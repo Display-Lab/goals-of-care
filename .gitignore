@@ -1,0 +1,18 @@
+# Ignore OSX specific files
+*.DS_Store
+
+# Ignore intermediate build files
+*.log
+*.synctex.gz
+
+# Ignore R Data files
+*.RData
+*.rdata
+*.Rhistory
+.Rproj.user
+*.Rproj
+
+# Ignore scratch space
+scratch/*
+
+

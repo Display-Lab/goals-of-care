@@ -1,0 +1,190 @@
+
+
+\documentclass[letterpaper]{texMemo}
+
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{helvet}
+\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the documen%t is to be sans serif
+
+\memoto{RECIPIENT-NAME}
+\memofrom{FEEDBACK-PROVIDER-NAME}
+\memosubject{Documenting goals of care conversations}
+\memodate{\today}
+%\logo{\includegraphics[width=0.3\textwidth]{queri_logo.png}}
+
+\begin{document}
+\maketitle
+
+On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations for Veterans admitted to your CLC.\bigskip
+
+This report focuses on newly admitted veterans because the admissions process provides a key opportunity to engage Veterans in goals of care conversations.\bigskip
+
+Please review the charts on the reverse side of this page to encourage reflection on your current practice and how your facility might increase the number of goals of care conversations and improve documentation of goals of care conversations.\bigskip
+
+To better understand the data, please keep in mind these points:
+
+\begin{itemize}
+% INTERPRETATION-ASSIST-POINTS
+  \item Data collected quarterly
+\end{itemize}\bigskip
+
+More information about the implementation of goals of care conversations, including a step-by-step implementation guide, is available at the following website: \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
+
+If you have any questions about this report, you can contact:
+\begin{itemize}
+  \item FIRSTNAME SURNAME, TITLE (555-555-5555)
+  \item FIRSTNAME SURNAME, TITLE (555-555-5555) 
+\end{itemize}\bigskip
+
+Thank you for your efforts to increase the frequency of goals of care conversations with Veterans and their families in your CLC and in ensuring that these important discussions are documented to improve care and the quality of life for our Veterans.
+
+\newpage
+
+\FloatBarrier
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+<<plot1, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE,
+  fig.1p="fig:", fig.keep='all', fig.width = 6.5, fig.height = 3, fig.align='center',
+  fig.show='hold'>>=
+
+# Plot graph of completeness of goal of care conversation documentation
+# Load libraries
+# 
+     library(ggplot2)
+     library(tidyverse)
+     library(ggthemes)
+
+     # Read in data 
+     load(file = "clc_summ.rdata")
+     
+     data_goc = clc_summ %>% mutate_if(is.character,as.factor)  %>% mutate(goc_done = (goc_7 + goc_14 + goc_30 + goc_pre90 + goc_pre)) %>% mutate(total_obs = (goc_7 + goc_14 + goc_30 + goc_pre90 + goc_pre + goc_none)) 
+     
+     # merge the quarter and year columns together
+     data_goc = transform(data_goc, period = paste(fy, "\n", "Q", quart))
+     
+    
+    # assign location ids to location
+     location_1 = 556   
+     location_2 = 607   
+     location_3 = 568   
+     location_4 = "568A4"
+     
+    
+    bar_graph_all = data_goc %>% filter(sta6a == location_1 & trt_spec == "All Specialties") %>% select(period,goc_none, goc_done, period,total_obs) %>% gather("documentation","veterans_admitted",goc_none, goc_done) 
+    
+    
+    #order the segments within each column
+    bar_graph_all$documentation = factor(bar_graph_all$documentation,
+                                                    levels = c("goc_none","goc_done"))
+    
+    goc_documentation.colors = c(goc_done = "#4286f4", goc_none = "#ffa700")
+  #cbPalette <- c("#0072B2", "#D55E00")
+    
+    bar_graph_all = data_goc %>% filter(sta6a == location_1 & trt_spec == "All Specialties") %>% select(period,goc_none, goc_done, period,total_obs) %>% gather("documentation","veterans_admitted",goc_none, goc_done) 
+    
+       
+    bar_graph_all %>% 
+
+          
+       ggplot(aes(x = period, y = veterans_admitted, fill = documentation)) + 
+                                                  geom_bar(stat = "identity", 
+                                                          position = "dodge") + 
+                                                  geom_text(aes( label = veterans_admitted, 
+                                                              veterans_admitted = veterans_admitted + 0.05), 
+                                                            position = position_dodge(0.9), 
+                                                            vjust = 1.5) + 
+      labs(title="How many newly admitted Veterans have a documented \ngoals of care conversation?", x = " ", y = "Veterans admitted") +
+                                                   theme(panel.grid.major = element_blank(),
+                                                         panel.grid.minor = element_blank(),
+                                                         panel.border = element_blank(),
+                                                         panel.background = element_blank(),
+                                                         legend.title = element_blank()) +
+                                                   scale_fill_manual(values=goc_documentation.colors, breaks=c("goc_none","goc_done"),
+                                                                       labels=c("Not documented", "Documented"))
+    
+@
+
+\begin{itemize}
+  \item The columns in the chart above show the number of Veterans admitted to your CLC each quarter, grouped by their goals of care documentation status
+  \item Veterans counted in the "Documented" column include those who ever had documentation from the LST template at any time between your facility's first use of the LST template, and up to 30 days following each Veteran's admission to your CLC
+\end{itemize}
+
+\hrulefill
+
+\bigskip
+
+
+
+<<plot2, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 3.5, fig.align='center', fig.show='hold'>>=
+
+# Plot graph of timeliness of goal of care conversation documentation
+    
+# group the totals into 1) before, 2) week after admission, and 3) up to 30 days after admission
+     data_goc2 = clc_summ %>% mutate_if(is.character,as.factor) %>% mutate(total_before = (goc_pre90 + goc_pre)) %>% mutate(total_week = (goc_7)) %>% mutate(total_after = (goc_14 + goc_30))
+    
+    #set colors for each category of documentation timeliness
+     goc_documentation2.colors = c(total_week     = "#009933",
+                         total_after    = "#ffa700",
+                         total_before = "#4286f4")
+
+     # merge the quarter and year columns together
+     data_goc2 = transform(data_goc2, period = paste(fy, "\n", "Q", quart))
+     
+     # merge the quarter and year columns together
+     #data_goc2 = transform(data_goc2, period=paste(fy, quart, sep=" "))
+    
+    # assign location ids to location
+     location_1 = 556   
+     location_2 = 607   
+     location_3 = 568   
+     location_4 = "568A4"
+     
+     #Plot of bar graph of quarters for each facility with total responses filled with numerator values
+     #Will create a variable called total observations which is going to be filled with the numerator
+     # Maybe iterate for each facility for the plots below.
+    
+    bar_graph_all = data_goc2 %>% filter(sta6a == location_1 & trt_spec == "All Specialties") %>% select(period, total_before, total_week, total_after) %>% gather("documentation","veterans_admitted", total_after, total_week, total_before) 
+
+    
+    #order segments in the stack
+    bar_graph_all$documentation = factor(bar_graph_all$documentation,
+                                                    levels = c("total_before",
+                                                               "total_week",
+                                                               "total_after"))
+    
+        bar_graph_all %>% 
+       mutate(veterans_admitted2 = ifelse(documentation == 'goc_7',veterans_admitted,NA)) %>% 
+       ggplot(aes(x = period, y = veterans_admitted)) + geom_bar(stat = "identity", aes(fill = documentation)) + 
+
+# used 'x = " "' to remove x axis text
+                                                  geom_text(aes( label = veterans_admitted2, vjust=1)) + labs(title="How close to the time of admission were goals of care \nconversations documented?", x = " ", y = "Veterans admitted") +
+                                                           geom_text(size = 4, aes(label = veterans_admitted),
+                                                          position = position_stack( vjust = .5))   +
+                                                   theme(panel.grid.major = element_blank(),
+                                                         panel.grid.minor = element_blank(),
+                                                         panel.border = element_blank(),
+                                                         panel.background = element_blank(),
+                                                         legend.title = element_blank()) +
+                                                   scale_fill_manual(values = goc_documentation2.colors,
+                                                                    breaks=c("total_before",
+                                                                                "total_week",
+                                                                                "total_after"),
+                                                                    labels=c("Before",
+                                                                          "0 to 7 days after",
+                                                                          "8 to 30 days after"
+                                                                         )) +
+                                                                guides(colour = guide_legend(order = 1))
+
+@
+
+\begin{itemize}
+
+  \item The segments of each column in the chart above show Veterans whose most recent goals of care conversation was documented before or after admission.
+
+  \item Each Veteran with a documented goals of care conversation was counted only once, starting with "0 to 7 days after", then "8 to 30 days after", then "Before".
+
+\end{itemize}\bigskip
+
+\end{document}
