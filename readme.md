@@ -42,7 +42,7 @@ Included under lib/ is an installer script that will attempt to download, build,
     #   The result should be the printed statement: `
     #   Header check:
     #   Expected: 12 encountered: 12
-    Rscript lib\check-input.r
+    Rscript lib\check_input.r
     ```
 
   * Windows CMD
@@ -51,7 +51,7 @@ Included under lib/ is an installer script that will attempt to download, build,
     Rscript lib\required-packages.r
 
     REM Check that input data has expected headers
-    Rscript lib\check-input.r
+    Rscript lib\check_input.r
     ```
 
   * Linux/OSX:
@@ -61,7 +61,13 @@ Included under lib/ is an installer script that will attempt to download, build,
     Rscript lib/required-packages.r
 
     # Check that input data has expected headers
-    Rscript lib/check-inputs.r
+    Rscript lib/check_input.r
+
+    # Filter the input data
+    Rscript lib/filter_input.r
+
+    # Calculate performance measure
+    Rscript lib/calc_perf_measures.r
     ```
 
 ## License
