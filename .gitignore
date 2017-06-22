@@ -17,5 +17,5 @@ scratch/*
 
 # Do not put inputs and outputs into version control
 input/*
-proc_data/*
 reports/*
+build/*
