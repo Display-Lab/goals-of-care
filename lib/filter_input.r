@@ -22,4 +22,5 @@ filter <- filter & clc_summ[,"trt_spec"] == "All Specialties"
 flt_data <- clc_summ[filter,]
 
 # Save filtered data to intermediate directory (build) for later use & examination
-save(flt_data, file = "build/filtered.rdata")
+output_path = file.path("build","filtered.rdata")
+save(flt_data, file = output_path)

@@ -38,4 +38,5 @@ location <- flt_data[,"sta6a"]
 perf_data <- data.frame(location, timepoint, hits, misses, total_obs)
 
 # Write perf data to intermediate directory
-save(perf_data, file = "build/perf.rdata")
+output_path = file.path("build","perf.rdata")
+save(perf_data, file = output_path)
