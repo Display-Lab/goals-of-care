@@ -8,13 +8,7 @@ For Windows users MikTex is suggested [https://miktex.org/](https://miktex.org/)
 ### R
 Home Page [https://cran.r-project.org/](https://cran.r-project.org/)
 
-Optionally, use RStudio to get a GUI interface and pandoc bundled.
-
-### Pandoc
-
-Home page and project information: [http://pandoc.org/](http://pandoc.org/)
-
-Windows installers available at [https://github.com/jgm/pandoc/releases](https://github.com/jgm/pandoc/releases).
+Optionally, use RStudio to get a GUI. [https://www.rstudio.com/](https://www.rstudio.com/)
 
 ### R Packages
 * ggplot2
