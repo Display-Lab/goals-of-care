@@ -1,21 +1,26 @@
 # Ignore OSX specific files
 *.DS_Store
 
-# Ignore intermediate build files
+# Intermediate build files
 *.log
 *.synctex.gz
 
-# Ignore R Data files
+# RStudo project and R Data files
 *.RData
 *.rdata
 *.Rhistory
 .Rproj.user
 *.Rproj
 
-# Ignore scratch space
+# Scratch space
 scratch/*
 
 # Do not put inputs and outputs into version control
 input/*
 reports/*
 build/*
+
+# RStudio and Sweave artifacts
+lib/**/*.pdf
+lib/**/*.tex
+lib/**/figure/*
