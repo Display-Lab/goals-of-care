@@ -10,7 +10,9 @@
 \memofrom{FEEDBACK-PROVIDER-NAME}
 \memosubject{Documenting goals of care conversations}
 \memodate{\today}
-%\logo{\includegraphics[width=0.3\textwidth]{queri_logo.png}}
+
+% Specify vignette engine so R CMD Sweave will work from the command line
+%\VignetteEngine{knitr::knitr}
 
 \begin{document}
 

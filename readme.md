@@ -3,7 +3,7 @@
 ## Prerequisites
 
 ### LaTeX
-[https://miktex.org/](https://miktex.org/)
+For Windows users MikTex is suggested [https://miktex.org/](https://miktex.org/)
 
 ### R
 Home Page [https://cran.r-project.org/](https://cran.r-project.org/)
@@ -19,16 +19,16 @@ Windows installers available at [https://github.com/jgm/pandoc/releases](https:/
 ### R Packages
 * ggplot2
 * ggthemes
-* tidyverse
+* tidyr
+* dplyr
 * knitr
-* rmarkdown
 
 Included under lib/ is an installer script that will attempt to download, build, and install required packages: [required-packages.r](lib/required-packages.r)
 
 ## Use
 
 1. Gather input data and export as an .rdata file in the input/ directory.
-    * Default behavior is to use the first .rdata file found in input/
+    * Default behavior is to use input/clc.rdata
     * The report generation does *not* currently accomodate concurrent use.
 
 1. From the project root directory run the following commands
@@ -68,6 +68,18 @@ Included under lib/ is an installer script that will attempt to download, build,
 
     # Calculate performance measure
     Rscript lib/calc_perf_measures.r
+
+    # Manual PDF compile from CLI
+    cd lib/clc_memo
+    R CMD Sweave --clean report_1.Rnw
+    pdflatex -output-directory=../../reports report_1.tex
+
+    # Clean up and return to root project directory
+    rm report_1.tex
+    rm -r figure
+    cd ../..
+
+    # Generated pdf will be reports/report_1.pdf
     ```
 
 ## License
