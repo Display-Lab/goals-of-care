@@ -73,8 +73,15 @@ Thank you for your efforts to increase the frequency of goals of care conversati
   # Format data for plotting
   plot_data <- transform_to_hit_rate_data(perf_data)
   
-  # Manually specify a single identifier (currently location) to futher filter data.
-  plot_data <- filter(plot_data, location == "607")
+  # This plot should only include a single recipient's (site's) data.
+  # If the plot_data includes more than one, check for a selected_location variable and filter by that.
+  locations = levels(plot_data$location)
+  if(length(locations) > 1){
+    if(exists("selected_location") == FALSE){
+      selected_location <- locations[1]
+    }
+    plot_data <- filter(plot_data, location == "607")
+  }
   
   # Create plot
   hit_rate_plot <- generate_hit_rate_plot(plot_data)
