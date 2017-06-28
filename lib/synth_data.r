@@ -26,7 +26,7 @@ no_data <- list(fy = integer(0), quart = integer(0), sta6a = character(0),
 # return: vector with number of samples in each hit category
 distribute_hits <- function(total, misses){
   picks <- sample(1:5, total - misses, replace = TRUE)
-  sapply(1:5, function(x, p){ sum(x==p)}, p = picks)
+  unname(lapply(1:5, function(x, p){ sum(x==p)}, p = picks))
 }
 
 # Empty data frame
@@ -36,16 +36,15 @@ df <- structure(no_data, .Names = c_names, var.labels = v_labels , row.names = c
 total = 104
 
 # No trend site
-ntr_data <- rbind(df,
-  c(2071L, 1L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 3L, 3L, "All Specialties"),
-  c(2071L, 2L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 2L, 4L, "All Specialties"),
-  c(2071L, 3L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 1L, 5L, "All Specialties"),
-  c(2071L, 4L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 3L, 3L, "All Specialties"),
-  c(2071L, 1L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 3L, 3L, "All Specialties"),
-  c(2071L, 2L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 2L, 4L, "All Specialties"),
-  c(2071L, 3L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 1L, 5L, "All Specialties"),
-  c(2071L, 4L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 3L, 3L, "All Specialties"))
-colnames(ntr_data) <- c_names
+ntr_data <- rbind(
+  setNames(data.frame(2071L, 1L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2071L, 2L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 2L, 4L, "All Specialties"), c_names),
+  setNames(data.frame(2071L, 3L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 1L, 5L, "All Specialties"), c_names),
+  setNames(data.frame(2071L, 4L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 1L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 2L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 2L, 4L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 3L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 1L, 5L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 4L, "nTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total,25), 25, 3L, 3L, "All Specialties"), c_names))
 
 # Return sum, hits1:5, misses for some randomly selected number of misses in 1:total
 rnd_misses <- function(total){
@@ -54,40 +53,37 @@ rnd_misses <- function(total){
 }
 
 rnd_data <- rbind(df,
-  c(2071L, 1L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"),
-  c(2071L, 2L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"),
-  c(2071L, 3L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"),
-  c(2071L, 3L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"),
-  c(2071L, 1L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"),
-  c(2071L, 2L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"),
-  c(2071L, 3L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"),
-  c(2071L, 3L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"))
-names(rnd_data) <- c_names
+  setNames(data.frame(2071L, 1L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2071L, 2L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2071L, 3L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2071L, 3L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 1L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 2L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 3L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 3L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"), c_names))
 
 # Incr site
 
 incr_data <- rbind(df,
-  c(2071L, 1L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 10), 10, 3L, 3L, "All Specialties"),
-  c(2071L, 2L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 15), 15, 3L, 3L, "All Specialties"),
-  c(2071L, 3L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 20), 20, 3L, 3L, "All Specialties"),
-  c(2071L, 4L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 25), 25, 3L, 3L, "All Specialties"),
-  c(2072L, 1L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 28), 28, 3L, 3L, "All Specialties"),
-  c(2072L, 2L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 32), 32, 3L, 3L, "All Specialties"),
-  c(2072L, 3L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 39), 39, 3L, 3L, "All Specialties"),
-  c(2072L, 4L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 38), 38, 3L, 3L, "All Specialties"))
-names(incr_data) <- c_names
+  setNames(data.frame(2071L, 1L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 10), 10, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2071L, 2L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 15), 15, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2071L, 3L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 20), 20, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2071L, 4L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 25), 25, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 1L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 28), 28, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 2L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 32), 32, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 3L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 39), 39, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 4L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 38), 38, 3L, 3L, "All Specialties"), c_names))
 
 # Decr site
 decr_data <- rbind(df,
-  c(2071L, 1L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 33), 33, 3L, 3L, "All Specialties"),
-  c(2071L, 2L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 28), 28, 3L, 3L, "All Specialties"),
-  c(2071L, 3L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 23), 23, 3L, 3L, "All Specialties"),
-  c(2071L, 4L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 15), 15, 3L, 3L, "All Specialties"),
-  c(2072L, 1L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 12), 12, 3L, 3L, "All Specialties"),
-  c(2072L, 2L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 10), 10, 3L, 3L, "All Specialties"),
-  c(2072L, 3L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 5), 5, 3L, 3L, "All Specialties"),
-  c(2072L, 5L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 0), 0, 3L, 3L, "All Specialties"))
-names(decr_data) <- c_names
+  setNames(data.frame(2071L, 1L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 33), 33, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2071L, 2L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 28), 28, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2071L, 3L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 23), 23, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2071L, 4L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 15), 15, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 1L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 12), 12, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 2L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 10), 10, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 3L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 5), 5, 3L, 3L, "All Specialties"), c_names),
+  setNames(data.frame(2072L, 5L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 0), 0, 3L, 3L, "All Specialties"), c_names))
 
 # Combine all the data together with expected data frame name for analysis
 clc_summ <- rbind(ntr_data, rnd_data, incr_data, decr_data)

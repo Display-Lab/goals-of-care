@@ -17,10 +17,44 @@
 \begin{document}
 
 <<include=FALSE>>=
+# Load knitr and tell it to create a concordance file.
 library(knitr)
-opts_chunk$set(
-concordance=TRUE
-)
+opts_chunk$set( concordance=TRUE )
+@
+
+<<include=FALSE>>=
+# Try to load data from build directory if it is not already present
+  if(exists("hit_rate_data") == FALSE || exists("hit_category_data") == FALSE) {
+    rel_filepath <- file.path("..", "..", "build","performance.rdata")
+    prj_filepath <- file.path("build","performance.rdata")
+    
+    # Try loading from relative path assuming project root as base
+    load_result <- try(load(prj_filepath), silent = TRUE) 
+    # Failing that, try loading from the relative path of this report.
+    if(class(load_result) == "try-error"){
+      try(load(rel_filepath), silent = TRUE)
+    }
+  }
+
+# Try to source from the path relative to the project root
+#  Then try relative to this script
+try_source <- function(prj_rel_path){
+  rel_script_path = file.path("..","..",prj_rel_path)
+  
+  src_result <- try(source(prj_rel_path), silent = TRUE)
+  if(class(src_result) == "try-error"){
+    src_result <- try(load(rel_script_path), silent = TRUE)
+  }
+}
+
+# Try to source r scripts that contain plotting functions if not already present
+  if(exists("generate_hit_rate_plot") == FALSE){
+    try_source(file.path("lib","hit_rate_plot.r"))
+  }
+
+  if(exists("generate_hit_category_plot") == FALSE){
+    try_source(file.path("lib","hit_categories_plot.r"))
+  }
 @
 
 \maketitle
@@ -57,21 +91,21 @@ Thank you for your efforts to increase the frequency of goals of care conversati
 
   library(dplyr)
 
-  # Check for existence of hit_rate_plot_data data.frame
-  # This will inidicate it's been loaded into the environment externally.
+  # Check for existence of hit_rate_plot_data data.frame 
+  # This will inidicate it's been loaded into the environment externally probably from running the project scripts.
   # Otherwise, try to load it from the expected location relative to this script.
-  if(exists("perf_data") == FALSE) {
-    input_filepath <- file.path("..", "..", "build","perf.rdata")
+  if(exists("hit_rate_data") == FALSE) {
+    input_filepath <- file.path("..", "..", "build","performance.rdata")
     load(input_filepath)
   }
 
-  if(exists("generate_hit_rate_plot") == FALSE){
+  if(exists("make_hit_rate_plot_data") == FALSE){
     plot_script_path <- file.path("..","..","lib","hit_rate_plot.r")
     source(plot_script_path)
   }
    
   # Format data for plotting
-  plot_data <- transform_to_hit_rate_data(perf_data)
+  plot_data <- make_hit_rate_plot_data(hit_rate_data)
   
   # This plot should only include a single recipient's (site's) data.
   # If the plot_data includes more than one, check for a selected_location variable and filter by that.
@@ -80,7 +114,7 @@ Thank you for your efforts to increase the frequency of goals of care conversati
     if(exists("selected_location") == FALSE){
       selected_location <- locations[1]
     }
-    plot_data <- filter(plot_data, location == "607")
+    plot_data <- filter(plot_data, location == selected_location)
   }
   
   # Create plot
@@ -102,71 +136,23 @@ Thank you for your efforts to increase the frequency of goals of care conversati
 
 <<plot2, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 3.5, fig.align='center', fig.show='hold'>>=
 
-  # Plot graph of completeness of goal of care conversation documentation
-  # Load libraries
-   
-  library(ggplot2)
-  library(tidyverse)
-  library(ggthemes)
-
-  # Read in data 
-  load(file = "../../input/clc.rdata")
-    
-# group the totals into 1) before, 2) week after admission, and 3) up to 30 days after admission
-   data_goc2 = clc_summ %>%
-     mutate_if(is.character,as.factor) %>% 
-     mutate(total_before = (goc_pre90 + goc_pre)) %>% 
-     mutate(total_week = (goc_7)) %>% 
-     mutate(total_after = (goc_14 + goc_30))
-    
-  #set colors for each category of documentation timeliness
-   goc_documentation2.colors = c(total_week     = "#009933",
-                       total_after    = "#ffa700",
-                       total_before = "#4286f4")
-
-   # merge the quarter and year columns together
-   data_goc2 = transform(data_goc2, period = paste(fy, "\n", "Q", quart))
-   
-   # merge the quarter and year columns together
-   #data_goc2 = transform(data_goc2, period=paste(fy, quart, sep=" "))
-    
-  # assign location ids to location
-   location_1 = 556   
-   location_2 = 607   
-   location_3 = 568   
-   location_4 = "568A4"
-   
-   #Plot of bar graph of quarters for each facility with total responses filled with numerator values
-   #Will create a variable called total observations which is going to be filled with the numerator
-   # Maybe iterate for each facility for the plots below.
-    
-  bar_graph_all = data_goc2 %>% 
-    filter(sta6a == location_2 & trt_spec == "All Specialties") %>% 
-    select(period, total_before, total_week, total_after) %>% 
-    gather("documentation","veterans_admitted", total_after, total_week, total_before) 
-
-    
-    #order segments in the stack
-  bar_graph_all$documentation = factor(bar_graph_all$documentation,
-                                       levels = c("total_before", "total_week", "total_after"))
-    
-  bar_graph_all %>% 
-    mutate(veterans_admitted2 = ifelse(documentation == 'goc_7',veterans_admitted,NA)) %>% 
-    ggplot(aes(x = period, y = veterans_admitted)) +
-      geom_bar(stat = "identity", aes(fill = documentation)) + 
-      geom_text(aes( label = veterans_admitted2, vjust=1)) +
-      labs(title="How close to the time of admission were goals of care \nconversations documented?", x = " ", y = "Veterans admitted") +
-      geom_text(size = 4, aes(label = veterans_admitted), position = position_stack( vjust = .5))   +
-      theme(panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            panel.border = element_blank(),
-            panel.background = element_blank(),
-            legend.title = element_blank()) +
-      scale_fill_manual(values = goc_documentation2.colors,
-                        breaks=c("total_before", "total_week", "total_after"), 
-                        labels=c("Before", "0 to 7 days after", "8 to 30 days after")) +
-      guides(colour = guide_legend(order = 1))
-
+  plot_data <- make_hit_category_plot_data(hit_category_data)
+  
+  # This plot should only include a single recipient's (site's) data.
+  # If the plot_data includes more than one, check for a selected_location variable and filter by that.
+  locations = levels(plot_data$location)
+  if(length(locations) > 1){
+    if(exists("selected_location") == FALSE){
+      selected_location <- locations[1]
+    }
+    plot_data <- filter(plot_data, location == selected_location)
+  }
+  
+  # Create plot
+  hit_category_plot <- generate_hit_category_plot(plot_data)
+  
+  # print plot to include in document
+  hit_category_plot
 @
 
 \begin{itemize}

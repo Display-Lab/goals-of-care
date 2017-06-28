@@ -10,7 +10,7 @@ library(ggthemes)
 
 # Given data frame with "identifier", "hits" and "misses" columns,
 #  return data frame transformed for plotting 
-transform_to_hit_rate_data <- function(input_data){
+make_hit_rate_plot_data <- function(input_data){
   # Convert multiple columns into two columns of key-value pairs
   #  where the keys are the column titles and the values are those of the former columns
   # For example, the row:
@@ -38,20 +38,36 @@ generate_hit_rate_plot <- function(plot_data){
   plot_title <- "How many newly admitted Veterans have a documented \ngoals of care conversation?" 
   
   # Specify the plot using grammar of graphics
-  hit_plot <- ggplot(plot_data, aes(x=timepoint, y = count, group=event)) +
-    geom_col(stat = "identity", aes(fill = event)) + 
-    geom_text(size = 4, aes(label = count), position = position_stack( vjust = 0.5))   +
-    geom_point(aes(y=total_obs,color="total_obs")) + 
-    geom_line( data = plot_data, aes(x = as.numeric(timepoint), y = total_obs, color = "total_obs")) +
-    labs(title=plot_title, x = " ", y = "Veterans admitted") +
-    scale_colour_manual(values = plot.colors, breaks = c("total_obs"), labels = c("Newly admitted \nveterans")) +
-    scale_fill_manual(values = plot.colors, breaks = c("hits","misses"), labels = c("Not documented", "Documented")) + 
-    theme(panel.grid.major = element_blank(),
-         panel.grid.minor = element_blank(),
-         panel.border = element_blank(),
-         panel.background = element_blank(),
-         legend.title = element_blank()
-         ) + 
+  hit_plot <-
+    ggplot(plot_data, aes(x = timepoint, y = count, group = event)) +
+    geom_col(stat = "identity", aes(fill = event)) +
+    geom_text(size = 4,
+              aes(label = count),
+              position = position_stack(vjust = 0.5))   +
+    geom_point(aes(y = total_obs, color = "total_obs")) +
+    geom_line(data = plot_data, aes(
+      x = as.numeric(timepoint),
+      y = total_obs,
+      color = "total_obs"
+    )) +
+    labs(title = plot_title, x = " ", y = "Veterans admitted") +
+    scale_colour_manual(
+      values = plot.colors,
+      breaks = c("total_obs"),
+      labels = c("Newly admitted \nveterans")
+    ) +
+    scale_fill_manual(
+      values = plot.colors,
+      breaks = c("hits", "misses"),
+      labels = c("Not documented", "Documented")
+    ) +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.border = element_blank(),
+      panel.background = element_blank(),
+      legend.title = element_blank()
+    ) +
     guides(colour = guide_legend(order = 1))
   
   return(hit_plot)

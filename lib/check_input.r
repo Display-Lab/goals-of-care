@@ -13,9 +13,12 @@ if(length(options)==0) {
 load(input_filename)
 
 # Expect data.frame named clc_summ
+print("Checking name of data frame from input rdata file.")
 if(exists("clc_summ") == FALSE || is.data.frame(clc_summ) == FALSE){
   print("No data frame named clc_summ in rdata.")
   quit(save="no", status=13)
+} else {
+  print("Found expected data.frame")
 }
 
 # Check that the header is as expected 
@@ -24,23 +27,18 @@ expected_vars <- c("fy","quart","sta6a","WardSID","trtsp_1", "WardLocationName",
 expected_vars_count <- length(expected_vars)
 
 # Expect 17 variables
+print("Checking number of variables in data frame.")
 cat("Expected:", expected_vars_count, "encountered:", length(clc_summ),"\n")
 if(length(clc_summ) != expected_vars_count){
   print("Unexpected number of variables!")
   quit(save="no", status=13)
 }
-  
-# Check that the header is as expected 
-expected_fields <- c("timeStamp","elapsed","label","responseCode","responseMessage","threadName","dataType","success","bytes",
-                     "grpThreads","allThreads","Latency")
-expected_field_count <- length(expected_fields)
-header_line <- readLines(input_file,n=1)
-header_fields <- unlist(strsplit(header_line,","))
 
-cat("Header check:\n")
-cat("Expected:", expected_field_count, "encountered:", length(header_fields),"\n")
-if(length(header_fields) != expected_field_count){
-  print("Unexpected number of input fields!")
-  close(input_file)
-  quit(save="no", status=10)
+# Check that names of columns matches expected
+col_differences <- setdiff(expected_vars, colnames(clc_summ))
+if(length(col_differences) == 0){
+  print("Found expected columns.")
+} else {
+  print("Unexpected names or order of columns!")
+  quit(save="no", status=13)
 }
