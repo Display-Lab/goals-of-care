@@ -2,7 +2,7 @@
 #  1. Hit Rate (hits vs misses)
 #  2. Hit Bin  (category of hits)
 
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE )
 
 # If not given a file name, assume the input is build/filtered.rdata
 options <- commandArgs(TRUE)
