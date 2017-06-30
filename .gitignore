@@ -24,3 +24,5 @@ build/*
 lib/**/*.pdf
 lib/**/*.tex
 lib/**/figure/*
+figure/*
+
