@@ -1,5 +1,5 @@
 library(tidyr)
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
 library(ggplot2)
 library(ggthemes)
 
@@ -28,6 +28,10 @@ make_hit_rate_plot_data <- function(input_data){
   # Convert key column (title of former columns) to a factor with the specified order of values
   gathered$event = factor(gathered$event, levels = c("misses","hits"))
   
+  # Create a column of data where the counts that are zero are replaced with NA
+  #   This column will be used for the text labels so that 0's aren't drawn on the top of the bar.
+  gathered$count_na_zero <- replace(gathered$count, gathered$count == 0, NA)
+  
   return(gathered)
 }
 
@@ -42,7 +46,7 @@ generate_hit_rate_plot <- function(plot_data){
     ggplot(plot_data, aes(x = timepoint, y = count, group = event)) +
     geom_col(stat = "identity", aes(fill = event)) +
     geom_text(size = 4,
-              aes(label = count),
+              aes(label = count_na_zero),
               position = position_stack(vjust = 0.5))   +
     geom_point(aes(y = total_obs, color = "total_obs")) +
     geom_line(data = plot_data, aes(

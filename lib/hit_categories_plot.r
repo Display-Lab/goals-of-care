@@ -1,5 +1,5 @@
 library(tidyr)
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
 library(ggplot2)
 library(ggthemes)
 
@@ -9,26 +9,18 @@ library(ggthemes)
 #   * Produce plot
 
 make_hit_category_plot_data <- function(input_data){
-  # Convert multiple columns into two columns of key-value pairs
-  #  where the keys are the column titles and the values are those of the former columns
-  # For example, the row:
-  #
-  # location timepoint hits misses total_obs
-  # 556      2019 Q3   30   10     40 
-  # 
-  # Will become two rows after the gather operation with the parameters used in this script.
-  #
-  # location timepoint total_obs event      count
-  # 556      2015 Q1   40        misses     10
-  # 556      2015 Q1   40        hits       30
-
 
   gathered <- gather(input_data, key="event", value="count", cat_1, cat_2, cat_3) 
   
   # Convert key column (title of former columns) to a factor with the specified order of values
-  #gathered$event = factor(gathered$event, levels = c("misses","hits"))
-  gathered$event = as.factor(gathered$event)
-  gathered <- mutate(gathered, extrad = ifelse(event == 'cat_2',count,NA))
+  #   Specify in reverse order so that the geom_text and geom_col line up.
+  #   Something screwing based on the values of the factor levels
+  gathered$event <- factor(gathered$event, levels = c("cat_3", "cat_2", "cat_1"))
+  
+  # Create a column of data where the counts that are zero are replaced with NA
+  #   This column will be used for the text labels so that 0's aren't drawn on the top of the bar.
+  gathered$count_na_zero <- replace(gathered$count, gathered$count == 0, NA)
+  
   return(gathered)
 }
 
@@ -39,14 +31,11 @@ generate_hit_category_plot <- function(plot_data){
   
   plot.colors = c(cat_1 = "#4286f4", cat_2 = "#009933", cat_3 = "#ffa700")
   plot.title <- "How close to the time of admission were goals of care \nconversations documented?"
-  # Not sure what extrad is doing
-  # created a new column just to use two geom text layers
   hit_plot <- ggplot(plot_data, aes(x = timepoint, y = count)) +
-    geom_bar(stat = "identity", aes(fill = event)) +
-    geom_text(aes(label = extrad, vjust = 1)) +
+    geom_col(aes(fill = event)) +
     geom_text(size = 4,
-              aes(label = count),
-              position = position_stack(vjust = .5))   +
+              aes(label = count_na_zero),
+              position = position_stack(vjust = 0.5))   +
     labs(title = plot.title, x = " ", y = "Veterans admitted") +
     theme(
       panel.grid.major = element_blank(),
@@ -60,7 +49,7 @@ generate_hit_category_plot <- function(plot_data){
       breaks = c("cat_1", "cat_2", "cat_3"),
       labels = c("Before", "0 to 7 days after", "8 to 30 days after")
     ) +
-    guides(colour = guide_legend(order = 1))
+    guides(colour = guide_legend(order = 0))
     
   return(hit_plot)
 }
