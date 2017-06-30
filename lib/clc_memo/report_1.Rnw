@@ -54,7 +54,6 @@ config <- get_report_settings()
 # Use subset data by selected_identifier
 #  the location ID in this case.
 ids = levels(hit_rate_data$location)
-write( paste("REPORT SELECTED_ID:", selected_id), stderr())
 if( !exists("selected_id") ){ selected_id <- ids[1] }
   
 @
@@ -89,7 +88,7 @@ More information about the implementation of goals of care conversations, includ
 If you have any questions about this report, you can contact:
 \begin{itemize}
 <<contacts_list, results="asis", echo=FALSE>>=
-  cat("", config$contacts, sep="\n\\item ")
+  cat("", config$contacts[[selected_id]], sep="\n\\item ")
 @
 \end{itemize}\bigskip
 
