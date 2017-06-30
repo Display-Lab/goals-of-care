@@ -6,23 +6,16 @@
 \usepackage{helvet}
 \renewcommand*\familydefault{\sfdefault} %% Only if the base font of the documen%t is to be sans serif
 
-\memoto{RECIPIENT-NAME}
-\memofrom{FEEDBACK-PROVIDER-NAME}
-\memosubject{Documenting goals of care conversations}
-\memodate{\today}
-
 % Specify vignette engine so R CMD Sweave will work from the command line
 %\VignetteEngine{knitr::knitr}
 
-\begin{document}
-
-<<include=FALSE>>=
+<<knitr_config, include=FALSE>>=
 # Load knitr and tell it to create a concordance file.
 library(knitr)
 opts_chunk$set( concordance=TRUE )
 @
 
-<<include=FALSE>>=
+<<load_data, include=FALSE>>=
 # Try to load data from build directory if it is not already present
   if(exists("hit_rate_data") == FALSE || exists("hit_category_data") == FALSE) {
     rel_filepath <- file.path("..", "..", "build","performance.rdata")
@@ -43,19 +36,37 @@ try_source <- function(prj_rel_path){
   
   src_result <- try(source(prj_rel_path), silent = TRUE)
   if(class(src_result) == "try-error"){
-    src_result <- try(load(rel_script_path), silent = TRUE)
+    src_result <- try(source(rel_script_path), silent = TRUE)
   }
 }
 
 # Try to source r scripts that contain plotting functions if not already present
-  if(exists("generate_hit_rate_plot") == FALSE){
-    try_source(file.path("lib","hit_rate_plot.r"))
-  }
+if( !exists("generate_hit_rate_plot") ){ try_source(file.path("lib","hit_rate_plot.r")) }
 
-  if(exists("generate_hit_category_plot") == FALSE){
-    try_source(file.path("lib","hit_categories_plot.r"))
-  }
+if( !exists("generate_hit_category_plot") ){ try_source(file.path("lib","hit_categories_plot.r")) }
+
+# Try to source r script that provides config list
+if( !exists("cfg_list") ){ try_source(file.path("config","report_settings.r")) }
+
+# Get the config and store it in a variable
+config <- get_report_settings()
+
+# Use subset data by selected_identifier
+#  the location ID in this case.
+ids = levels(hit_rate_data$location)
+write( paste("REPORT SELECTED_ID:", selected_id), stderr())
+if( !exists("selected_id") ){ selected_id <- ids[1] }
+  
 @
+
+
+\memoto{ \Sexpr{config$id_names[selected_id]} }
+\memofrom{ \Sexpr{config$provider} }
+\memosubject{ \Sexpr{config$title} }
+\memodate{\today}
+
+
+\begin{document}
 
 \maketitle
 
@@ -68,16 +79,18 @@ Please review the charts on the reverse side of this page to encourage reflectio
 To better understand the data, please keep in mind these points:
 
 \begin{itemize}
-% INTERPRETATION-ASSIST-POINTS
-  \item Data collected quarterly
+<<intepret_assist, results="asis", echo=FALSE>>=
+  cat("", config$assists, sep="\n\\item ")
+@
 \end{itemize}\bigskip
 
 More information about the implementation of goals of care conversations, including a step-by-step implementation guide, is available at the following website: \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
 
 If you have any questions about this report, you can contact:
 \begin{itemize}
-  \item FIRSTNAME SURNAME, TITLE (555-555-5555)
-  \item FIRSTNAME SURNAME, TITLE (555-555-5555) 
+<<contacts_list, results="asis", echo=FALSE>>=
+  cat("", config$contacts, sep="\n\\item ")
+@
 \end{itemize}\bigskip
 
 Thank you for your efforts to increase the frequency of goals of care conversations with Veterans and their families in your CLC and in ensuring that these important discussions are documented to improve care and the quality of life for our Veterans.
@@ -89,33 +102,13 @@ Thank you for your efforts to increase the frequency of goals of care conversati
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 <<plot1, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 6.5, fig.height = 3.5, fig.align='center', fig.show='hold'>>=
 
-  library(dplyr)
+  library(dplyr, warn.conflicts = FALSE)
 
-  # Check for existence of hit_rate_plot_data data.frame 
-  # This will inidicate it's been loaded into the environment externally probably from running the project scripts.
-  # Otherwise, try to load it from the expected location relative to this script.
-  if(exists("hit_rate_data") == FALSE) {
-    input_filepath <- file.path("..", "..", "build","performance.rdata")
-    load(input_filepath)
-  }
-
-  if(exists("make_hit_rate_plot_data") == FALSE){
-    plot_script_path <- file.path("..","..","lib","hit_rate_plot.r")
-    source(plot_script_path)
-  }
-   
   # Format data for plotting
   plot_data <- make_hit_rate_plot_data(hit_rate_data)
   
-  # This plot should only include a single recipient's (site's) data.
-  # If the plot_data includes more than one, check for a selected_location variable and filter by that.
-  locations = levels(plot_data$location)
-  if(length(locations) > 1){
-    if(exists("selected_location") == FALSE){
-      selected_location <- locations[1]
-    }
-    plot_data <- filter(plot_data, location == selected_location)
-  }
+  # This plot should only have data from a single recipient (site).
+  plot_data <- filter(plot_data, location == selected_id)
   
   # Create plot
   hit_rate_plot <- generate_hit_rate_plot(plot_data)
@@ -136,17 +129,11 @@ Thank you for your efforts to increase the frequency of goals of care conversati
 
 <<plot2, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 3.5, fig.align='center', fig.show='hold'>>=
 
+  # Format data for plotting
   plot_data <- make_hit_category_plot_data(hit_category_data)
   
-  # This plot should only include a single recipient's (site's) data.
-  # If the plot_data includes more than one, check for a selected_location variable and filter by that.
-  locations = levels(plot_data$location)
-  if(length(locations) > 1){
-    if(exists("selected_location") == FALSE){
-      selected_location <- locations[1]
-    }
-    plot_data <- filter(plot_data, location == selected_location)
-  }
+  # This plot should only have data from a single recipient (site).
+  plot_data <- filter(plot_data, location == selected_id)
   
   # Create plot
   hit_category_plot <- generate_hit_category_plot(plot_data)
