@@ -13,12 +13,12 @@ if(length(options)==0) {
 load(input_filename)
 
 # Expect data.frame named clc_summ
-print("Checking name of data frame from input rdata file.")
+cat("\nChecking name of data frame from input rdata file.\n")
 if(exists("clc_summ") == FALSE || is.data.frame(clc_summ) == FALSE){
-  print("No data frame named clc_summ in rdata.")
+  cat("No data frame named clc_summ in rdata.\n")
   quit(save="no", status=13)
 } else {
-  print("Found expected data.frame")
+  cat("Found expected data.frame\n")
 }
 
 # Check that the header is as expected 
@@ -27,18 +27,19 @@ expected_vars <- c("fy","quart","sta6a","WardSID","trtsp_1", "WardLocationName",
 expected_vars_count <- length(expected_vars)
 
 # Expect 17 variables
-print("Checking number of variables in data frame.")
+cat("Checking number of variables in data frame.\n")
 cat("Expected:", expected_vars_count, "encountered:", length(clc_summ),"\n")
 if(length(clc_summ) != expected_vars_count){
-  print("Unexpected number of variables!")
+  cat("Unexpected number of variables!\n")
   quit(save="no", status=13)
 }
 
 # Check that names of columns matches expected
 col_differences <- setdiff(expected_vars, colnames(clc_summ))
 if(length(col_differences) == 0){
-  print("Found expected columns.")
+  cat("Found expected columns.\n")
 } else {
-  print("Unexpected names or order of columns!")
+  cat("Unexpected columns!\n")
+  print(col_differences)
   quit(save="no", status=13)
 }
