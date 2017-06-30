@@ -63,17 +63,13 @@ Included under lib/ is an installer script that will attempt to download, build,
     # Calculate performance measure
     Rscript lib/calc_perf_measures.r
 
-    # Manual PDF compile from CLI
-    cd lib/clc_memo
-    R CMD Sweave --clean report_1.Rnw
-    pdflatex -output-directory=../../reports report_1.tex
+    # Build all report figures and tex
+    Rscript lib/build_all_tex.r
 
-    # Clean up and return to root project directory
-    rm report_1.tex
-    rm -r figure
-    cd ../..
+    # Complile all tex reports to pdf
+    find build -name '*.tex' -execdir pdflatex {} \;
 
-    # Generated pdf will be reports/report_1.pdf
+    # Generated pdf will be build/reports/<id>/<id>_clc.pdf
     ```
 
 ## License
