@@ -30,7 +30,7 @@ Included under lib/ is an installer script that will attempt to download, build,
   * Windows Powershell
     ```
     # Run install script to make sure required packages are installed.
-    Rscript lib\required-packages.r
+    Rscript lib\install_required-packages.r
 
     # Check that input data has expected headers
     #   The result should be the printed statement: `
@@ -42,7 +42,7 @@ Included under lib/ is an installer script that will attempt to download, build,
   * Windows CMD
     ```
     echo Run install script to make sure required packages are installed.
-    Rscript lib\required-packages.r
+    Rscript lib\install_required-packages.r
 
     REM Check that input data has expected headers
     Rscript lib\check_input.r
@@ -52,7 +52,7 @@ Included under lib/ is an installer script that will attempt to download, build,
 
     ```
     # Run install script to make sure required packages are installed.
-    Rscript lib/required-packages.r
+    Rscript lib/install_required_packages.r
 
     # Check that input data has expected headers
     Rscript lib/check_input.r
