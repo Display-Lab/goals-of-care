@@ -14,12 +14,9 @@ v_labels <- c("Fiscal Year",  "Quarter", "CLC Station", "WardSID", "Treating Spe
               "No GOCC pre-CLC Admission to 31+ days post-Admission or discharge", 
               "GOCC 31+ Days post-CLC Admission", "GOCC post-CLC Discharge (within next quarter)", "")
 
-no_data <- list(fy = integer(0), quart = integer(0), sta6a = character(0), 
-                WardSID = integer(0), trtsp_1 = character(0), WardLocationName = character(0), 
-                `_TYPE_` = integer(0), `_FREQ_` = integer(0), goc_7 = integer(0), 
-                goc_14 = integer(0), goc_30 = integer(0), goc_pre90 = integer(0), 
-                goc_pre = integer(0), goc_none = integer(0), goc_post30 = integer(0), 
-                goc_post = integer(0), trt_spec = character(0))
+# Empty data frame
+#df <- structure(no_data, .Names = c_names, var.labels = v_labels , row.names = character(0), class = "data.frame")
+
 
 # Function to distribute the hits between five hit categories
 # params: total number of samples, number of misses
@@ -28,9 +25,6 @@ distribute_hits <- function(total, misses){
   picks <- sample(1:5, total - misses, replace = TRUE)
   unname(lapply(1:5, function(x, p){ sum(x==p)}, p = picks))
 }
-
-# Empty data frame
-df <- structure(no_data, .Names = c_names, var.labels = v_labels , row.names = character(0), class = "data.frame")
 
 # Global total patients for each synthetic data set
 total = 104
@@ -52,7 +46,7 @@ rnd_misses <- function(total){
   c(total, distribute_hits(total, misses), misses)
 }
 
-rnd_data <- rbind(df,
+rnd_data <- rbind(
   setNames(data.frame(2071L, 1L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"), c_names),
   setNames(data.frame(2071L, 2L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"), c_names),
   setNames(data.frame(2071L, 3L, "rTR", NA_integer_, "NA", "NA", 4L, rnd_misses(total), 3L, 3L, "All Specialties"), c_names),
@@ -64,7 +58,7 @@ rnd_data <- rbind(df,
 
 # Incr site
 
-incr_data <- rbind(df,
+incr_data <- rbind(
   setNames(data.frame(2071L, 1L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 10), 10, 3L, 3L, "All Specialties"), c_names),
   setNames(data.frame(2071L, 2L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 15), 15, 3L, 3L, "All Specialties"), c_names),
   setNames(data.frame(2071L, 3L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 20), 20, 3L, 3L, "All Specialties"), c_names),
@@ -75,7 +69,7 @@ incr_data <- rbind(df,
   setNames(data.frame(2072L, 4L, "iTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 38), 38, 3L, 3L, "All Specialties"), c_names))
 
 # Decr site
-decr_data <- rbind(df,
+decr_data <- rbind(
   setNames(data.frame(2071L, 1L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 33), 33, 3L, 3L, "All Specialties"), c_names),
   setNames(data.frame(2071L, 2L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 28), 28, 3L, 3L, "All Specialties"), c_names),
   setNames(data.frame(2071L, 3L, "dTR", NA_integer_, "NA", "NA", 4L, total, distribute_hits(total, 23), 23, 3L, 3L, "All Specialties"), c_names),
