@@ -15,6 +15,9 @@
 # Scratch space
 scratch/*
 
+# Do not put actual config into version control
+config/*
+
 # Do not put inputs and outputs into version control
 input/*
 reports/*
