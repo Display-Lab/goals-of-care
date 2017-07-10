@@ -46,10 +46,9 @@ generate_hit_category_plot <- function(plot_data){
     ) +
     scale_fill_manual(
       values = plot.colors,
-      breaks = c("cat_1", "cat_2", "cat_3"),
-      labels = c("Before", "0 to 7 days after", "8 to 30 days after")
-    ) +
-    guides(colour = guide_legend(order = 0))
+      breaks = c("cat_3", "cat_2", "cat_1"),
+      labels = c("8 to 30 days after", "0 to 7 days after","Before")
+    )
     
   return(hit_plot)
 }
