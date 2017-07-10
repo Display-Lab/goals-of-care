@@ -5,6 +5,11 @@
 ### LaTeX
 For Windows users MikTex is suggested [https://miktex.org/](https://miktex.org/)
 
+### Pandoc
+Home Page [https://www.pandoc.org](https://www.pandoc.org)
+
+Pandoc is a requirement of the knitr package.  For command line Rscript, `pandoc` needs to be included in `PATH`.
+
 ### R
 Home Page [https://cran.r-project.org/](https://cran.r-project.org/)
 
@@ -21,35 +26,11 @@ Included under lib/ is an installer script that will attempt to download, build,
 
 ## Use
 
-1. Gather input data and export as an .rdata file in the input/ directory.
-    * Default behavior is to use input/clc.rdata
+1. Gather input data and export in csv format with a header row into the input/ directory.
+    * Expected input file is input/clc.rdata
     * The report generation does *not* currently accomodate concurrent use.
 
-1. From the project root directory run the following commands
-
-  * Windows Powershell
-    ```
-    # Run install script to make sure required packages are installed.
-    Rscript lib\install_required-packages.r
-
-    # Check that input data has expected headers
-    #   The result should be the printed statement: `
-    #   Header check:
-    #   Expected: 12 encountered: 12
-    Rscript lib\check_input.r
-    ```
-
-  * Windows CMD
-    ```
-    echo Run install script to make sure required packages are installed.
-    Rscript lib\install_required-packages.r
-
-    REM Check that input data has expected headers
-    Rscript lib\check_input.r
-    ```
-
-  * Linux/OSX:
-
+1. From the project root directory, run the following commands in order:
     ```
     # Run install script to make sure required packages are installed.
     Rscript lib/install_required_packages.r
