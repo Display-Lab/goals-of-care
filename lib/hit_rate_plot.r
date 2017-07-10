@@ -62,7 +62,7 @@ generate_hit_rate_plot <- function(plot_data){
     ) +
     scale_fill_manual(
       values = plot.colors,
-      breaks = c("hits", "misses"),
+      breaks = c("misses", "hits"),
       labels = c("Not documented", "Documented")
     ) +
     theme(
