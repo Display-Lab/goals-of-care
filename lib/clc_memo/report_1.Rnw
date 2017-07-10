@@ -60,7 +60,7 @@ if( !exists("selected_id") ){ selected_id <- ids[1] }
 
 
 \memoto{ \Sexpr{config$id_names[selected_id]} CLC Providers and Staff }
-\memofrom{ \Sexpr{config$provider} }
+\memofrom{ \Sexpr{config$provider[selected_id]} }
 \memosubject{ \Sexpr{config$title} }
 \memodate{\today}
 
