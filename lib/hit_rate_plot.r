@@ -39,7 +39,7 @@ generate_hit_rate_plot <- function(plot_data){
   plot.colors = c(total_obs="#000000", hits = "#4286f4", misses = "#e8e8e8")
   
   # Specify title of the plot
-  plot_title <- "How many newly admitted Veterans have a documented \ngoals of care conversation?" 
+  plot_title <- "How many total newly admitted Veterans have a documented \ngoals of care conversation?" 
   
   # Specify the plot using grammar of graphics
   hit_plot <-
