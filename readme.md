@@ -66,7 +66,7 @@ Included under lib/ is an installer script that will attempt to download, build,
     # Build all report figures and tex
     Rscript lib/build_all_tex.r
 
-    # Complile all tex reports to pdf
+    # Compile all tex reports to pdf
     find build -name '*.tex' -execdir pdflatex {} \;
 
     # Generated pdf will be build/reports/<id>/<id>_clc.pdf
