@@ -4,38 +4,45 @@
 #   and allow for swapping out how settings are provided.
 get_report_settings <- function(){
   
-  
-  feedback_provider_name <- "Feedback Provider Name"
-  
   memo_title <- "Documenting goals of care conversations"
   
-  identifier_names <- c(dTR = "Decreasing Trend Facility",
-                        iTR = "Increasing Trend Site",
-                        nTR = "No Trend Location",
-                        rTR = "Randal Trenderson"
+  # Long name for each feedback recipient identifier (facility id)
+  # i.e. Facility name for each facility id.
+  identifier_names <- c("dTR" = "Decreasing Trend Facility",
+                        "iTR" = "Increasing Trend Site",
+                        "nTR" = "No Trend Location",
+                        "rTR" = "Randal Trenderson"
                         )
   
-  contacts_per_id <- list(
-    dTR = c("Jane Smith, Product Owner (555-555-5555)",
-            "John Jones, Decreasing Manager (555-222-1234)"
-            ),
-    iTR = c("Jane Smith, Product Owner (555-555-5555)",
-            "John Jones, Increasing Manager (555-222-5678)"
-            ),
-    nTR = c("Jane Smith, Product Owner (555-555-5555)",
-            "John Jones, No Trend Manager (555-222-9101)"
-            ),
-    rTR = c("Jane Smith, Product Owner (555-555-5555)",
-            "John Jones, Random Manager (555-222-1121)"
-            )
+  # Name of feedback source per identifier (facility id)
+  feedback_provider_name <- c(
+    "5569AA" = "Long-Term Care QUERI project",
+    "6079AA" = "Long-Term Care QUERI project",
+    "568" = "Lynn Peters",
+    "568A4" = "Lynn Peters"
   )
   
+  # Contact details per identifier (facility id)
+  contacts_per_id <- list(
+    "dTR" = c("Jane Smith, Product Owner (555-555-5555)",
+            "John Jones, Decreasing Manager (555-222-1234)"
+            ),
+    "iTR" = c("Jane Smith, Product Owner (555-555-5555)",
+            "John Jones, Increasing Manager (555-222-5678)"
+            ),
+    "nTR" = c("Jane Smith, Product Owner (555-555-5555)",
+            "John Jones, No Trend Manager (555-222-9101)"
+            ),
+    "rTR" = c("John Jones, Random Manager (555-222-1121)")
+  )
+  
+  # Itemized list of statements about the report to help recipients understand/interpret the report.
   interpretation_assist_statements <- c("Data collected quarterly.",
                                         "Data is analyzed in aggregate.",
                                         "Your millage may vary."
                                         )
   
-  # Return a list with each item named
+  # Construct and return the configuration object; a list with each item of the confige named.
   config <- list(title    = memo_title,
                  contacts = contacts_per_id,
                  provider = feedback_provider_name,
