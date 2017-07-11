@@ -1,0 +1,28 @@
+---
+default:
+  title: Documenting goals of care conversations
+  contacts:
+    dTR:
+    - Jane Smith, Product Owner (555-555-5555)
+    - John Jones, Decreasing Manager (555-222-1234)
+    iTR:
+    - Jane Smith, Product Owner (555-555-5555)
+    - John Jones, Increasing Manager (555-222-5678)
+    nTR:
+    - Jane Smith, Product Owner (555-555-5555)
+    - John Jones, No Trend Manager (555-222-9101)
+    rTR: John Jones, Random Manager (555-222-1121)
+  provider:
+    dTR: REPORT PROVIDER NAME
+    iTR: REPORT PROVIDER NAME
+    nTR: REPORT PROVIDER NAME
+    rTR: REPORT PROVIDER NAME
+  id_names:
+    dTR: dTR:Decreasing Trend Facility
+    iTR: iTR:Increasing Trend Site
+    nTR: nTR:No Trend Location
+    rTR: rTR:Randal Trenderson
+  assists:
+    - Data collected quarterly.
+    - Data is analyzed in aggregate.
+    - Your millage may vary.

@@ -18,6 +18,12 @@ if(require('tidyverse', quietly=TRUE) == FALSE){
   print('tidyverse already installed.')
 }
 
+if(require('config', quietly=TRUE) == FALSE){
+  install.packages('config')
+} else {
+  print('config already installed.')
+}
+
 # knitr use here requires pandoc 
 if(require('knitr', quietly=TRUE) == FALSE){
   install.packages('knitr', dependencies = TRUE)
