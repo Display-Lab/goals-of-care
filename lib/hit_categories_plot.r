@@ -46,7 +46,7 @@ generate_hit_category_plot <- function(plot_data){
     scale_fill_manual(
       values = plot.colors,
       breaks = c("cat_3", "cat_2", "cat_1"),
-      labels = c("8 to 30 days after", "0 to 7 days after","Before")
+      labels = c("8 to 30 days after", "0 to 7 days after","Before admission")
     )
     
   return(hit_plot)

@@ -145,7 +145,7 @@ Thank you for your efforts to increase the frequency of goals of care conversati
 
   \item The segments of each column in the chart above show Veterans whose most recent goals of care conversation was documented before or after admission.
 
-  \item Each Veteran with a documented goals of care conversation was counted only once, starting with "0 to 7 days after", then "8 to 30 days after", then "Before".
+  \item Each Veteran with a documented goals of care conversation was counted only once, starting with "0 to 7 days after", then "8 to 30 days after", then "Before admission".
 
 \end{itemize}\bigskip
 
