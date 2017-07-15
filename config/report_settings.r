@@ -8,13 +8,13 @@ get_report_settings <- function(){
   
   # Long name for each feedback recipient identifier (facility id)
   # i.e. Facility name for each facility id.
-  identifier_names <- c("5569AA"   = "Captain James A Lovell FHCC",
-                        "6079AA"   = "Madison VA",
-                        "568"   = "VA Black Hills HCS",
-                        "568A4" = "VA Black Hills HCS"
+  identifier_names <- c("dTR" = "Decreasing Trend Facility",
+                        "iTR" = "Increasing Trend Site",
+                        "nTR" = "No Trend Location",
+                        "rTR" = "Randal Trenderson"
                         )
   
-  # Name of feedback source per identifier facility id
+  # Name of feedback source per identifier (facility id)
   feedback_provider_name <- c(
     "5569AA" = "Long-Term Care QUERI project",
     "6079AA" = "Long-Term Care QUERI project",
@@ -22,25 +22,27 @@ get_report_settings <- function(){
     "568A4" = "Lynn Peters"
   )
   
-  # Contact details per facility id
+  # Contact details per identifier (facility id)
   contacts_per_id <- list(
-    "5569AA"   = c("Jennifer Henry, Project Coordinator (Jennifer.Henry2@va.gov)"),
-    "6079AA"   = c("Jennifer Henry, Project Coordinator (Jennifer.Henry2@va.gov)"),
-    "568"   = c("Lynn Peters 605-347-2511 ext 7644"),
-    "568A4" = c("Lynn Peters 605-347-2511 ext 7644")
+    "dTR" = c("Jane Smith, Product Owner (555-555-5555)",
+            "John Jones, Decreasing Manager (555-222-1234)"
+            ),
+    "iTR" = c("Jane Smith, Product Owner (555-555-5555)",
+            "John Jones, Increasing Manager (555-222-5678)"
+            ),
+    "nTR" = c("Jane Smith, Product Owner (555-555-5555)",
+            "John Jones, No Trend Manager (555-222-9101)"
+            ),
+    "rTR" = c("John Jones, Random Manager (555-222-1121)")
   )
   
   # Itemized list of statements about the report to help recipients understand/interpret the report.
-  interpretation_assist_statements <-  c(
-    "Data are collected quarterly from CLCs",
-    "This report shows data from your facility only",
-    "Data in this report comes from the LST template in CPRS; the data is extracted from the Corporate Data Warehouse (CDW) Production Domain and summarized using SAS EG 7.1",
-    "The report includes data only for Veterans who were newly admitted to your CLC in 2015 and 2016, quarter by quarter",
-    "If a Veteran had more than one goals of care conversation documented in a quarter, only the first conversation was counted, therefore multiple readmissions in one quarter are not represented",
-    "If a Veteran was admitted more than once during a quarter, only the first admission was counted."
-    )
+  interpretation_assist_statements <- c("Data collected quarterly.",
+                                        "Data is analyzed in aggregate.",
+                                        "Your millage may vary."
+                                        )
   
-  # Construct and return the configuration object; a list with each item named.
+  # Construct and return the configuration object; a list with each item of the confige named.
   config <- list(title    = memo_title,
                  contacts = contacts_per_id,
                  provider = feedback_provider_name,
