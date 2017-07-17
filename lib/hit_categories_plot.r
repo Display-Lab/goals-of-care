@@ -28,8 +28,7 @@ generate_hit_category_plot <- function(plot_data){
   # cat_1 is before
   # cat_2 is week
   # cat_3 is after
-  
-  plot.colors = c(cat_1 = "#4286f4", cat_2 = "#009933", cat_3 = "#ffa700")
+  plot.colors = c(cat_1 = "#aaccff", cat_2 = "#88eeaa", cat_3 = "#ffee88")  
   plot.title <- "How close to the time of admission were goals of care \nconversations documented?"
   hit_plot <- ggplot(plot_data, aes(x = timepoint, y = count)) +
     geom_col(aes(fill = event)) +
@@ -47,7 +46,7 @@ generate_hit_category_plot <- function(plot_data){
     scale_fill_manual(
       values = plot.colors,
       breaks = c("cat_3", "cat_2", "cat_1"),
-      labels = c("8 to 30 days after", "0 to 7 days after","Before")
+      labels = c("8 to 30 days after", "0 to 7 days after","Before admission")
     )
     
   return(hit_plot)
