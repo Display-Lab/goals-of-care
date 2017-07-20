@@ -12,6 +12,7 @@
 <<knitr_config, include=FALSE>>=
 # Load knitr and tell it to create a concordance file.
 library(knitr)
+library(config, warn.conflicts = FALSE)
 opts_chunk$set( concordance=TRUE )
 @
 
@@ -29,8 +30,8 @@ opts_chunk$set( concordance=TRUE )
     }
   }
 
-# Try to source from the path relative to the project root
-#  Then try relative to this script
+# Function that tries to source from the path relative to the project root
+#  then tries relative to this script
 try_source <- function(prj_rel_path){
   rel_script_path = file.path("..","..",prj_rel_path)
   
@@ -48,19 +49,30 @@ if( !exists("generate_hit_category_plot") ){ try_source(file.path("lib","hit_cat
 # Try to source r script that provides config list
 if( !exists("cfg_list") ){ try_source(file.path("config","report_settings.r")) }
 
-# Get the config and store it in a variable
-config <- get_report_settings()
+# Get the config and store it in a variable.
+# Accomodate running this file from Rstudio or from project root
+config_path_prj <- file.path("config","report_settings.yml")
+config_path_loc <- file.path("..","..",config_path_prj)
 
-# Use subset data by selected_identifier
-#  the location ID in this case.
+if( file.exists(config_path_prj) ){ 
+  config_path <- config_path_prj
+} else if( file.exists(config_path_loc) ){
+  config_path <- config_path_loc
+}
+
+config <- config::get(file=config_path, config = "default", use_parent = FALSE)
+#config <- get_report_settings()
+
+# Use subset data by selected_identifier.
+#  This is set in the parent environment or defaults to the first location found.
 ids = levels(hit_rate_data$location)
 if( !exists("selected_id") ){ selected_id <- ids[1] }
   
 @
 
 
-\memoto{ \Sexpr{config$id_names[selected_id]} CLC Providers and Staff }
-\memofrom{ \Sexpr{config$provider[selected_id]} }
+\memoto{ \Sexpr{config$id_names[[selected_id]]} CLC Providers and Staff }
+\memofrom{ \Sexpr{config$provider[[selected_id]]} }
 \memosubject{ \Sexpr{config$title} }
 \memodate{\today}
 
