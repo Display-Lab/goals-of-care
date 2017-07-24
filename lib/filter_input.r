@@ -1,32 +1,45 @@
-# Filter the input data to get only the rows that will be used susequently
-
-# If not given a file name, assume the input is input/clc.rdata
-options <- commandArgs(TRUE)
-if(length(options)==0) {
-  input_filename <- file.path("input","clc.csv")
-}else{
-  input_filename <- options[1]
+# Read input data if it exists, filter, write to build directory
+read_in_data <- function(path, classes){
+  df <- read.csv( path, header = TRUE, colClasses = classes )
+  df 
 }
 
-input_classes <- c("integer", "integer", "character", "character", "character",  "character", "character",
-                            "integer", "integer", "integer", "integer", "integer", "integer",
-                            "integer", "integer", "integer", "integer")
+# Filter the input data to get only the rows that will be used susequently
+filter_clc_data <- function(df){
+  # Create a array of boolean (TRUE) with one value per row in the data frame
+  filter <- rep(TRUE, nrow(df))
+  
+  # Only use rows with the treatment specialty value of "All Speciialties"
+  # Logical AND together the base filter with rows for which the condition is true
+  filter <- filter & df[,"trtsp_1"] == "All NH Treating Specialties"
+  
+  # Apply filter to get filtered data
+  # Subset the data by selecting rows that correspond to TRUE in the filter.
+  flt_data <- df[filter,]
+}
 
-input_csv_file <- file.path("input","clc.csv")
-clc_summ <- read.csv( input_csv_file, header = TRUE, colClasses = input_classes )
+# CLC input is input/clc.csv
+clc_filename <- file.path("input","clc.csv")
+clc_classes <- c("integer", "integer", rep("character", 5), rep("integer", 10))
 
+# HBPC input is input/hbpc.csv
+hbpc_filename <- file.path("input","hbpc.csv")
 
-# Create a array of boolean (TRUE) with one value per row in the data
-filter <- rep(TRUE, nrow(clc_summ))
+hbpc_classes <- c( rep("integer",2), "factor", rep("NULL",5), rep(c("integer","NULL"),4),
+                   "NULL", rep("integer",2), rep("NULL",18) )
 
-# Only use rows with the treatment specialty value of "All Speciialties"
-# Logical AND together the base filter with rows for which the condition is true
-filter <- filter & clc_summ[,"trtsp_1"] == "All NH Treating Specialties"
+# Save filtered data to build directory for later use or examination
+if(file.exists(clc_filename)){
+  clc_data <- read_in_data(clc_filename, clc_classes)
+  clc_data <- filter_clc_data(clc_data)
+  
+  output_path = file.path("build","filtered_clc.rdata")
+  save(clc_data, file = output_path)
+}
 
-# Apply filter to get filtered data
-# Subset the data by selecting rows that correspond to TRUE in the filter.
-flt_data <- clc_summ[filter,]
-
-# Save filtered data to intermediate directory (build) for later use & examination
-output_path = file.path("build","filtered.rdata")
-save(flt_data, file = output_path)
+if(file.exists(hbpc_filename)){
+  hbpc_data <- read_in_data(hbpc_filename, hbpc_classes)
+  
+  output_path = file.path("build","filtered_hbpc.rdata")
+  save(hbpc_data, file = output_path)
+}
