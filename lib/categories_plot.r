@@ -3,12 +3,12 @@ library(dplyr, warn.conflicts = FALSE)
 library(ggplot2)
 library(ggthemes)
 
-# Generate the plot for a hit categories performance metric
+# Generate the plot for a categories performance metric
 # This script contains two utility functions:
 #   * Transform data for plotting convenience
 #   * Produce plot
 
-make_hit_category_plot_data <- function(input_data){
+make_category_plot_data <- function(input_data){
 
   gathered <- gather(input_data, key="event", value="count", cat_1, cat_2, cat_3) 
   
@@ -24,13 +24,10 @@ make_hit_category_plot_data <- function(input_data){
   return(gathered)
 }
 
-generate_hit_category_plot <- function(plot_data){
-  # cat_1 is before
-  # cat_2 is week
-  # cat_3 is after
+generate_category_plot <- function(plot_data){
   plot.colors = c(cat_1 = "#aaccff", cat_2 = "#88eeaa", cat_3 = "#ffee88")  
   plot.title <- "How close to the time of admission were goals of care \nconversations documented?"
-  hit_plot <- ggplot(plot_data, aes(x = timepoint, y = count)) +
+  plot <- ggplot(plot_data, aes(x = timepoint, y = count)) +
     geom_col(aes(fill = event)) +
     geom_text(size = 4,
               aes(label = count_na_zero),
@@ -49,5 +46,5 @@ generate_hit_category_plot <- function(plot_data){
       labels = c("8 to 30 days after", "0 to 7 days after","Before admission")
     )
     
-  return(hit_plot)
+  return(plot)
 }
