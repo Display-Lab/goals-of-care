@@ -118,7 +118,12 @@ Thank you for your efforts to increase the frequency of goals of care conversati
   plot_data <- filter(plot_data, id == selected_id)
   
   # Create plot
-  rate_plot <- generate_rate_plot(plot_data)
+  rate_plot <- generate_rate_plot(plot_data,
+    plot_title = "How many total newly admitted Veterans have a documented \ngoals of care conversation?",
+    y_label = "Veterans Admitted",
+    line_label = "Newly admitted\nveterans",
+    stack_labels = c("Not documented", "Documented")
+  )
   
   # print plot to include in document
   rate_plot

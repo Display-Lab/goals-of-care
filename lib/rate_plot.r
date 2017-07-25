@@ -2,6 +2,7 @@ library(tidyr)
 library(dplyr, warn.conflicts = FALSE)
 library(ggplot2)
 library(ggthemes)
+library(viridis)
 
 # Generate the plot for a rate type performance metric
 # This script contains two utility functions:
@@ -35,16 +36,14 @@ make_rate_plot_data <- function(input_data){
   return(gathered)
 }
 
-generate_rate_plot <- function(plot_data){
-  plot.colors = c(denominator="#000000", numerator = "#4286f4", misses = "#e8e8e8")
-  
-  # Specify title of the plot
-  plot_title <- "How many total newly admitted Veterans have a documented \ngoals of care conversation?" 
+generate_rate_plot <- function(plot_data, plot_title = "", y_label = "", line_label="", stack_labels=c("") ){
+  # Manually selected colors from Viridis Palette
+  viridis_colors = c(denominator="#440154FF", "#414487FF", numerator="#2A788EFF", "#22A884FF", misses = "#7AD151FF", "#FDE725FF")
   
   # Specify the plot using grammar of graphics
   plot <-
     ggplot(plot_data, aes(x = timepoint, y = count, group = event)) +
-    geom_col(stat = "identity", aes(fill = event)) +
+    geom_col(aes(fill = event)) +
     geom_text(size = 4,
               aes(label = count_na_zero),
               position = position_stack(vjust = 0.5))   +
@@ -54,16 +53,16 @@ generate_rate_plot <- function(plot_data){
       y = denominator,
       color = "denominator"
     )) +
-    labs(title = plot_title, x = " ", y = "Veterans admitted") +
+    labs(title = plot_title, x = " ", y = y_label) +
     scale_colour_manual(
-      values = plot.colors,
+      values = viridis_colors,
       breaks = c("denominator"),
-      labels = c("Newly admitted \nveterans")
+      labels = c(line_label)
     ) +
     scale_fill_manual(
-      values = plot.colors,
+      values = viridis_colors,
       breaks = c("misses", "numerator"),
-      labels = c("Not documented", "Documented")
+      labels = stack_labels
     ) +
     theme(
       panel.grid.major = element_blank(),
