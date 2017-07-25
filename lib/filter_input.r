@@ -31,15 +31,16 @@ hbpc_classes <- c( rep("integer",2), "factor", rep("NULL",5), rep(c("integer","N
 # Save filtered data to build directory for later use or examination
 if(file.exists(clc_filename)){
   clc_data <- read_in_data(clc_filename, clc_classes)
-  clc_data <- filter_clc_data(clc_data)
+  flt_data <- filter_clc_data(clc_data)
   
   output_path = file.path("build","filtered_clc.rdata")
-  save(clc_data, file = output_path)
+  save(flt_data, file = output_path)
 }
 
 if(file.exists(hbpc_filename)){
   hbpc_data <- read_in_data(hbpc_filename, hbpc_classes)
+  flt_data <- hbpc_data
   
   output_path = file.path("build","filtered_hbpc.rdata")
-  save(hbpc_data, file = output_path)
+  save(flt_data, file = output_path)
 }
