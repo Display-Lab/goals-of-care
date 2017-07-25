@@ -2,7 +2,6 @@ library(tidyr)
 library(dplyr, warn.conflicts = FALSE)
 library(ggplot2)
 library(ggthemes)
-library(viridis)
 
 # Generate the plot for a rate type performance metric
 # This script contains two utility functions:
