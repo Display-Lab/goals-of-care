@@ -57,7 +57,8 @@ if( file.exists(config_path_prj) ){
   config_path <- config_path_loc
 }
 
-config <- config::get(file=config_path, config = "default", use_parent = FALSE)
+full_config <- config::get(file=config_path, config = "default", use_parent = FALSE)
+config <- full_config$clc
 
 # Use subset data by selected_identifier.
 #  This is set in the parent environment or defaults to the first id found.
@@ -150,7 +151,7 @@ Thank you for your efforts to increase the frequency of goals of care conversati
   # Create plot
   category_plot <- generate_category_plot(plot_data,
     plot_title = "How close to the time of admission were goals of care \nconversations documented?",
-    y_label = "Veterans admitted",
+    y_label = "Veterans Admitted",
     cat_labels = c("8 to 30 days after", "0 to 7 days after","Before admission")
   )
   
