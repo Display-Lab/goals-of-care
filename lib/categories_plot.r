@@ -44,6 +44,12 @@ generate_category_plot <- function(plot_data, plot_title, y_label, cat_labels){
       discrete = TRUE,
       breaks = levels(plot_data$event),
       labels = cat_labels
+    ) +
+    scale_color_viridis(
+      discrete = TRUE,
+      breaks = levels(plot_data$event),
+      labels = cat_labels,
+      direction = -1
     )
     
   return(plot)

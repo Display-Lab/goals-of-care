@@ -62,7 +62,7 @@ config <- full_config$hbpc
 
 # Use subset data by selected_identifier.
 #  This is set in the parent environment or defaults to the first location found.
-ids = levels(rate_data$location)
+ids = levels(rate_data$id)
 if( !exists("selected_id") ){ selected_id <- ids[1] }
   
 @
