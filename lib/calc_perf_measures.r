@@ -49,7 +49,7 @@ hbpc_categories <- list("cat_1"=c("numer90","goc_pre"),
                         "cat_2"=c("numer1"),
                         "cat_3"=c("numer2"),
                         "cat_4"=c("numer3"))
-hbpc_numer_cols <- c('numer1','numer2','numer3')
+hbpc_numer_cols <- c('numer1','numer2','numer3', 'numer90', 'goc_pre')
 hbpc_denom_cols <- c('hbpc')
 
 
