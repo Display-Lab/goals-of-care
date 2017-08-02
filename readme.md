@@ -18,6 +18,7 @@ Optionally, use RStudio to get a GUI. [https://www.rstudio.com/](https://www.rst
 ### R Packages
 * ggplot2
 * ggthemes
+* viridis
 * tidyr
 * config
 * dplyr
@@ -55,34 +56,37 @@ Included under lib/ is an installer script that will attempt to download, build,
     ```
 
 ## Configuration
-Various strings that appear in the report need to be changed per recipient.
+Various strings that appear in the reports need to be changed per recipient.
 To facilitate this, those strings are specified in `config/report_settings.yml`.
 
 Important Config Notes
 * The config must be filled out for each id that exists in the input data.
+* The config must start with the key `default`
+* The config should contain a config for `clc` & `hbpc`.
 * The config file is not being tracked in version control.
 
 ```yaml
 ---
 default:
-  title: Title of the Report
-  contacts:
-    A_recipient_ID:
-      - Ann Smith, Product Owner (555-555-5555)
-      - Bob Jones, Decreasing Manager (555-222-1234)
-    B_recipient_ID:
-      - Carol Smith, Product Owner (555-555-5555)
-      - Dennis Jones, Increasing Manager (555-222-5678)
-  provider:
-    A_recipient_ID: Department of Reports
-    B_recipient_ID: Analytics Project Foo
-  id_names:
-    A_recipient_ID: Recipient Facility or Group Name
-    B_recipient_ID: Facility Foo
-  assists:
-    - Data collected quarterly.
-    - Data is analyzed in aggregate.
-    - Your millage may vary.
+  clc:
+    title: Title of the Report
+    contacts:
+      A_recipient_ID:
+        - Ann Smith, Product Owner (555-555-5555)
+        - Bob Jones, Decreasing Manager (555-222-1234)
+      B_recipient_ID:
+        - Carol Smith, Product Owner (555-555-5555)
+        - Dennis Jones, Increasing Manager (555-222-5678)
+    provider:
+      A_recipient_ID: Department of Reports
+      B_recipient_ID: Analytics Project Foo
+    id_names:
+      A_recipient_ID: Recipient Facility or Group Name
+      B_recipient_ID: Facility Foo
+    assists:
+      - Data collected quarterly.
+      - Data is analyzed in aggregate.
+      - Your millage may vary.
 ```
 
 Note that the values for the `contacts`,`provider`, and `id_names` are keyed with the id of the recipient they're associated with.

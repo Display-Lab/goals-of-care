@@ -12,6 +12,12 @@ if(require('ggthemes', quietly=TRUE) == FALSE){
   print('ggthemes already installed.')
 }
 
+if(require('viridis', quietly=TRUE) == FALSE){
+  install.packages('viridis')
+} else {
+  print('viridis already installed.')
+}
+
 if(require('tidyverse', quietly=TRUE) == FALSE){
   install.packages('tidyverse')
 } else {
