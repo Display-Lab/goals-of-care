@@ -19,6 +19,7 @@ Optionally, use RStudio to get a GUI. [https://www.rstudio.com/](https://www.rst
 * ggplot2
 * ggthemes
 * viridis
+* scales
 * tidyr
 * config
 * dplyr

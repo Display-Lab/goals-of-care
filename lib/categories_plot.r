@@ -3,6 +3,7 @@ library(dplyr, warn.conflicts = FALSE)
 library(ggplot2)
 library(ggthemes)
 library(viridis)
+library(scales)
 
 # Generate the plot for a categories performance metric
 # This script contains two utility functions:
@@ -32,6 +33,7 @@ generate_category_plot <- function(plot_data, plot_title, y_label, cat_labels){
               aes(label = count_na_zero, colour=event),
               position = position_stack(vjust = 0.5),
               show.legend = F)   +
+    scale_y_continuous(breaks=pretty_breaks()) +
     labs(title = plot_title, x = " ", y = y_label) +
     theme(
       panel.grid.major = element_blank(),
