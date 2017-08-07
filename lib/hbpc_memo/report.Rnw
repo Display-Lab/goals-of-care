@@ -149,7 +149,7 @@ Thank you for your efforts to increase the frequency of goals of care conversati
   
   # Create plot
   category_plot <- generate_category_plot(plot_data,
-    plot_title = "During which visit were goals of care \nconversations documented?",
+    plot_title = "During which visit were goals of care conversations documented?",
     y_label = "Veterans Admitted",
     cat_labels = c("Visit 3", "Visit 2", "Visit 1", "Before admission")
   )
@@ -162,7 +162,7 @@ Thank you for your efforts to increase the frequency of goals of care conversati
 
   \item The segments of each column in the chart above show Veterans whose most recent goals of care conversation was documented before or after admission.
 
-  \item Each Veteran with a documented goals of care conversation was counted only once, starting with "0 to 7 days after", then "8 to 30 days after", then "Before admission".
+  \item Each Veteran with a documented goals of care conversation was counted only once, starting with "Visit 1", then "Visit 2", "Visit 3", and finally "Before admission".
 
 \end{itemize}\bigskip
 
