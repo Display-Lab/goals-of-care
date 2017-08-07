@@ -20,28 +20,30 @@ get_script_dir(){
 # Assume project root is one directory up, and 
 #  change to the project root directory.
 SCRIPT_DIR=$(get_script_dir)
-cd "${SCRIPT_DIR}/.."
+PROJ_DIR=$(dirname ${SCRIPT_DIR})
+
+LOGFILE="${PROJ_DIR}/build/build.log"
 
 # Clear out any existing intermediate data
-rm build/*.rdata
+rm "${PROJ_DIR}/build/*.rdata"
 
 # Run install script to make sure required packages are installed.
-Rscript lib/install_required_packages.r
+Rscript "${PROJ_DIR}/lib/install_required_packages.r"
 
 # Check that input data has expected headers
-Rscript lib/check_input.r
+Rscript "${PROJ_DIR}/lib/check_input.r"
 
 # Filter the input data
-Rscript lib/filter_input.r
+Rscript "${PROJ_DIR}/lib/filter_input.r"
 
 # Calculate performance measure
-Rscript lib/calc_perf_measures.r
+Rscript "${PROJ_DIR}/lib/calc_perf_measures.r"
 
 # Build all report figures and tex
-Rscript lib/build_all_tex.r
+Rscript "${PROJ_DIR}/lib/build_all_tex.r"
 
 # Compile all tex reports to pdf
-find build -name '*.tex' -execdir pdflatex {} \;
+find ${PROJ_DIR}/build -name '*.tex' -execdir pdflatex {} \;
 
-echo "Generated pdf will be build/reports"
+echo "Generated pdf will be ${PROJ_DIR}/build/reports"
 
