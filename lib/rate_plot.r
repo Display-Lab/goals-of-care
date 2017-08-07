@@ -2,6 +2,7 @@ library(tidyr)
 library(dplyr, warn.conflicts = FALSE)
 library(ggplot2)
 library(ggthemes)
+library(scales)
 
 # Generate the plot for a rate type performance metric
 # This script contains two utility functions:
@@ -53,6 +54,7 @@ generate_rate_plot <- function(plot_data, plot_title = "", y_label = "", line_la
       color = "denominator"
     )) +
     labs(title = plot_title, x = " ", y = y_label) +
+    scale_y_continuous(breaks=pretty_breaks()) +
     scale_colour_manual(
       values = viridis_colors,
       breaks = c("denominator"),

@@ -12,6 +12,18 @@ if(require('ggthemes', quietly=TRUE) == FALSE){
   print('ggthemes already installed.')
 }
 
+if(require('scales', quietly=TRUE) == FALSE){
+  install.packages('scales')
+} else {
+  print('scales already installed.')
+}
+
+if(require('ggthemes', quietly=TRUE) == FALSE){
+  install.packages('ggthemes')
+} else {
+  print('ggthemes already installed.')
+}
+
 if(require('viridis', quietly=TRUE) == FALSE){
   install.packages('viridis')
 } else {
