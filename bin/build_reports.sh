@@ -23,27 +23,32 @@ SCRIPT_DIR=$(get_script_dir)
 PROJ_DIR=$(dirname ${SCRIPT_DIR})
 
 LOGFILE="${PROJ_DIR}/build/build.log"
+DATE=$(date +%Y-%m-%d:%H:%M:%S)
+
+echo "Started build log at ${PROJ_DIR}/build/build.log"
 
 # Clear out any existing intermediate data
-rm "${PROJ_DIR}/build/*.rdata"
+echo "Starting Build: ${DATE}" > "${LOGFILE}" 
+echo "Removing any intermediate data" >> "${LOGFILE}" 
+find "${PROJ_DIR}" -type f -name '*.rdata' -exec rm {} +
 
-# Run install script to make sure required packages are installed.
-Rscript "${PROJ_DIR}/lib/install_required_packages.r"
+echo "Checking if required R packages are installed" | tee -a "${LOGFILE}" 
+Rscript "${PROJ_DIR}/lib/install_required_packages.r" 1>>"${LOGFILE}" 2>&1 
 
-# Check that input data has expected headers
-Rscript "${PROJ_DIR}/lib/check_input.r"
+echo "Checking that input data has expected headers" | tee -a "${LOGFILE}"
+Rscript "${PROJ_DIR}/lib/check_input.r" 1>>"${LOGFILE}" 2>&1 
 
-# Filter the input data
-Rscript "${PROJ_DIR}/lib/filter_input.r"
+echo "Filtering the input data" | tee -a "${LOGFILE}"
+Rscript "${PROJ_DIR}/lib/filter_input.r" 1>>"${LOGFILE}" 2>&1 
 
-# Calculate performance measure
-Rscript "${PROJ_DIR}/lib/calc_perf_measures.r"
+echo "Calculating performance measures" | tee -a "${LOGFILE}"
+Rscript "${PROJ_DIR}/lib/calc_perf_measures.r" 1>>"${LOGFILE}" 2>&1 
 
-# Build all report figures and tex
-Rscript "${PROJ_DIR}/lib/build_all_tex.r"
+echo "Building report figures and tex" | tee -a "${LOGFILE}"
+Rscript "${PROJ_DIR}/lib/build_all_tex.r" 1>>"${LOGFILE}" 2>&1 
 
-# Compile all tex reports to pdf
-find ${PROJ_DIR}/build -name '*.tex' -execdir pdflatex {} \;
+echo "Finding tex reports and compiling to pdf" | tee -a "${LOGFILE}"
+find ${PROJ_DIR}/build -name '*.tex' -execdir pdflatex {} \; 1>>"${LOGFILE}" 2>&1 
 
-echo "Generated pdf will be ${PROJ_DIR}/build/reports"
-
+echo "Done" 1>> "${LOGFILE}"
+echo "Generated reports in ${PROJ_DIR}/build/reports"
