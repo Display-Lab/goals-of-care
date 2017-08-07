@@ -34,12 +34,30 @@ find "${PROJ_DIR}" -type f -name '*.rdata' -exec rm {} +
 
 echo "Checking if required R packages are installed" | tee -a "${LOGFILE}" 
 Rscript "${PROJ_DIR}/lib/install_required_packages.r" 1>>"${LOGFILE}" 2>&1 
+if [ $? -ne 0 ]
+then
+  echo "Problem installing R packages."
+  echo "Verify required packages are installed and accessible."
+  exit 1
+fi
 
 echo "Checking that input data has expected headers" | tee -a "${LOGFILE}"
 Rscript "${PROJ_DIR}/lib/check_input.r" 1>>"${LOGFILE}" 2>&1 
+if [ $? -ne 0 ]
+then
+  echo "Problem encountered verifying input data."
+  echo "Check that expected header and columns are present."
+  exit 1
+fi
 
 echo "Filtering the input data" | tee -a "${LOGFILE}"
 Rscript "${PROJ_DIR}/lib/filter_input.r" 1>>"${LOGFILE}" 2>&1 
+if [ $? -ne 0 ]
+then
+  echo "Problem filtering input data."
+  echo "Check build log for more information."
+  exit 1
+fi
 
 echo "Calculating performance measures" | tee -a "${LOGFILE}"
 Rscript "${PROJ_DIR}/lib/calc_perf_measures.r" 1>>"${LOGFILE}" 2>&1 
