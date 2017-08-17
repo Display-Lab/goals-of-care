@@ -29,11 +29,23 @@ make_rate_plot_data <- function(input_data){
   # Convert key column (title of former columns) to a factor with the specified order of values
   gathered$event = factor(gathered$event, levels = c("misses","numerator"))
   
-  # Create a column of data where the counts that are zero are replaced with NA
-  #   This column will be used for the text labels so that 0's aren't drawn on the top of the bar.
-  gathered$count_na_zero <- replace(gathered$count, gathered$count == 0, NA)
+  # Calculate the max digit per ID that should be plotted to avoid overplotting when the height
+  #   of the bar is less than that of the plotted numeral.
+  count_limits <- gathered %>%
+    group_by(id) %>%
+    summarise(limit = floor(log(max(denominator/2))))
   
-  return(gathered)
+  # Create a column count_label with NA for counts that are less than the count limit for the id.
+  plot_data <- gathered %>% 
+    left_join(count_limits, by="id")  %>%
+    mutate(
+      count_label = case_when(
+        count > limit ~ count,
+        count <= limit ~ as.numeric(NA)
+      )
+    )
+  
+  return(plot_data)
 }
 
 generate_rate_plot <- function(plot_data, plot_title = "", y_label = "", line_label="", stack_labels=c("") ){
@@ -45,7 +57,7 @@ generate_rate_plot <- function(plot_data, plot_title = "", y_label = "", line_la
     ggplot(plot_data, aes(x = timepoint, y = count, group = event)) +
     geom_col(aes(fill = event)) +
     geom_text(size = 4,
-              aes(label = count_na_zero),
+              aes(label = count_label),
               position = position_stack(vjust = 0.5))   +
     geom_point(aes(y = denominator, color = "denominator")) +
     geom_line(data = plot_data, aes(

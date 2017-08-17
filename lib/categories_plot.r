@@ -16,21 +16,57 @@ make_category_plot_data <- function(input_data){
   
   # Convert key column (title of former columns) to a factor with the specified order of values
   #   Specify in reverse order so that the geom_text and geom_col legends are in same order.
-  rev_levels = sort(unique(gathered$event), decreasing=TRUE)
+  rev_levels <- sort(unique(gathered$event), decreasing=TRUE)
   gathered$event <- factor(gathered$event, levels = rev_levels)
   
-  # Create a column of data where the counts that are zero are replaced with NA
-  #   This column will be used for the text labels so that 0's aren't drawn on the top of the bar.
-  gathered$count_na_zero <- replace(gathered$count, gathered$count == 0, NA)
+  # Calculate the max digit per ID that should be plotted to avoid overplotting when the height
+  #   of the bar is less than that of the plotted numeral.
+  count_limits <- gathered %>%
+    group_by(id) %>%
+    summarise(limit = floor(log(sum(count))/2))
   
-  return(gathered)
+  # Create a column count_label with NA for counts that are less than the count limit for the id.
+  plot_data <- gathered %>% 
+    left_join(count_limits, by="id")  %>%
+    mutate(
+      count_label = case_when(
+        count > limit ~ count,
+        count <= limit ~ as.numeric(NA)
+      )
+    )
+  
+  return(plot_data)
+}
+
+# Use a grey for the middle color
+odd_palette <- function(n){
+  pal <- viridis_pal(direction = -1)(n)
+  #extra_color <- first(setdiff(viridis_pal()(n+1), pal))
+  extra_color <- "#2D2D2D"
+  pal[ceiling(n/2)] <- extra_color
+  return(pal)
 }
 
 generate_category_plot <- function(plot_data, plot_title, y_label, cat_labels){
+  # For odd numbers of categories, use a custom palette for the text label color
+  if(length(cat_labels) %% 2 == 0){
+    text_label_scale <- scale_colour_viridis(
+        discrete = TRUE,
+        breaks = levels(plot_data$event),
+        option = "C",
+        direction = -1
+      )
+  }else{
+    text_label_scale <- scale_colour_manual(
+        breaks = levels(plot_data$event),
+        values = odd_palette( length(cat_labels) )
+      )
+  }
+  
   plot <- ggplot(plot_data, aes(x = timepoint, y = count)) +
     geom_col(aes(fill = event)) +
     geom_text(size = 4,
-              aes(label = count_na_zero, colour=event),
+              aes(label = count_label, colour=event),
               position = position_stack(vjust = 0.5),
               show.legend = F)   +
     scale_y_continuous(breaks=pretty_breaks()) +
@@ -47,12 +83,7 @@ generate_category_plot <- function(plot_data, plot_title, y_label, cat_labels){
       breaks = levels(plot_data$event),
       labels = cat_labels
     ) +
-    scale_color_viridis(
-      discrete = TRUE,
-      breaks = levels(plot_data$event),
-      labels = cat_labels,
-      direction = -1
-    )
+    text_label_scale
     
   return(plot)
 }
