@@ -45,14 +45,9 @@ if(file.exists(clc_filename)){
 }
 
 # Need to use make names as _TYPE and _FREQ_ aren't syntacticly valid
-expected_hbc_colnames <- make.names(c("fy","quart","hbpc_sta6a","_TYPE_","_FREQ_","no_hbpc","no_hbpc_ever","no_hbpc30",
-                           "hbpc","one_stop","numer1","denom1","numer2","denom2","numer3","denom3","denom90",
-                           "numer90","goc_pre","goc_any","goc_3","n1","n2","n3","min1","min2","min3",
-                           "mean1","mean2","mean3","max1","max2","maX3","goc_perc1","goc_perc2","goc_perc3","goc_any_perc"))
+expected_hbc_colnames <- make.names(c("fy","quart","hbpc_sta6a","hbpc","numer1","numer2","numer3","denom90","numer90","goc_pre"))
 
-expected_hbc_classes <- c("integer","integer","factor",rep("character",5),
-                           "integer","character","integer","character","integer","character","integer","character","character",
-                           "integer","integer",rep("character",18) )
+expected_hbc_classes <- c("integer","integer","character",rep("integer",7))
 
 hbc_filename <- file.path("input","hbpc.csv")
 if(file.exists(hbc_filename)){
