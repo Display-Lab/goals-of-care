@@ -25,8 +25,7 @@ clc_classes <- c("integer", "integer", rep("character", 5), rep("integer", 10))
 # HBPC input is input/hbpc.csv
 hbpc_filename <- file.path("input","hbpc.csv")
 
-hbpc_classes <- c( rep("integer",2), "factor", rep("NULL",5), rep(c("integer","NULL"),4),
-                   "NULL", rep("integer",2), rep("NULL",18) )
+hbpc_classes <- c("integer","integer","character",rep("integer",7))
 
 # Save filtered data to build directory for later use or examination
 if(file.exists(clc_filename)){
