@@ -43,7 +43,7 @@
 
 % Set the Paper Size and margins
 \RequirePackage{geometry}
-\geometry{margin=1in}
+\geometry{margin=0.75in}
 
 % Create the Letterhead and To/From Block
 
