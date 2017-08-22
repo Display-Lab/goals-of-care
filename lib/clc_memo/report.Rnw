@@ -79,7 +79,7 @@ if( !exists("selected_id") ){ selected_id <- ids[1] }
 
 \maketitle
 
-On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations for Veterans admitted to \Sexpr{config$id_names[[selected_id]]}.\bigskip
+On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations for Veterans admitted to CLC at \Sexpr{config$id_names[[selected_id]]}.\bigskip
 
 This report focuses on newly admitted Veterans because the admissions process provides a key opportunity to engage Veterans in goals of care conversations.\bigskip
 
@@ -133,7 +133,7 @@ Thank you for your efforts to increase the frequency of goals of care conversati
 
 \begin{itemize}
   \item The columns in the chart above show the number of Veterans admitted to \Sexpr{config$id_names[[selected_id]]} each quarter.
-  \item The segments of each column compare the number without documentation to the number who had documentation from the LST template at any time between the first use of the LST template by \Sexpr{config$id_names[[selected_id]]}, and up to 30 days following each Veteran's admission to \Sexpr{config$id_names[[selected_id]]}.
+  \item The segments of each column compare the number without documentation to the number who had documentation from the LST template at any time between the first use of the LST template by \Sexpr{config$id_names[[selected_id]]}, and up to 30 days following each Veteran's admission.
 \end{itemize}
 
 \hrulefill
