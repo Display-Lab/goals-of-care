@@ -35,12 +35,12 @@ Included under lib/ is an installer script that will attempt to download, build,
 
 1. Fill out the configuration file `config/report_settings.yml`
     * An example config with defaults settings exits at `config/report_settings.yml.sample`
-      ```
+      ```console
       cp config/report_settings.yml.sample config/report_settings.yml
       ```
 
 1. From the project root directory, run the following commands in order:
-    ```
+    ```console
     # Run install script to make sure required packages are installed.
     Rscript lib/install_required_packages.r
 
@@ -61,6 +61,14 @@ Included under lib/ is an installer script that will attempt to download, build,
 
     # Generated pdf will be build/reports/<id>/<id>_clc.pdf
     ```
+## Demo with synthetic data
+```console
+# Generate fake data
+bin/generate_example_data.sh
+
+# Build reports using fake data
+bin/build_reports.sh
+```
 
 ## Configuration
 Various strings that appear in the reports need to be changed per recipient.
