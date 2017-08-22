@@ -66,11 +66,14 @@ config <- full_config$clc
 ids = levels(rate_data$id)
 if( !exists("selected_id") ){ selected_id <- ids[1] }
   
+# Save the site config
+site <- config$sites[[selected_id]]
+
 @
 
 
-\memoto{ \Sexpr{config$id_names[[selected_id]]} CLC Providers and Staff }
-\memofrom{ \Sexpr{config$provider[[selected_id]]} }
+\memoto{ \Sexpr{site$name} CLC Providers and Staff }
+\memofrom{ \Sexpr{site$provider} }
 \memosubject{ \Sexpr{config$title} }
 \memodate{\today}
 
@@ -79,11 +82,11 @@ if( !exists("selected_id") ){ selected_id <- ids[1] }
 
 \maketitle
 
-On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations for Veterans admitted to CLC at \Sexpr{config$id_names[[selected_id]]}.\bigskip
+On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations for Veterans admitted to CLC at \Sexpr{site$name}.\bigskip
 
 This report focuses on newly admitted Veterans because the admissions process provides a key opportunity to engage Veterans in goals of care conversations.\bigskip
 
-Please review the charts on the reverse side of this page to encourage reflection on your current practice and how \Sexpr{config$id_names[[selected_id]]} might increase the number of goals of care conversations and improve documentation of goals of care conversations.\bigskip
+Please review the charts on the reverse side of this page to encourage reflection on your current practice and how \Sexpr{site$name} might increase the number of goals of care conversations and improve documentation of goals of care conversations.\bigskip
 
 To better understand the data, please keep in mind these points:
 
@@ -98,11 +101,11 @@ More information about the implementation of goals of care conversations, includ
 If you have any questions about this report, you can contact:
 \begin{itemize}
 <<contacts_list, results="asis", echo=FALSE>>=
-  cat("", config$contacts[[selected_id]], sep="\n\\item ")
+  cat("", site$contacts, sep="\n\\item ")
 @
 \end{itemize}\bigskip
 
-Thank you for your efforts to increase the frequency of goals of care conversations with Veterans and their families in \Sexpr{config$id_names[[selected_id]]} and in ensuring that these important discussions are documented to improve care and the quality of life for our Veterans.
+Thank you for your efforts to increase the frequency of goals of care conversations with Veterans and their families in \Sexpr{site$name} and in ensuring that these important discussions are documented to improve care and the quality of life for our Veterans.
 
 \newpage
 
@@ -132,8 +135,8 @@ Thank you for your efforts to increase the frequency of goals of care conversati
 @
 
 \begin{itemize}
-  \item The columns in the chart above show the number of Veterans admitted to \Sexpr{config$id_names[[selected_id]]} each quarter.
-  \item The segments of each column compare the number without documentation to the number who had documentation from the LST template at any time between the first use of the LST template by \Sexpr{config$id_names[[selected_id]]}, and up to 30 days following each Veteran's admission.
+  \item The columns in the chart above show the number of Veterans admitted to \Sexpr{site$name} each quarter.
+  \item The segments of each column compare the number without documentation to the number who had documentation from the LST template at any time between the first use of the LST template by \Sexpr{site$name}, and up to 30 days following each Veteran's admission.
 \end{itemize}
 
 \hrulefill

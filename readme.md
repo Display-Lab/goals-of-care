@@ -25,13 +25,13 @@ Optionally, use RStudio to get a GUI. [https://www.rstudio.com/](https://www.rst
 * dplyr
 * knitr
 
-Included under lib/ is an installer script that will attempt to download, build, and install required packages: [required-packages.r](lib/required-packages.r)
+Included under lib/ is an installer script that will attempt to download, build, and install required packages: [lib/required-packages.r](lib/required-packages.r)
 
 ## Use
 
 1. Gather input data and export in csv format with a header row into the input/ directory.
-    * Expected input file is input/clc.rdata
-    * The report generation does *not* currently accomodate concurrent use.
+    * Expected input file input/clc.csv
+    * Expected input file input/hbpc.csv
 
 1. Fill out the configuration file `config/report_settings.yml`
     * An example config with defaults settings exits at `config/report_settings.yml.sample`
@@ -78,25 +78,21 @@ Important Config Notes
 default:
   clc:
     title: Title of the Report
-    contacts:
-      A_recipient_ID:
-        - Ann Smith, Product Owner (555-555-5555)
-        - Bob Jones, Decreasing Manager (555-222-1234)
-      B_recipient_ID:
-        - Carol Smith, Product Owner (555-555-5555)
-        - Dennis Jones, Increasing Manager (555-222-5678)
-    provider:
-      A_recipient_ID: Department of Reports
-      B_recipient_ID: Analytics Project Foo
-    id_names:
-      A_recipient_ID: Recipient Facility or Group Name
-      B_recipient_ID: Facility Foo
     assists:
       - Data collected quarterly.
       - Data is analyzed in aggregate.
       - Your millage may vary.
+    sites:
+      nTR:
+        name: No Trend Location
+        contacts:
+          - Jane Smith, Product Owner (555-555-5555)
+          - John Jones, No Trend Manager (555-222-9101)
+        provider: Reporting Committe for Reporting Reports
+      9984: 
+        name: Randal Trenderson Building
+        contacts: John Jones, Random Manager (555-222-1121)
+        provider: Friendly Neighborhood Feedback Provider
 ```
-
-Note that the values for the `contacts`,`provider`, and `id_names` are keyed with the id of the recipient they're associated with.
 
 ## License
