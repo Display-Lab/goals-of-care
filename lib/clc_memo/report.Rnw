@@ -81,7 +81,7 @@ if( !exists("selected_id") ){ selected_id <- ids[1] }
 
 On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations for Veterans admitted to \Sexpr{config$id_names[[selected_id]]}.\bigskip
 
-This report focuses on newly admitted veterans because the admissions process provides a key opportunity to engage Veterans in goals of care conversations.\bigskip
+This report focuses on newly admitted Veterans because the admissions process provides a key opportunity to engage Veterans in goals of care conversations.\bigskip
 
 Please review the charts on the reverse side of this page to encourage reflection on your current practice and how \Sexpr{config$id_names[[selected_id]]} might increase the number of goals of care conversations and improve documentation of goals of care conversations.\bigskip
 
