@@ -75,11 +75,10 @@ Various strings that appear in the reports need to be changed per recipient.
 To facilitate this, those strings are specified in `config/report_settings.yml`.
 
 Important Config Notes
-* **The config file must exist**
-* The config must be filled out for each id that exists in the input data.
-* The config must start with the key `default`
-* The config should contain a config for `clc` & `hbpc`.
-* The config file is not being tracked in version control.
+- **The config file must exist**
+- The config must be filled out for each id that exists in the input data.
+- The config must start with the key `default`
+- The config should contain a config for `clc` & `hbpc`.
 
 ```yaml
 ---
