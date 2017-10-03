@@ -13,6 +13,16 @@ filter_clc_data <- function(df){
   # Logical AND together the base filter with rows for which the condition is true
   filter <- filter & df[,"trtsp_1"] == "All NH Treating Specialties"
   
+  # Only use rows with a time in the top 8 time points (fiscal year quarters in practice)
+  # Unique Times, Top time index, top times dataframe
+  uniq_t <- unique(df[,c('fy','quart')])
+  top_t_idx <- order(uniq_t$fy, uniq_t$quart, decreasing=T)[1:8]
+  top_t <- uniq_t[top_t_idx, c('fy','quart')]
+  
+  # Add time_filter to overall filter
+  time_filter <- paste0(df$fy, df$quart) %in% paste0(top_t$fy, top_t$quart)
+  filter <- filter & time_filter
+  
   # Apply filter to get filtered data
   # Subset the data by selecting rows that correspond to TRUE in the filter.
   flt_data <- df[filter,]
@@ -24,7 +34,6 @@ clc_classes <- c("integer", "integer", rep("character", 5), rep("integer", 10))
 
 # HBPC input is input/hbpc.csv
 hbpc_filename <- file.path("input","hbpc.csv")
-
 hbpc_classes <- c("integer","integer","character",rep("integer",7))
 
 # Save filtered data to build directory for later use or examination
