@@ -59,7 +59,7 @@ Included under lib/ is an installer script that will attempt to download, build,
     # Compile all tex reports to pdf
     find build -name '*.tex' -execdir pdflatex {} \;
 
-    # Generated pdf will be build/reports/<id>/<id>_clc.pdf
+    # Generated pdf will be build/reports/<id>/<id>.clc.pdf
     ```
 ## Demo with synthetic data
 ```console
