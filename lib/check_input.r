@@ -1,3 +1,4 @@
+library(stringr)
 # Pre-process: check validity of input files.
 # Function to check that expected columns exist
 # Return boolean
@@ -15,8 +16,11 @@ check_input <- function(input_path, expected_colnames, expected_classes){
     return(FALSE)
   }
   
-  # Check that names of columns matches expected column names
-  col_differences <- setdiff(expected_colnames, colnames(summ))
+  # Check that names of columns matches expected column names converted to lower case
+  lower_colnames <- str_to_lower(colnames(summ))
+  col_differences <- setdiff(expected_colnames, lower_colnames)
+  
+  # Report column name differences to std out
   if(length(col_differences) == 0){
     cat("Found expected columns.\n")
   } else {
@@ -30,8 +34,8 @@ check_input <- function(input_path, expected_colnames, expected_classes){
 }
 
 # Check the CLC input if the input file exists
-expected_clc_colnames <- c("fy", "quart", "sta6a", "WardSID", "trtsp_1", "name", "WardLocationName", 
-                             "X_TYPE_", "X_FREQ_", "goc_7", "goc_14", "goc_30", "goc_pre90", 
+expected_clc_colnames <- c("fy", "quart", "sta6a", "wardsid", "trtsp_1", "name", "wardlocationname", 
+                             "x_type_", "x_freq_", "goc_7", "goc_14", "goc_30", "goc_pre90", 
                              "goc_pre", "goc_none", "goc_post30", "goc_post")
 
 expected_clc_classes <- c("integer", "integer", "character", "character", "character",  "character", "character",
@@ -44,8 +48,8 @@ if(file.exists(clc_filename)){
   clc_result <- check_input(clc_filename, expected_clc_colnames, expected_clc_classes)
 }
 
-# Need to use make names as _TYPE and _FREQ_ aren't syntacticly valid
-expected_hbc_colnames <- make.names(c("fy","quart","hbpc_sta6a","hbpc","numer1","numer2","numer3","denom90","numer90","goc_pre"))
+# Need to use make names as provided column names (_TYPE_ and _FREQ_) aren't syntacticly valid
+expected_hbc_colnames <- make.names(c("fy","quart","cdw_sta6a","hbpc","numer1","numer2","numer3","denom90","numer90","goc_pre"))
 
 expected_hbc_classes <- c("integer","integer","character",rep("integer",7))
 
@@ -55,14 +59,14 @@ if(file.exists(hbc_filename)){
 }
 
 
-# Exit with status code 65 in the even hbpc or clc input files aren't good
+# Exit with status code 65 in the event hbpc or clc input files aren't good
 if(exists('clc_result')){
   if(clc_result == FALSE){
     quit(save='no', status=65)
   }
 }
 if(exists('hbc_result')){
-  if(clc_result == FALSE){
+  if(hbc_result == FALSE){
     quit(save='no', status=65)
   }
 }
@@ -70,5 +74,6 @@ if(exists('hbc_result')){
 # Handle case where neither input exist
 if(!exists('clc_result') && !exists('hbc_result')){
   cat("\n\n!!! NO INPUT FILES FOUND !!!")
+  cat("\n\n!!! Expected input/clc.csv or input/hbpc.csv !!!")
   quit(save='no', status=65)
 }

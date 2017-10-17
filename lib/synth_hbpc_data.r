@@ -3,7 +3,7 @@
 # Four locations to show: HBPC No Trend, HBPC Random trend, HBPC Upward, HBPC Downward
 
 #Column names
-c_names <- c("fy", "quart", "hbpc_sta6a",
+c_names <- c("fy", "quart", "cdw_sta6a",
              "hbpc", "numer1", "numer2", "numer3", "numer90", "goc_pre", "denom90") 
 
 expected_input_classes <- c("integer", "integer", "character", rep("integer",7))
