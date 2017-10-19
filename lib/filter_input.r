@@ -1,3 +1,4 @@
+library(stringr)
 # Read input data if it exists, filter, write to build directory
 read_in_data <- function(path, classes){
   df <- read.csv( path, header = TRUE, colClasses = classes )
@@ -6,6 +7,9 @@ read_in_data <- function(path, classes){
 
 # Filter the input data to get only the rows that will be used susequently
 filter_clc_data <- function(df){
+  # Covert column names to lower case
+  names(df) <- str_to_lower(names(df))
+  
   # Create a array of boolean (TRUE) with one value per row in the data frame
   filter <- rep(TRUE, nrow(df))
   
@@ -26,6 +30,7 @@ filter_clc_data <- function(df){
   # Apply filter to get filtered data
   # Subset the data by selecting rows that correspond to TRUE in the filter.
   flt_data <- df[filter,]
+  
 }
 
 # CLC input is input/clc.csv
