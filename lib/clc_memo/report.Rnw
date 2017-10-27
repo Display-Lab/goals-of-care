@@ -126,7 +126,7 @@ Thank you for your efforts to increase the frequency of goals of care conversati
   rate_plot <- generate_rate_plot(plot_data,
     plot_title = "How many total newly admitted Veterans have a documented \ngoals of care conversation?",
     y_label = "Veterans Admitted",
-    line_label = "Newly admitted\nveterans",
+    line_label = "Newly admitted\nVeterans",
     stack_labels = c("Not documented", "Documented")
   )
   
