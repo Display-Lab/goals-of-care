@@ -82,7 +82,7 @@ site <- config$sites[[selected_id]]
 
 \maketitle
 
-On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations for Veterans admitted to CLC at \Sexpr{site$name}.\bigskip
+On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations for Veterans admitted to \Sexpr{site$name}.\bigskip
 
 This report focuses on newly admitted Veterans because the admissions process provides a key opportunity to engage Veterans in goals of care conversations.\bigskip
 
