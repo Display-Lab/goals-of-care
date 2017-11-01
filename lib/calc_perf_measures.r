@@ -4,7 +4,6 @@
 #   misses
 #   numerator category sums
 
-  #results = calc_perf(clc_filename, clc_id_cols, clc_numer_cols, clc_denom_cols, clc_categories)
 calc_perf <- function(input_file, id_cols, numer_cols, denom_cols, numer_categories){
   # Assuming input rdata file has a flt_data data frame
   load(input_file)
@@ -45,7 +44,7 @@ clc_denom_cols <- c('goc_7', 'goc_14', 'goc_30', 'goc_pre90', 'goc_pre', 'goc_no
 
 # Performance measure config for HBPC
 hbpc_filename <- file.path("build","filtered_hbpc.rdata")
-hbpc_id_cols <- c("cdw_sta6a")
+hbpc_id_cols <- c("sta6a")
 hbpc_categories <- list("cat_1"=c("numer90","goc_pre"),
                         "cat_2"=c("numer1"),
                         "cat_3"=c("numer2"),
