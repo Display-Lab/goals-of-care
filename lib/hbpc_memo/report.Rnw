@@ -105,7 +105,7 @@ If you have any questions about this report, you can contact:
 @
 \end{itemize}\bigskip
 
-Thank you for your efforts to increase the frequency of GoCCs with Veterans and their families in \Sexpr{config$id_names[[selected_id]]} and in ensuring that these important discussions are documented to improve care and the quality of life for our Veterans.
+Thank you for your efforts to increase the frequency of GoCCs with Veterans and their families in \Sexpr{site$name} and in ensuring that these important discussions are documented to improve care and the quality of life for our Veterans.
 
 \newpage
 
