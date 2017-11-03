@@ -82,11 +82,11 @@ site <- config$sites[[selected_id]]
 
 \maketitle
 
-On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations for Veterans admitted to \Sexpr{site$name}.\bigskip
+On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations (GoCCs) for Veterans newly admitted to \Sexpr{site$name}.\bigskip
 
-This report focuses on newly admitted Veterans because the admissions process provides a key opportunity to engage Veterans in goals of care conversations.\bigskip
+This report focuses on newly admitted Veterans because the admissions process provides a key opportunity to engage Veterans in GoCCs.\bigskip
 
-Please review the charts on the reverse side of this page to encourage reflection on your current practice and how \Sexpr{site$name} might increase the number of goals of care conversations and improve documentation of goals of care conversations.\bigskip
+Please review the charts on the reverse side of this page to encourage reflection on your current practice and how \Sexpr{site$name} might increase the number of GoCCs and improve documentation of GoCCs.\bigskip
 
 To better understand the data, please keep in mind these points:
 
@@ -96,7 +96,7 @@ To better understand the data, please keep in mind these points:
 @
 \end{itemize}\bigskip
 
-More information about the implementation of goals of care conversations, including a step-by-step implementation guide, is available at the following website: \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
+More information about the implementation of GoCCs, including a step-by-step implementation guide, is available at the following website: \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
 
 If you have any questions about this report, you can contact:
 \begin{itemize}
@@ -105,7 +105,7 @@ If you have any questions about this report, you can contact:
 @
 \end{itemize}\bigskip
 
-Thank you for your efforts to increase the frequency of goals of care conversations with Veterans and their families in \Sexpr{site$name} and in ensuring that these important discussions are documented to improve care and the quality of life for our Veterans.
+Thank you for your efforts to increase the frequency of GoCCs with Veterans and their families in \Sexpr{site$name} and in ensuring that these important discussions are documented to improve care and the quality of life for our Veterans.
 
 \newpage
 
@@ -136,7 +136,7 @@ Thank you for your efforts to increase the frequency of goals of care conversati
 
 \begin{itemize}
   \item The columns in the chart above show the number of Veterans admitted to \Sexpr{site$name} each quarter.
-  \item The segments of each column compare the number without documentation to the number who had documentation from the LST template at any time between the first use of the LST template by \Sexpr{site$name}, and up to 30 days following each Veteran's admission.
+  \item The segments of each column compare the number without documentation to the number who had documentation from the LST template at any time between the first use of the LST template by \Sexpr{site$name}, and up to 30 days following each CLC admission.
 \end{itemize}
 
 \hrulefill
@@ -165,9 +165,9 @@ Thank you for your efforts to increase the frequency of goals of care conversati
 
 \begin{itemize}
 
-  \item The segments of each column in the chart above show Veterans whose most recent goals of care conversation was documented before or after admission.
+  \item The segments of each column in the chart above show Veterans whose most recent GoCC was documented before or after admission.
 
-  \item Each Veteran with a documented goals of care conversation was counted only once, starting with "0 to 7 days after", then "8 to 30 days after", then "Before admission".
+  \item Each Veteran with a documented GoCC was counted only once, starting with "0 to 7 days after", then "8 to 30 days after", then "Before admission".
 
 \end{itemize}\bigskip
 
