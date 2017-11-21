@@ -82,6 +82,12 @@ Included under lib/ is an installer script that will attempt to download, build,
 1. Collect the generated reports from the directory `build/reports/`
 
 ## Demo with synthetic data
+### Config & Input Data Backups
+The generate example data script makes a backup of any existing data in the input directory.
+It will also make a backup of the report_settings.yml in a similar fashion.
+So multiple runs of the demo will result in backups of the synthetic data and config.
+### Running the Demo
+Run the following commands from the project base directory. 
 ```console
 # Generate fake data
 bin/generate_example_data.sh
