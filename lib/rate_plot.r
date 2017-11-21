@@ -9,6 +9,10 @@ library(scales)
 #   * Transform data for plotting convenience
 #   * Produce plot
 
+
+# Hueristic for determining the lower limit of plottable number characters given a vector of counts
+lower_print_lim <- function(x){ floor(sum(x)/10) }
+
 # Given data frame with "identifier", "numerator" and "misses" columns,
 #  return data frame transformed for plotting 
 make_rate_plot_data <- function(input_data){
@@ -33,7 +37,7 @@ make_rate_plot_data <- function(input_data){
   #   of the bar is less than that of the plotted numeral.
   count_limits <- gathered %>%
     group_by(id) %>%
-    summarise(limit = floor(log(max(denominator/2))))
+    summarise(limit = lower_print_lim(max(denominator)))
   
   # Create a column count_label with NA for counts that are less than the count limit for the id.
   plot_data <- gathered %>% 

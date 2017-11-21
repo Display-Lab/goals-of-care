@@ -5,6 +5,9 @@ library(ggthemes)
 library(viridis)
 library(scales)
 
+# Hueristic for determining the lower limit of plottable number characters given a vector of counts
+lower_print_lim <- function(x){ floor(sum(x)/10) }
+
 # Generate the plot for a categories performance metric
 # This script contains two utility functions:
 #   * Transform data for plotting convenience
@@ -21,9 +24,13 @@ make_category_plot_data <- function(input_data){
   
   # Calculate the max digit per ID that should be plotted to avoid overplotting when the height
   #   of the bar is less than that of the plotted numeral.
+  
   count_limits <- gathered %>%
+    group_by(id, timepoint) %>%
+    summarize(t_lim=lower_print_lim(count) ) %>%
     group_by(id) %>%
-    summarise(limit = floor(log(sum(count))/2))
+    summarize(limit=max(t_lim))
+  
   
   # Create a column count_label with NA for counts that are less than the count limit for the id.
   plot_data <- gathered %>% 
