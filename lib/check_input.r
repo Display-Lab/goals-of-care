@@ -34,13 +34,13 @@ check_input <- function(input_path, expected_colnames, expected_classes){
 }
 
 # Check the CLC input if the input file exists
-expected_clc_colnames <- c("fy", "quart", "sta6a", "wardsid", "trtsp_1", "name", "wardlocationname", 
-                             "x_type_", "x_freq_", "goc_7", "goc_14", "goc_30", "goc_pre90", 
-                             "goc_pre", "goc_none", "goc_post30", "goc_post")
+expected_clc_colnames <- c("fy", "quart", "sta6a", "trtsp_1",
+                             "x_freq_", "goc_7", "goc_14", "goc_30", "goc_pre90", 
+                             "goc_pre", "goc_none")
 
-expected_clc_classes <- c("integer", "integer", "character", "character", "character",  "character", "character",
-                            "integer", "integer", "integer", "integer", "integer", "integer",
-                            "integer", "integer", "integer", "integer")
+expected_clc_classes <- c("integer", "integer", "character", "character", 
+                            "integer", "integer", "integer", "integer", "integer",
+                            "integer", "integer")
 
 clc_filename <- file.path("input","clc.csv")
 

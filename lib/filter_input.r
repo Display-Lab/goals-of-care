@@ -84,7 +84,7 @@ filter_clc_data <- function(df){
 
 # CLC input is input/clc.csv
 clc_filename <- file.path("input","clc.csv")
-clc_classes <- c("integer", "integer", rep("character", 5), rep("integer", 10))
+clc_classes <- c("integer", "integer", rep("character", 2), rep("integer", 7))
 
 # HBPC input is input/hbpc.csv
 hbpc_filename <- file.path("input","hbpc.csv")
