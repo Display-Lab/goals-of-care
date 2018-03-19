@@ -60,3 +60,9 @@ if(require('rmarkdown', quietly=TRUE) == FALSE){
 } else {
   print('rmarkdown already installed.')
 }
+
+if(require('here', quietly=TRUE) == FALSE){
+  install.packages('here')
+} else {
+  print('here already installed.')
+}
