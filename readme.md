@@ -35,6 +35,24 @@ Optionally, use RStudio to get a GUI. [https://www.rstudio.com/](https://www.rst
 
 Included under lib/ is an installer script that will attempt to download, build, and install required packages: [lib/required-packages.r](lib/required-packages.r)
 
+## Package Use
+1. Gather input data and export in csv format with a header row into the input/ directory.
+    - Expected input file input/clc.csv
+    - Expected input file input/hbpc.csv
+
+1. Fill out the configuration file `config/report_settings.yml`
+    - An example config with defaults settings exists at `config/report_settings.yml.sample`
+      ```console
+      cp config/report_settings.yml.sample config/report_settings.yml
+      ```
+1. Run the report generation script supplying the path the the inputs directory and config directory.
+    ```
+    TODO: RSCRIPT USE
+    ```
+    ```
+    TODO: BASH SCRIPT WRAPPER
+    ```
+
 ## Use
 1. Change directory to the project root directory.
 
