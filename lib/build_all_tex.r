@@ -1,7 +1,8 @@
 library(knitr)
+library(here)
 
 report_dir_path <- function (id, memo_type){
-  name <- file.path("build","reports",paste(id, memo_type, sep="_"))
+  name <- file.path(here::here(),"build","reports",paste(id, memo_type, sep="_"))
 }
 
 create_report_dir <- function(id, memo_type){
@@ -20,7 +21,7 @@ generate_report <- function(id, memo_type){
   # Generate a CLC Report passing selected_id via the global env
   # Selected id is a variable used in the report script.
   selected_id <- id
-  knitr_file <- file.path("lib",memo_dir_name,"report.Rnw")
+  knitr_file <- file.path(here::here(),"lib",memo_dir_name,"report.Rnw")
   knit(input= knitr_file)
   
   # Clean destination figures directory
@@ -44,7 +45,7 @@ run_report_for_all_ids <- function(input_path, memo_type){
   ids = levels(rate_data$id)
   
   # create build directories if they don't exist
-  dir.create(file.path("build", "reports"), showWarnings = FALSE)
+  dir.create(file.path(here::here(),"build", "reports"), showWarnings = FALSE)
   num_dirs_created <- lapply(ids, FUN=create_report_dir, memo_type=memo_type )
   
   # run report generation for each id
@@ -52,8 +53,8 @@ run_report_for_all_ids <- function(input_path, memo_type){
   return(sum(successes))
 }
 
-clc_input <- file.path("build","performance_clc.rdata")
-hbpc_input <- file.path("build","performance_hbpc.rdata")
+clc_input <- file.path(here::here(),"build","performance_clc.rdata")
+hbpc_input <- file.path(here::here(),"build","performance_hbpc.rdata")
 
 if(file.exists(clc_input)){
   cat("Generating CLC Reports\n")
@@ -66,8 +67,3 @@ if(file.exists(hbpc_input)){
   num_reports <- run_report_for_all_ids(hbpc_input, "hbpc")
   cat("Created ", num_reports, " HBPC reports.")
 }
-
-
-
-
-

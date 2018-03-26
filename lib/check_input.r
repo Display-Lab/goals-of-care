@@ -42,7 +42,8 @@ expected_clc_classes <- c("integer", "integer", "character", "character",
                             "integer", "integer", "integer", "integer", "integer",
                             "integer", "integer")
 
-clc_filename <- file.path("input","clc.csv")
+clc_filename <- file.path(here::here(),"input","clc.csv")
+print(clc_filename)
 
 if(file.exists(clc_filename)){
   clc_result <- check_input(clc_filename, expected_clc_colnames, expected_clc_classes)
@@ -53,7 +54,9 @@ expected_hbc_colnames <- make.names(c("fy","quart","cdw_sta6a","hbpc","numer1","
 
 expected_hbc_classes <- c("integer","integer","character",rep("integer",7))
 
-hbc_filename <- file.path("input","hbpc.csv")
+hbc_filename <- file.path(here::here(),"input","hbpc.csv")
+print(hbc_filename)
+
 if(file.exists(hbc_filename)){
   hbc_result <- check_input(hbc_filename, expected_hbc_colnames, expected_hbc_classes)
 }

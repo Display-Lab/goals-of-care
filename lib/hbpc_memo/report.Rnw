@@ -20,43 +20,25 @@ opts_chunk$set( concordance=TRUE )
 <<load_data, include=FALSE>>=
 # Try to load data from build directory if it is not already present
   if(exists("rate_data") == FALSE || exists("category_data") == FALSE) {
-    rel_filepath <- file.path("..", "..", "build","performance_hbpc.rdata")
-    prj_filepath <- file.path("build","performance_hbpc.rdata")
+    prj_filepath <- file.path(here::here(),"build","performance_hbpc.rdata")
     
     # Try loading from relative path assuming project root as base
     load_result <- try(load(prj_filepath), silent = TRUE) 
-    # Failing that, try loading from the relative path of this report.
-    if(class(load_result) == "try-error"){
-      try(load(rel_filepath), silent = TRUE)
-    }
   }
 
 # Function that tries to source from the path relative to the project root
 #  then tries relative to this script
 try_source <- function(prj_rel_path){
-  rel_script_path = file.path("..","..",prj_rel_path)
-  
   src_result <- try(source(prj_rel_path), silent = TRUE)
-  if(class(src_result) == "try-error"){
-    src_result <- try(source(rel_script_path), silent = TRUE)
-  }
 }
 
 # Try to source r scripts that contain plotting functions if not already present
-if( !exists("generate_rate_plot") ){ try_source(file.path("lib","rate_plot.r")) }
+if( !exists("generate_rate_plot") ){ try_source(file.path(here::here(),"lib","rate_plot.r")) }
 
-if( !exists("generate_category_plot") ){ try_source(file.path("lib","categories_plot.r")) }
+if( !exists("generate_category_plot") ){ try_source(file.path(here::here(),"lib","categories_plot.r")) }
 
 # Get the config and store it in a variable.
-# Accomodate running this file from Rstudio or from project root
-config_path_prj <- file.path("config","report_settings.yml")
-config_path_loc <- file.path("..","..",config_path_prj)
-
-if( file.exists(config_path_prj) ){ 
-  config_path <- config_path_prj
-} else if( file.exists(config_path_loc) ){
-  config_path <- config_path_loc
-}
+config_path <- file.path(here::here(),"config","report_settings.yml")
 
 full_config <- config::get(file=config_path, config = "default", use_parent = FALSE)
 config <- full_config$hbpc
@@ -68,9 +50,15 @@ if( !exists("selected_id") ){ selected_id <- ids[1] }
 
 # Save the site config
 site <- config$sites[[selected_id]]
-  
 @
 
+<<timespan_to_text, include=FALSE>>=
+# Utility function to convert timepoints factor into string for title. 
+timespan_text <- function(timepoints){
+  ret <- paste(first(timepoints), last(timepoints), sep=" - ")
+  ret <- gsub('\\\n','', ret)
+}
+@
 
 \memoto{ \Sexpr{site$name} HBPC Providers and Staff }
 \memofrom{ \Sexpr{site$provider} }
@@ -122,9 +110,15 @@ Thank you for your efforts to increase the frequency of GoCCs with Veterans and 
   # This plot should only have data from a single recipient (site).
   plot_data <- filter(plot_data, id == selected_id)
   
+  # Format title of plot
+  title_txt <- paste("How many total newly admitted Veterans have a documented",
+                     "goals of care conversation?",
+                     paste("HBPC", timespan_text(plot_data$timepoint)),
+                     sep="\n",collapse="")
+  
   # Create plot
   rate_plot <- generate_rate_plot(plot_data,
-    plot_title = "How many total newly admitted Veterans have a documented \ngoals of care conversation?",
+    plot_title = title_txt,
     y_label = "Veterans Admitted",
     line_label = "Newly admitted\nVeterans",
     stack_labels = c("Not documented", "Documented")
@@ -151,9 +145,14 @@ Thank you for your efforts to increase the frequency of GoCCs with Veterans and 
   # This plot should only have data from a single recipient (site).
   plot_data <- filter(plot_data, id == selected_id)
   
+  # Format title of plot
+  title_txt <- paste("During which visit were goals of care conversations documented?",
+                     paste("HBPC", timespan_text(plot_data$timepoint)),
+                     sep="\n",collapse="")
+  
   # Create plot
   category_plot <- generate_category_plot(plot_data,
-    plot_title = "During which visit were goals of care conversations documented?",
+    plot_title = title_txt,
     y_label = "Veterans Admitted",
     cat_labels = c("Visit 3", "Visit 2", "Visit 1", "Before admission")
   )
