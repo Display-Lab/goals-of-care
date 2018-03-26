@@ -70,13 +70,16 @@ generate_category_plot <- function(plot_data, plot_title, y_label, cat_labels){
       )
   }
   
+  # Set upper limit to 10 or max(count) whichever is higher.
+  ulim <- ifelse(max(plot_data$count < 10), 10, max(plot_data$count))
+  
   plot <- ggplot(plot_data, aes(x = timepoint, y = count)) +
     geom_col(aes(fill = event)) +
     geom_text(size = 4,
               aes(label = count_label, colour=event),
               position = position_stack(vjust = 0.5),
               show.legend = F)   +
-    scale_y_continuous(breaks=pretty_breaks()) +
+    scale_y_continuous(breaks=pretty_breaks(), limit=c(0,ulim)) +
     labs(title = plot_title, x = " ", y = y_label) +
     theme(
       panel.grid.major = element_blank(),

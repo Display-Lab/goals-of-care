@@ -56,6 +56,9 @@ generate_rate_plot <- function(plot_data, plot_title = "", y_label = "", line_la
   # Manually selected colors from Viridis Palette
   viridis_colors = c(denominator="#440154FF", "#414487FF", numerator="#2A788EFF", "#22A884FF", misses = "#7AD151FF", "#FDE725FF")
   
+  # Set upper limit to 10 or max(count) whichever is higher.
+  ulim <- ifelse(max(plot_data$denominator < 10), 10, max(plot_data$denominator))
+  
   # Specify the plot using grammar of graphics
   plot <-
     ggplot(plot_data, aes(x = timepoint, y = count, group = event)) +
@@ -70,7 +73,7 @@ generate_rate_plot <- function(plot_data, plot_title = "", y_label = "", line_la
       color = "denominator"
     )) +
     labs(title = plot_title, x = " ", y = y_label) +
-    scale_y_continuous(breaks=pretty_breaks()) +
+    scale_y_continuous(breaks=pretty_breaks(), limits=c(0,ulim)) +
     scale_colour_manual(
       values = viridis_colors,
       breaks = c("denominator"),
