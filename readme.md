@@ -31,6 +31,7 @@ Optionally, use RStudio to get a GUI. [https://www.rstudio.com/](https://www.rst
 - dplyr
 - knitr
 - rmarkdown
+- here
 
 Included under lib/ is an installer script that will attempt to download, build, and install required packages: [lib/required-packages.r](lib/required-packages.r)
 
