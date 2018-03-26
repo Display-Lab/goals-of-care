@@ -4,13 +4,14 @@
 #' @param expected_colnames vector of names that need to match the column headers
 #' @importFrom stringr str_to_lower
 check_input <- function(df, expected_colnames){
- 
   verify_count <- check_col_count(df, expected_colnames)
   verify_names <- check_col_names(df, expected_colnames)
   
   return( verify_count && verify_names)
 }
 
+#' @title Check Column Names
+#' @describeIn check_input Check observed column names in df against expected.
 check_col_names <- function(df, expected_colnames){
   cat("\nChecking column names\n")
   
@@ -29,6 +30,8 @@ check_col_names <- function(df, expected_colnames){
   return(TRUE)
 }
 
+#' @title Check Column Count
+#' @describeIn check_input Check observed number of columns in df against expected.
 check_col_count <- function(df, expected_colnames){
   cat("\nChecking number of variables\n")
   
