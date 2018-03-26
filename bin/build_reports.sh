@@ -21,9 +21,11 @@ get_script_dir(){
 #  change to the project root directory.
 SCRIPT_DIR=$(get_script_dir)
 PROJ_DIR=$(dirname ${SCRIPT_DIR})
+cd ${PROJ_DIR}
 
 LOGFILE="${PROJ_DIR}/build/build.log"
 DATE=$(date +%Y-%m-%d:%H:%M:%S)
+
 
 echo "Started build log at ${PROJ_DIR}/build/build.log"
 

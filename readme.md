@@ -35,6 +35,7 @@ Optionally, use RStudio to get a GUI. [https://www.rstudio.com/](https://www.rst
 Included under lib/ is an installer script that will attempt to download, build, and install required packages: [lib/required-packages.r](lib/required-packages.r)
 
 ## Use
+1. Change directory to the project root directory.
 
 1. Gather input data and export in csv format with a header row into the input/ directory.
     - Expected input file input/clc.csv
