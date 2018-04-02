@@ -69,9 +69,12 @@ generate_category_plot <- function(plot_data, plot_title, y_label, cat_labels){
         values = odd_palette( length(cat_labels) )
       )
   }
-  
-  # Set upper limit to 10 or max(count) whichever is higher.
-  ulim <- ifelse(max(plot_data$count < 10), 10, max(plot_data$count))
+  # Get max of sum of stacked counts
+  ulim <- plot_data %>%
+    group_by(timepoint) %>% 
+    summarize(sum=sum(count)) %>%
+    pull(sum) %>%
+    max()
   
   plot <- ggplot(plot_data, aes(x = timepoint, y = count)) +
     geom_col(aes(fill = event)) +
