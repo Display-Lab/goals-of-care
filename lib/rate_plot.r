@@ -57,7 +57,7 @@ generate_rate_plot <- function(plot_data, plot_title = "", y_label = "", line_la
   viridis_colors = c(denominator="#440154FF", "#414487FF", numerator="#2A788EFF", "#22A884FF", misses = "#7AD151FF", "#FDE725FF")
   
   # Set upper limit to 10 or max(count) whichever is higher.
-  ulim <- ifelse(max(plot_data$denominator < 10), 10, max(plot_data$denominator))
+  ulim <- ifelse(max(plot_data$denominator) < 10, 10, max(plot_data$denominator))
   
   # Specify the plot using grammar of graphics
   plot <-
