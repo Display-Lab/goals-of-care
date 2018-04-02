@@ -74,7 +74,10 @@ generate_category_plot <- function(plot_data, plot_title, y_label, cat_labels){
     group_by(timepoint) %>% 
     summarize(sum=sum(count)) %>%
     pull(sum) %>%
-    max()
+    max(na.rm=T)
+  
+  # Use 10 as minimum upper limit
+  ulim <- ifelse(ulim < 10, 10, ulim)
   
   plot <- ggplot(plot_data, aes(x = timepoint, y = count)) +
     geom_col(aes(fill = event)) +
