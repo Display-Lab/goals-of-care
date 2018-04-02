@@ -25,8 +25,15 @@ category_plot <- function(plot_data, plot_title, y_label, cat_labels){
       )
   }
   
-  # Set upper limit to 10 or max(count) whichever is higher.
-  ulim <- ifelse(max(plot_data$count < 10), 10, max(plot_data$count))
+  data_max <- plot_data %>%
+    group_by(timepoint) %>%
+    summarize(sum = sum(count)) %>%
+    pull(sum) %>%
+    max(na.rm=TRUE)
+  
+  # Upper limit should not be less than 10
+  ulim <- max(data_max, 10)
+  
   
   ggplot(plot_data, aes(x = timepoint, y = count)) +
     geom_col(aes(fill = event)) +
