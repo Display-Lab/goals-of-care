@@ -4,6 +4,7 @@
 #' @return dataframe transformed for plotting with rate_plot
 #' @import dplyr
 #' @importFrom tidyr gather
+#' @export
 rate_plot_data <- function(input_data){
   gathered <- gather(input_data, key="event", value="count", misses, numerator) 
   

@@ -9,6 +9,7 @@
 #' @importFrom scales pretty_breaks
 #' @importFrom viridis scale_colour_viridis
 #' @importFrom viridis scale_fill_viridis
+#' @export
 category_plot <- function(plot_data, plot_title, y_label, cat_labels){
   # For odd numbers of categories, use a custom palette for the text label color
   if(length(cat_labels) %% 2 == 0){

@@ -7,6 +7,7 @@
 #' @param stack_labels legend text for the numerator and misses values.
 #' @import ggplot2
 #' @importFrom scales pretty_breaks
+#' @export
 rate_plot <- function(plot_data, plot_title = "", y_label = "", line_label="", stack_labels=c("") ){
   # Manually selected colors from Viridis Palette
   viridis_colors = c(denominator="#440154FF", "#414487FF", numerator="#2A788EFF", "#22A884FF", misses = "#7AD151FF", "#FDE725FF")

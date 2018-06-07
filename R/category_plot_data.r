@@ -4,6 +4,7 @@
 #' @return dataframe transformed for plotting with category_plot
 #' @import dplyr
 #' @importFrom tidyr gather
+#' @export
 category_plot_data <- function(input_data){
   # Assume all non-id non-timepoint columns are category columns
   gathered <- gather(input_data, key="event", value="count", -id, -timepoint) 

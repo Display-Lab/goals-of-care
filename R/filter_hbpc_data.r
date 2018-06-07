@@ -4,6 +4,7 @@
 #' @note Rename id column for consistency with clc then filter
 #' @return dataframe of filtered HBPC data
 #' @import dplyr
+#' @importFrom magrittr %>%
 filter_hbpc_data <- function(df){
   df %>%
     rename(sta6a=cdw_sta6a) %>%

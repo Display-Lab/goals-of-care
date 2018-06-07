@@ -8,19 +8,21 @@
 #' @export
 #' 
 main <- function(input_dir, config_path, output_dir = NULL){
+  # Ignore warnings
+  options(warn = -1) 
+  
   # Default to using same directory for input and output
-  if(is.null(output_dir)){
-    output_dir <- input_dir
-  }
+  if(is.null(output_dir)){ output_dir <- input_dir }
   
   config <- read_config(config_path)
   
   # Read in CLC and HBPC data frames
+  cat("\n\n--- ReadingData\n")
   clc_filename <- file.path(input_dir,"clc.csv")
   hbpc_filename <- file.path(input_dir,"hbpc.csv")
   
-  df_hbpc <- read_hbpc_data() 
-  df_clc  <- read_clc_data() 
+  df_hbpc <- read_hbpc_data(hbpc_filename) 
+  df_clc  <- read_clc_data(clc_filename) 
   
   # Process Data
   if(!is.null(df_hbpc)){
@@ -39,4 +41,6 @@ main <- function(input_dir, config_path, output_dir = NULL){
   
   report_all(hbpc_df_list, GOCC$HBPC, config, output_dir)
   report_all(clc_df_list,  GOCC$CLC,  config, output_dir)
+  
+  cat("\n\nEnd of Line\n\n")
 }

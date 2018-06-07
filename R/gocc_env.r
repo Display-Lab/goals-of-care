@@ -17,7 +17,7 @@ GOCC$HBPC$COL_CLASSES <- c("integer","integer","character",rep("integer",7))
 GOCC$HBPC$COL_NAMES <- make.names(c("fy","quart","cdw_sta6a","hbpc","numer1","numer2",
                                     "numer3","denom90","numer90","goc_pre"))
 
-GOCC$HBPC$ID_COLS    
+GOCC$HBPC$ID_COLS    <- c("sta6a")
 GOCC$HBPC$CATEGORIES <- list("cat_1"=c("numer90","goc_pre"), 
                              "cat_2"=c("numer1"), 
                              "cat_3"=c("numer2"),
