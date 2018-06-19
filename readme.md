@@ -4,11 +4,16 @@
 
 1. Install Prequisites (details below)
 1. Clone repository into directory named `gocc`
-    ```
+    ```console
     git clone https://github.com/Display-Lab/goals-of-care gocc
     ```
-1. Install gocc package from source
+1. Install gocc package dependencies
+    ```console
+    Rscript --vanilla -e 'install.packages("devtools", repos="http://cran.us.r-project.org")'
+    Rscript --vanilla -e 'devtools::install_deps(pkg="gocc", dependencies="Import")'
     ```
+1. Install gocc package from source directory
+    ```console
     R CMD INSTALL --preclean --no-multiarch --with-keep.source gocc
     ```
 
@@ -33,9 +38,6 @@ gocc.sh is a symlink to the shell script in the package
 gocctest/
 ├── config
 │   └── report_settings.yml
-├── figure
-│   ├── plot1-1.pdf
-│   └── plot2-1.pdf
 ├── gocc.sh -> /home/grosscol/workspace/gocc/bin/gocc.sh
 └── input
     ├── clc.csv
