@@ -15,6 +15,7 @@
 # Scratch space
 scratch/*
 scratch.r
+TODO
 
 # Do not put actual config into version control
 config/*
@@ -25,8 +26,8 @@ reports/*
 build/*
 
 # RStudio and Sweave artifacts
-lib/**/*.pdf
-lib/**/*.tex
-lib/**/figure/*
+*.pdf
+*.tex
+
 figure/*
 

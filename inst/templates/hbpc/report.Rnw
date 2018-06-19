@@ -1,0 +1,136 @@
+% Specify vignette engine so R CMD Sweave will work from the command line
+%\VignetteEngine{knitr::knitr}
+
+<<load_gocc, include=FALSE>>=
+library(gocc)
+hbpc_path <- system.file(file.path("templates", "hbpc", "texMemo.cls"), package="gocc")
+tex_cls_name <- tools::file_path_sans_ext(hbpc_path)
+@
+
+% HBPC Report Template
+\documentclass[letterpaper, 10pt]{\Sexpr{tex_cls_name}}
+
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{helvet}
+\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the documen%t is to be sans serif
+
+<<timespan_to_text, include=FALSE>>=
+# Utility function to convert timepoints factor into string for title. 
+timespan_text <- function(timepoints){
+  ret <- paste(first(timepoints), last(timepoints), sep=" - ")
+  ret <- gsub('\\\n','', ret)
+}
+@
+
+\memoto{ \Sexpr{name} HBPC Providers and Staff }
+\memofrom{ \Sexpr{provider} }
+\memosubject{ \Sexpr{title} }
+\memodate{\today}
+
+
+\begin{document}
+
+\maketitle
+
+On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations (GoCCs) for Veterans newly admitted to \Sexpr{name}.\bigskip
+
+This report focuses on newly admitted Veterans because the admissions process provides a key opportunity to engage Veterans in GoCCs.\bigskip
+
+Please review the charts on the reverse side of this page to encourage reflection on your current practice and how \Sexpr{name} might increase the number of GoCCs and improve documentation of GoCCs.\bigskip
+
+To better understand the data, please keep in mind these points:
+
+\begin{itemize}
+<<intepret_assist, results="asis", echo=FALSE>>=
+  cat("", assists, sep="\n\\item ")
+@
+\end{itemize}\bigskip
+
+More information about the implementation of GoCCs, including a step-by-step implementation guide, is available at the following website: \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
+
+If you have any questions about this report, you can contact:
+\begin{itemize}
+<<contacts_list, results="asis", echo=FALSE>>=
+  cat("", contacts, sep="\n\\item ")
+@
+\end{itemize}\bigskip
+
+Thank you for your efforts to increase the frequency of GoCCs with Veterans and their families in \Sexpr{name} and in ensuring that these important discussions are documented to improve care and the quality of life for our Veterans.
+
+\newpage
+
+\FloatBarrier
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+<<plot1, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 6.5, fig.height = 3.5, fig.align='center', fig.show='hold'>>=
+
+  library(dplyr, warn.conflicts = FALSE)
+
+  # Format data for plotting
+  plot_data <- gocc::rate_plot_data(rate_data)
+  
+  # This plot should only have data from a single recipient (site).
+  plot_data <- dplyr::filter(plot_data, id == selected_id)
+  
+  # Format title of plot
+  title_txt <- paste("How many total newly admitted Veterans have a documented",
+                     "goals of care conversation?",
+                     paste("HBPC", timespan_text(plot_data$timepoint)),
+                     sep="\n",collapse="")
+  
+  # Create plot
+  rt_plot <- gocc::rate_plot(plot_data,
+    plot_title = title_txt,
+    y_label = "Veterans Admitted",
+    line_label = "Newly admitted\nVeterans",
+    stack_labels = c("Not documented", "Documented")
+  )
+  # print plot to include in document
+  rt_plot
+@
+
+\begin{itemize}
+  \item The columns in the chart above show the number of Veterans admitted to \Sexpr{name} each quarter.
+  \item The segments of each column compare the number without documentation to the number who had documentation from the LST template at any time between the first use of the LST template at \Sexpr{name}, and up to 30 days following each HBPC admission.
+\end{itemize}
+
+\hrulefill
+
+\bigskip
+
+
+<<plot2, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 3.5, fig.align='center', fig.show='hold'>>=
+
+  # Format data for plotting
+  plot_data <- gocc::category_plot_data(category_data)
+  
+  # This plot should only have data from a single recipient (site).
+  plot_data <- dplyr::filter(plot_data, id == selected_id)
+  
+  # Format title of plot
+  title_txt <- paste("During which visit were goals of care conversations documented?",
+                     paste("HBPC", timespan_text(plot_data$timepoint)),
+                     sep="\n",collapse="")
+  
+  # Create plot
+  ctgy_plot <- gocc::category_plot(plot_data,
+    plot_title = title_txt,
+    y_label = "Veterans Admitted",
+    cat_labels = c("61-90 days", "31-60 days", "0-30 days", "Before admission")
+  )
+  
+  # print plot to include in document
+  ctgy_plot
+@
+
+\begin{itemize}
+
+  \item The segments of each column in the chart above show Veterans whose most recent GoCC was documented before or after admission.
+
+  \item Each Veteran with a documented GoCC was counted only once, starting with "0-30 days", "31-60 days", "61-90 days", and finally "Before admission".
+
+\end{itemize}\bigskip
+
+\end{document}

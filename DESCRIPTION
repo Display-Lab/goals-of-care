@@ -1,0 +1,25 @@
+Package: gocc
+Type: Package
+Title: VA Goals of Care Conversations Feedback
+Version: 0.6.0
+Author: Colin Gross
+Maintainer: Colin Gross <grosscol@umich.edu>
+Description: Generate performance feedback summaries for sites in the VA that conduct goals of care conversations with Veterans.  Provides report templates, data processing, and helper scripts to generate pdf reports for distribution within the VA.
+License: Apache License, Version 2.0
+Encoding: UTF-8
+LazyData: true
+Suggests: testthat
+Imports: config,
+    dplyr,
+    ggplot2,
+    ggthemes,
+    knitr,
+    magrittr,
+    rmarkdown,
+    scales,
+    stringr,
+    tidyr,
+    tools,
+    utils,
+    viridis
+RoxygenNote: 6.0.1

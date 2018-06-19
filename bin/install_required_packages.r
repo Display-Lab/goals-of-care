@@ -18,12 +18,6 @@ if(require('scales', quietly=TRUE) == FALSE){
   print('scales already installed.')
 }
 
-if(require('ggthemes', quietly=TRUE) == FALSE){
-  install.packages('ggthemes')
-} else {
-  print('ggthemes already installed.')
-}
-
 if(require('viridis', quietly=TRUE) == FALSE){
   install.packages('viridis')
 } else {
