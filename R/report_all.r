@@ -26,6 +26,7 @@ report_all <- function(df_list, envir, config, output_dir){
 #' @param output_directory path to directory where output file will be deposited.
 #' @importFrom knitr knit2pdf
 #' @importFrom utils capture.output
+#' @importFrom tools file_path_sans_ext
 report_one <- function(id, df_list, envir, config, output_dir){
   cat(".")
   memo_type <- environmentName(envir)

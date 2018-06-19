@@ -1,4 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\scratch\*$
-^\scratch.r$
+^scratch\.r$
+^build/.*$
+^build/$

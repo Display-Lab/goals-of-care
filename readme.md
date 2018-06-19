@@ -75,6 +75,7 @@ Optionally, use RStudio to get a GUI. [https://www.rstudio.com/](https://www.rst
 - scales,
 - stringr,
 - tidyr,
+- tools,
 - utils,
 - viridis
 

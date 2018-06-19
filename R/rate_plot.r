@@ -1,8 +1,8 @@
 #' @title Rate Plot
 #' @description Create a rate plot figure.
 #' @param plot_data rate plot dataframe
-#' @param plot_title
-#' @param y_label
+#' @param plot_title string for plot title
+#' @param y_label string for y-axis label
 #' @param line_label legend text for line that represents total admissions
 #' @param stack_labels legend text for the numerator and misses values.
 #' @import ggplot2

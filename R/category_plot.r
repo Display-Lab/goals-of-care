@@ -1,8 +1,8 @@
 #' @title Category Plot
 #' @description Create a category plot figure.
 #' @param plot_data category plot dataframe
-#' @param plot_title
-#' @param y_label
+#' @param plot_title string for plot title
+#' @param y_label string for y-axis label
 #' @param line_label legend text for line that represents total admissions
 #' @param cat_labels legend text for the numerator and misses values.
 #' @import ggplot2
