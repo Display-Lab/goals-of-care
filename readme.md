@@ -1,6 +1,8 @@
 # Goals of Care Site Reports
 
 ## Installation
+Installation instructions are inteneted to be run from the directory that contains the `gocc` directory.
+For example, if `/home/joe/projects/gocc` is where the gocc source directory will reside, then the commands below should be run from `/home/joe/projects`.
 
 1. Install Prequisites (details below)
 1. Clone repository into directory named `gocc`
