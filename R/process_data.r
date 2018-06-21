@@ -8,7 +8,6 @@ process_data <- function(df, envir){
   # Check for valid inputs
   valid_input <- check_input(df, envir$COL_NAMES)
   
-  
   if(!valid_input){
     print("Aborting: Problem with input data.\n")
     return(list())
@@ -20,7 +19,11 @@ process_data <- function(df, envir){
   }
   
   if(environmentName(envir) == 'clc'){
-    df_filtered <- filter_clc_data(df) 
+    df_filtered <- filter_clc_data(df) %>% 
+      select(-trtsp_1) %>% 
+      group_by(fy, quart, sta6a) %>%
+      summarise_all(sum) %>%
+      ungroup
   }
   
   # Calc Performance Measures

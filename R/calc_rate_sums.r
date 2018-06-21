@@ -6,7 +6,7 @@
 #' @return dataframe of numerator and denominator sums
 calc_rate_sums <- function(flt_data, id_cols, numer_cols, denom_cols){
   id          <- apply(flt_data[,id_cols, drop=FALSE], 1, FUN=paste, sep="", collapse="")
-  timepoint   <- paste(flt_data[,"fy"], "\n", "Q", flt_data[,"quart"], sep="")
+  timepoint   <- paste(flt_data$fy, "\n", "Q", flt_data$quart, sep="")
   numerator   <- rowSums(flt_data[,numer_cols, drop=FALSE])
   denominator <- rowSums(flt_data[,denom_cols, drop=FALSE])
   misses      <- denominator - numerator
