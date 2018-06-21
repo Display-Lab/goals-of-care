@@ -64,8 +64,7 @@ Thank you for your efforts to increase the frequency of GoCCs with Veterans and 
 \FloatBarrier
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-<<plot1, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 6.5, fig.height = 3.5, fig.align='center', fig.show='hold'>>=
-
+<<rate_plot_data, include=FALSE, message=FALSE, echo=FALSE>>=
   library(dplyr, warn.conflicts = FALSE)
   library(gocc, warn.conflicts = FALSE)
 
@@ -75,13 +74,21 @@ Thank you for your efforts to increase the frequency of GoCCs with Veterans and 
   # This plot should only have data from a single recipient (site).
   plot_data <- dplyr::filter(plot_data, id == selected_id)
   
-  title_txt <- paste("How many total newly admitted Veterans have a documented",
-                     "goals of care conversation?",
+  lt_plot_data <- dplyr::filter(plot_data, trtsp_1 == "Long-Term NH Care")
+  st_plot_data <- dplyr::filter(plot_data, trtsp_1 == "Short-Term NH Care")
+
+@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+<<lt_rate_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 6.5, fig.height = 3.5, fig.align='center', fig.show='hold'>>=
+
+  title_txt <- paste("How many total newly admitted Long-Term Care Veterans",
+                     "have a documented goals of care conversation?",
                      paste("CLC", timespan_text(plot_data$timepoint)),
                      sep="\n",collapse="")
   
   # Create plot
-  rt_plot <- gocc::rate_plot(plot_data,
+  lt_rate_plot <- gocc::rate_plot(lt_plot_data,
     plot_title = title_txt,
     y_label = "Veterans Admitted",
     line_label = "Newly admitted\nVeterans",
@@ -89,7 +96,27 @@ Thank you for your efforts to increase the frequency of GoCCs with Veterans and 
   )
   
   # print plot to include in document
-  rt_plot
+  lt_rate_plot
+@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+<<st_rate_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 6.5, fig.height = 3.5, fig.align='center', fig.show='hold'>>=
+
+  title_txt <- paste("How many total newly admitted Short-Term Care Veterans",
+                     "have a documented goals of care conversation?",
+                     paste("CLC", timespan_text(plot_data$timepoint)),
+                     sep="\n",collapse="")
+  
+  # Create plot
+  st_rate_plot <- gocc::rate_plot(st_plot_data,
+    plot_title = title_txt,
+    y_label = "Veterans Admitted",
+    line_label = "Newly admitted\nVeterans",
+    stack_labels = c("Not documented", "Documented")
+  )
+  
+  # print plot to include in document
+  st_rate_plot
 @
 
 \begin{itemize}

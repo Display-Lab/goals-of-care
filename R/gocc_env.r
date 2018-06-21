@@ -39,6 +39,7 @@ GOCC$CLC$CATEGORIES <- list("cat_1"=c("goc_pre90","goc_pre"),
                             "cat_3"=c("goc_14","goc_30"))
 GOCC$CLC$NUMER_COLS <- c('goc_7', 'goc_14', 'goc_30', 'goc_pre90', 'goc_pre')
 GOCC$CLC$DENOM_COLS <- c('goc_7', 'goc_14', 'goc_30', 'goc_pre90', 'goc_pre', 'goc_none')
+GOCC$CLC$GROUP_COLS <- c('trtsp_1')
 GOCC$CLC$OUTFILE_PREFIX <- "clc"
 
 # -----------------------------#

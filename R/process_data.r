@@ -19,15 +19,11 @@ process_data <- function(df, envir){
   }
   
   if(environmentName(envir) == 'clc'){
-    df_filtered <- filter_clc_data(df) %>% 
-      select(-trtsp_1) %>% 
-      group_by(fy, quart, sta6a) %>%
-      summarise_all(sum) %>%
-      ungroup
+    df_filtered <- filter_clc_data(df) 
   }
   
   # Calc Performance Measures
-  rate_df <- calc_rate_sums(df_filtered, envir$ID_COLS, envir$NUMER_COLS, envir$DENOM_COLS)
+  rate_df <- calc_rate_sums(df_filtered, envir$ID_COLS, envir$NUMER_COLS, envir$DENOM_COLS, envir$GROUP_COLS)
   category_df <- calc_category_sums(df_filtered, envir$ID_COLS, envir$CATEGORIES)
   
   return(list(rate=rate_df, category=category_df))
