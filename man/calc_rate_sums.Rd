@@ -4,7 +4,7 @@
 \alias{calc_rate_sums}
 \title{Calculate Rate Sums}
 \usage{
-calc_rate_sums(flt_data, id_cols, numer_cols, denom_cols)
+calc_rate_sums(flt_data, id_cols, numer_cols, denom_cols, group_cols = NULL)
 }
 \arguments{
 \item{flt_data}{dataframe of filtered data}
@@ -14,6 +14,8 @@ calc_rate_sums(flt_data, id_cols, numer_cols, denom_cols)
 \item{numer_cols}{names of columns used in numerators}
 
 \item{denom_cols}{names of columns used in denominators}
+
+\item{group_cols}{names of columns to be preserved for further grouping}
 }
 \value{
 dataframe of numerator and denominator sums

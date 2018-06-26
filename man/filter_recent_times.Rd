@@ -7,7 +7,7 @@
 filter_recent_times(df, x)
 }
 \arguments{
-\item{df}{the hbpc or clc data frame}
+\item{df}{the hbpc or clc data frame: has fy, quart, sta6a}
 
 \item{x}{number of most recent time points to include}
 }

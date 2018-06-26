@@ -4,7 +4,7 @@
 \alias{calc_category_sums}
 \title{Calculate Category Sums}
 \usage{
-calc_category_sums(flt_data, id_cols, numer_categories)
+calc_category_sums(flt_data, id_cols, numer_categories, group_cols)
 }
 \arguments{
 \item{flt_data}{dataframe of filtered data}
