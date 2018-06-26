@@ -24,7 +24,7 @@ process_data <- function(df, envir){
   
   # Calc Performance Measures
   rate_df <- calc_rate_sums(df_filtered, envir$ID_COLS, envir$NUMER_COLS, envir$DENOM_COLS, envir$GROUP_COLS)
-  category_df <- calc_category_sums(df_filtered, envir$ID_COLS, envir$CATEGORIES)
+  category_df <- calc_category_sums(df_filtered, envir$ID_COLS, envir$CATEGORIES, envir$GROUP_COLS)
   
   return(list(rate=rate_df, category=category_df))
 }
