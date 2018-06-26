@@ -8,7 +8,6 @@ process_data <- function(df, envir){
   # Check for valid inputs
   valid_input <- check_input(df, envir$COL_NAMES)
   
-  
   if(!valid_input){
     print("Aborting: Problem with input data.\n")
     return(list())
@@ -24,8 +23,8 @@ process_data <- function(df, envir){
   }
   
   # Calc Performance Measures
-  rate_df <- calc_rate_sums(df_filtered, envir$ID_COLS, envir$NUMER_COLS, envir$DENOM_COLS)
-  category_df <- calc_category_sums(df_filtered, envir$ID_COLS, envir$CATEGORIES)
+  rate_df <- calc_rate_sums(df_filtered, envir$ID_COLS, envir$NUMER_COLS, envir$DENOM_COLS, envir$GROUP_COLS)
+  category_df <- calc_category_sums(df_filtered, envir$ID_COLS, envir$CATEGORIES, envir$GROUP_COLS)
   
   return(list(rate=rate_df, category=category_df))
 }

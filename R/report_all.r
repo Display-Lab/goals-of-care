@@ -24,6 +24,7 @@ report_all <- function(df_list, envir, config, output_dir){
 #' @param envir with name matching the convention for the corresponding template
 #' @param config external configuration information
 #' @param output_directory path to directory where output file will be deposited.
+#' @import tinytex
 #' @importFrom knitr knit2pdf
 #' @importFrom utils capture.output
 #' @importFrom tools file_path_sans_ext
@@ -42,8 +43,6 @@ report_one <- function(id, df_list, envir, config, output_dir){
   report_env$name          <- site_cfg$name
   report_env$provider      <- site_cfg$provider
   report_env$contacts      <- site_cfg$contacts
-  report_env$rate_data     <- df_list$rate
-  report_env$category_data <- df_list$category
   
   template_path <- system.file(file.path("templates", memo_type,"report.Rnw"), package="gocc")
   tex_inputs_path <- system.file(file.path("templates", memo_type), package="gocc") 
@@ -53,6 +52,7 @@ report_one <- function(id, df_list, envir, config, output_dir){
   
   output_path = file.path(output_dir, out_filename)
   
+  options(tinytex.engine="pdflatex")
   suppressMessages(
     utils::capture.output(
       knitr::knit2pdf(input = template_path,

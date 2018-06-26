@@ -22,7 +22,7 @@ rate_plot <- function(plot_data, plot_title = "", y_label = "", line_label="", s
               position = position_stack(vjust = 0.5))   +
     geom_point(aes(y = denominator, color = "denominator")) +
     geom_line(data = plot_data, aes(
-      x = as.numeric(timepoint),
+      x = as.factor(timepoint),
       y = denominator,
       color = "denominator"
     )) +

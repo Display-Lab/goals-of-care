@@ -3,13 +3,18 @@
 #' @param id_cols names of columns to use as id
 #' @param numer_cols names of columns used in numerators
 #' @param denom_cols names of columns used in denominators
+#' @param group_cols names of columns to be preserved for further grouping
 #' @return dataframe of numerator and denominator sums
-calc_rate_sums <- function(flt_data, id_cols, numer_cols, denom_cols){
-  id          <- apply(flt_data[,id_cols, drop=FALSE], 1, FUN=paste, sep="", collapse="")
-  timepoint   <- paste(flt_data[,"fy"], "\n", "Q", flt_data[,"quart"], sep="")
-  numerator   <- rowSums(flt_data[,numer_cols, drop=FALSE])
-  denominator <- rowSums(flt_data[,denom_cols, drop=FALSE])
-  misses      <- denominator - numerator
+calc_rate_sums <- function(flt_data, id_cols, numer_cols, denom_cols, group_cols=NULL){
+  # Figure out quosure or scoped approach to stuff this into dplyr
+  idvals <- apply(flt_data[,id_cols, drop=FALSE], 1, FUN=paste, sep="", collapse="")
   
-  data.frame(id, timepoint, numerator, misses, denominator)
+  flt_data %>%
+    mutate(
+      id=idvals,
+      timepoint=paste(fy, "\n", "Q", quart, sep=""),
+      numerator=rowSums(select_at(., .vars=numer_cols)),
+      denominator=rowSums(select_at(., .vars=denom_cols)),
+      misses=denominator - numerator) %>%
+    select_at(c("id", "timepoint", "numerator", "denominator", "misses", group_cols))
 }

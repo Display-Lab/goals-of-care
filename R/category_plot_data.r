@@ -4,10 +4,12 @@
 #' @return dataframe transformed for plotting with category_plot
 #' @import dplyr
 #' @importFrom tidyr gather
+#' @importFrom purrr map_lgl
 #' @export
 category_plot_data <- function(input_data){
-  # Assume all non-id non-timepoint columns are category columns
-  gathered <- gather(input_data, key="event", value="count", -id, -timepoint) 
+  # Assume all numeric columns are category columns
+  cat_cols <- names(input_data)[purrr::map_lgl(input_data, is.numeric)]
+  gathered <- gather(input_data, key="event", value="count", cat_cols) 
   
   # Convert key column (title of former columns) to a factor with the specified order of values
   #   Specify in reverse order so that the geom_text and geom_col legends are in same order.
