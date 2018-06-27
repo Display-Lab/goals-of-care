@@ -4,14 +4,14 @@
 \alias{main}
 \title{Main}
 \usage{
-main(input_dir, config_path, output_dir = NULL)
+main(config_path, output_dir = NULL, ...)
 }
 \arguments{
-\item{input_dir}{path to directory that contains clc.csv or hbpc.csv}
-
 \item{config_path}{path to configuration file}
 
 \item{output_dir}{path to output directory. Defaults to input_dir}
+
+\item{...}{paths to input files for clc, hbpc, or dementia reports}
 }
 \value{
 boolean TRUE indicates successful run.
