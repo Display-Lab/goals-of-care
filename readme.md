@@ -12,12 +12,29 @@ For example, if `/home/joe/projects/gocc` is where the gocc source directory wil
 1. Install gocc package dependencies
     ```console
     Rscript --vanilla -e 'install.packages("devtools", repos="http://cran.us.r-project.org")'
-    Rscript --vanilla -e 'devtools::install_deps(pkg="gocc", dependencies="Import")'
+    Rscript --vanilla -e 'devtools::install_deps(pkg="gocc", dependencies=TRUE)'
     ```
 1. Install gocc package from source directory
     ```console
     R CMD INSTALL --preclean --no-multiarch --with-keep.source gocc
     ```
+### Update
+1. Navigate to gocc source directory
+    ```console
+    cd /path/to/gocc
+    ```
+1. Pull latest source code
+    ```console
+    git pull
+    ```
+1. Navidate on directory up and follow final two steps from installation instructions above.
+    ```console
+    cd ..
+    Rscript --vanilla -e 'install.packages("devtools", repos="http://cran.us.r-project.org")'
+    Rscript --vanilla -e 'devtools::install_deps(pkg="gocc", dependencies=TRUE)'
+    R CMD INSTALL --preclean --no-multiarch --with-keep.source gocc
+    ```
+
 
 ## Package Use
 The package comes with a command line utility script in `bin/gocc.sh`
