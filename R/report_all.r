@@ -5,10 +5,8 @@
 #' @param config external configuration
 #' @param output_dir destination for reports
 report_all <- function(df_list, envir, config, output_dir){
-  
   ids <- unique(df_list$rate[,"id"])
   
-  # Build report
   cat(paste("\n\n----Generating", environmentName(envir), "Reports\n"))
   
   successes <- sapply(ids, FUN=report_one, df_list, envir, config, output_dir)
@@ -47,7 +45,7 @@ report_one <- function(id, df_list, envir, config, output_dir){
   template_path <- system.file(file.path("templates", memo_type,"report.Rnw"), package="gocc")
   tex_inputs_path <- system.file(file.path("templates", memo_type), package="gocc") 
   
-  out_filename <- paste(envir$OUTFILE_PREFIX, id, "pdf", sep=".")
+  out_filename <- paste(envir$OUTFILE_PREFIX, site_cfg$name, "pdf", sep=".")
   build_dir <- tempdir()
   
   output_path = file.path(output_dir, out_filename)
