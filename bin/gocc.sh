@@ -8,17 +8,18 @@ command -v Rscript 1> /dev/null 2>&1 || \
 read -r -d '' USE_MSG <<'HEREDOC'
 Usage:
   gocc.sh -h
-  gocc.sh input_dir config_file
-  gocc.sh -i [path to input dir] -c [path to config]
-  gocc.sh --input [path to input dir] --config [path to config]
+  gocc.sh [options]
+  gocc.sh [options] config_file  
 
 Input directory is expected to contain hbpc.csv and clc.csv files.
 
 Options:
   -h | --help   print help and exit
-  -i | --input  path to input directory
   -c | --config path to configuration file
   -o | --output path to output directory
+  --clc         path to clc report input csv file
+  --hbpc        path to hbpc report input csv file
+  --dementia    (unimplimented) path to dementia report input csv file
 HEREDOC
 
 # Parse args
@@ -29,16 +30,24 @@ while (( "$#" )); do
       echo "${USE_MSG}"
       exit 0
       ;;
-    -i|--input)
-      INPUT_DIR=$2
-      shift 2
-      ;;
     -c|--config)
       CONFIG_FILE=$2
       shift 2
       ;;
     -o|--output)
       OUTPUT_DIR=$2
+      shift 2
+      ;;
+    --clc)
+      CLC_INPUT=$2
+      shift 2
+      ;;
+    --hbpc)
+      HBPC_INPUT=$2
+      shift 2
+      ;;
+    --dementia)
+      DEMENTIA_INPUT=$2
       shift 2
       ;;
     --) # end argument parsing
@@ -56,23 +65,16 @@ while (( "$#" )); do
   esac
 done
 
-# Sort out input directory and shift params if used
-if [[ -z $INPUT_DIR ]]; then
-  if [[ ${PARAMS[0]} ]]; then
-    INPUT_DIR="${PARAMS[0]}"
-    PARAMS=("${PARAMS[@]:1}")
-  else
-    echo "Aborting: Input directory required."
-    exit 1
-  fi
+# Check for input options
+if [[ -z ${CLC_INPUT} ]] && [[ -z ${HBPC_INPUT} ]] && [[ -z ${DEMENTIA_INPUT} ]]; then
+  echo "Aborting: Report input file required. See -h for input options."
+  exit 1
 fi
 
 # Sort out config file. 
 # Check 2nd param (unshifted case) then 1st param (shifted case)
 if [[ -z $CONFIG_FILE ]]; then
-  if [[ ${PARAMS[1]} ]]; then
-    CONFIG_FILE="${PARAMS[1]}"
-  elif [[ ${PARAMS[0]} ]]; then
+  if [[ ${PARAMS[0]} ]]; then
     CONFIG_FILE="${PARAMS[0]}"
   else
     echo "Aborting: Config file required."
@@ -87,8 +89,10 @@ fi
 echo "Creating ${OUTPUT_DIR} if it doesn't exist"
 mkdir -p "${OUTPUT_DIR}"
 
+INPUT_ARGS="clc='${CLC_INPUT}', hbpc='${HBPC_INPUT}', dementia='${DEMENTIA_INPUT}'"
+
 echo "Running GoCC R Package."
-EXPR="gocc::main('${INPUT_DIR}', '${CONFIG_FILE}', '${OUTPUT_DIR}')"
+EXPR="gocc::main(config_path='${CONFIG_FILE}', output_dir='${OUTPUT_DIR}', ${INPUT_ARGS})"
 echo "${EXPR}"
 Rscript --vanilla --default-packages=gocc -e "${EXPR}"
 
