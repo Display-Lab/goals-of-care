@@ -22,3 +22,9 @@ read_clc_data <- function(path){
 read_hbpc_data <- function(path){
   read_data(path, GOCC$HBPC$COL_CLASSES)
 }
+
+#' @title Read Dementia Data
+#' @describeIn read_data Convenience function for reading dementia data
+read_dementia_data <- function(path){
+  read_data(path, GOCC$DEMENTIA$COL_CLASSES)
+}

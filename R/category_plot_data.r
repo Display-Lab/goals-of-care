@@ -1,5 +1,6 @@
 #' @title Category Plot Data
-#' @description Transform rate data to rate plot data. 
+#' @description Transform rate data to rate plot data. Assumes all numeric columns are count data. Will group by id and timepoint.
+#' Other columns are preserved and end up as facets.
 #' @param input_data dataframe with "identifier", "timepoint" and category columns,
 #' @return dataframe transformed for plotting with category_plot
 #' @import dplyr
@@ -7,7 +8,7 @@
 #' @importFrom purrr map_lgl
 #' @export
 category_plot_data <- function(input_data){
-  # Assume all numeric columns are category columns
+  # Assume all numeric columns are category count columns
   cat_cols <- names(input_data)[purrr::map_lgl(input_data, is.numeric)]
   gathered <- gather(input_data, key="event", value="count", cat_cols) 
   
@@ -18,16 +19,18 @@ category_plot_data <- function(input_data){
   
   # Calculate the max digit per ID that should be plotted to avoid overplotting when the height
   #   of the bar is less than that of the plotted numeral.
+  non_cat_cols <- setdiff(colnames(input_data), cat_cols) 
+  group_cols <- setdiff(colnames(input_data), c(cat_cols, 'timepoint'))
   
   count_limits <- gathered %>%
-    group_by(id, timepoint) %>%
+    group_by_at(.vars=non_cat_cols) %>%
     summarize(t_lim=lower_print_lim(count) ) %>%
-    group_by(id) %>%
+    group_by_at(.vars=group_cols) %>%
     summarize(limit=max(t_lim))
   
   # Create a column count_label with NA for counts that are less than the count limit for the id.
   gathered %>% 
-    left_join(count_limits, by="id")  %>%
+    left_join(count_limits, by=NULL)  %>%
     mutate(
       count_label = case_when(
         count > limit ~ count,

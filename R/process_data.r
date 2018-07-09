@@ -13,13 +13,17 @@ process_data <- function(df, envir){
     return(list())
   }
   
-  # Filter input
+  # Special processing input
   if(environmentName(envir) == 'hbpc'){
     df_filtered <- filter_hbpc_data(df)
   }
   
   if(environmentName(envir) == 'clc'){
     df_filtered <- filter_clc_data(df) 
+  }
+  
+  if(environmentName(envir) == 'dementia'){
+    df_filtered <- filter_dementia_data(df) 
   }
   
   # Calc Performance Measures
