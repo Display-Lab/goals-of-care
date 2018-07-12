@@ -8,12 +8,6 @@
 #' @export
 #' 
 main <- function(config_path, output_dir = NULL, ...){
-  cat("\nDEBUG\n")
-  cat(config_path)
-  cat("\nDEBUG\n")
-  cat(output_dir)
-  cat("\n")
-  
   input_args <- list(...)
   
   # Ignore warnings
@@ -25,34 +19,44 @@ main <- function(config_path, output_dir = NULL, ...){
   config <- read_config(config_path)
   
   # Read in data
-  cat("\n\n--- ReadingData\n")
+  cat("\n\n--- Reading Data\n")
   clc_inpath <- input_args[['clc']] 
-  if(!is.null(clc_inpath) || clc_inpath != ''){
-    df_clc  <- read_clc_data(input_args[['clc']]) 
+  if(!is.null(clc_inpath) && clc_inpath != ''){
+    df_clc  <- read_clc_data(clc_inpath) 
   }
   
   hbpc_inpath <- input_args[['hbpc']]
-  if(!is.null(hbpc_inpath) || hbpc_inpath != ''){
+  if(!is.null(hbpc_inpath) && hbpc_inpath != ''){
     df_hbpc <- read_hbpc_data(hbpc_inpath) 
   }
   
+  dementia_inpath <- input_args[['dementia']] 
+  if(!is.null(dementia_inpath) && dementia_inpath != ''){
+    df_dementia  <- read_dementia_data(dementia_inpath) 
+  }
+  
+  cat("\n\n--- Processing Data\n")
   # Process data
-  if(!is.null(df_hbpc)){
+  if(exists('df_hbpc')){
     hbpc_df_list <- process_data(df_hbpc, envir=GOCC$HBPC)
     report_all(hbpc_df_list, GOCC$HBPC, config, output_dir)
   }else{
-    cat(paste("\nHBPC input file", hbpc_inpath, "not present or malformed.\n"))
-    hbpc_df_list <- list()
+    cat("\nSkipping HBPC processing")
   }
   
-  if(!is.null(df_clc)){
+  if(exists('df_clc')){
     clc_df_list <- process_data(df_clc, envir=GOCC$CLC)
     report_all(clc_df_list,  GOCC$CLC,  config, output_dir)
   }else{
-    cat(paste("\nCLC input file", clc_inpath, "not present or malformed.\n"))
-    clc_df_list <- list()
+    cat("\nSkipping CLC processing")
   }
   
+  if(exists('df_dementia')){
+    dementia_df_list <- process_data(df_dementia, envir=GOCC$DEMENTIA)
+    report_all(dementia_df_list,  GOCC$DEMENTIA,  config, output_dir)
+  }else{
+    cat("\nSkipping Dementia processing")
+  }
   
   cat("\n\nEnd of Line\n\n")
 }

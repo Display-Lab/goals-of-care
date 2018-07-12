@@ -12,10 +12,13 @@ rate_plot <- function(plot_data, plot_title = "", y_label = "", line_label="", s
   # Manually selected colors from Viridis Palette
   viridis_colors = c(denominator="#440154FF", "#414487FF", numerator="#2A788EFF", "#22A884FF", misses = "#7AD151FF", "#FDE725FF")
   
+  # Check for extra columns to be used as faceting factors:
+  extra_colnames <- rate_extra_colnames(names(plot_data))
+  
   # Set upper limit to 10 or max(count) whichever is higher.
   ulim <- ifelse(max(plot_data$denominator) < 10, 10, max(plot_data$denominator))
   
-  ggplot(plot_data, aes(x = timepoint, y = count, group = event)) +
+  g <- ggplot(plot_data, aes(x = timepoint, y = count, group = event)) +
     geom_col(aes(fill = event)) +
     geom_text(size = 4,
               aes(label = count_label),
@@ -43,7 +46,21 @@ rate_plot <- function(plot_data, plot_title = "", y_label = "", line_label="", s
       panel.grid.minor = element_blank(),
       panel.border = element_blank(),
       panel.background = element_blank(),
+      axis.text.x = element_text(angle=50, vjust = 0.9, hjust = 0.9, size=rel(0.8)),
       legend.title = element_blank()
     ) +
-    guides(colour = guide_legend(order = 1))
+    guides(colour = guide_legend(order = 1)) 
+  # Add facet wrap if faceting columns are avaialble
+  if(length(extra_colnames) > 0) {
+    g <- g +facet_wrap(extra_colnames, nrow = 2)
+  }
+  return(g)
+}
+
+#' @title  Rate Extra Colnames
+#' @description set diff of column names in plot data with expected names
+#' @describeIn Rate Plot
+rate_extra_colnames <- function(cnames){
+  expected_names <- c('id', 'timepoint', 'event', 'count', 'limit', 'count_label', 'denominator')
+  setdiff(cnames, expected_names)
 }

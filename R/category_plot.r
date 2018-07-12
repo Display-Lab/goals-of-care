@@ -11,6 +11,9 @@
 #' @importFrom viridis scale_fill_viridis
 #' @export
 category_plot <- function(plot_data, plot_title, y_label, cat_labels){
+  # Check for extra columns to be used as faceting factors:
+  extra_colnames <- category_extra_colnames(names(plot_data))
+  
   # For odd numbers of categories, use a custom palette for the text label color
   if(length(cat_labels) %% 2 == 0){
     text_label_scale <- scale_colour_viridis(
@@ -27,7 +30,7 @@ category_plot <- function(plot_data, plot_title, y_label, cat_labels){
   }
   
   data_max <- plot_data %>%
-    group_by(timepoint) %>%
+    group_by_at(.vars=c('timepoint', extra_colnames)) %>%
     summarize(sum = sum(count)) %>%
     pull(sum) %>%
     max(na.rm=TRUE)
@@ -35,8 +38,7 @@ category_plot <- function(plot_data, plot_title, y_label, cat_labels){
   # Upper limit should not be less than 10
   ulim <- max(data_max, 10)
   
-  
-  ggplot(plot_data, aes(x = timepoint, y = count)) +
+  g <- ggplot(plot_data, aes(x = timepoint, y = count)) +
     geom_col(aes(fill = event)) +
     geom_text(size = 4,
               aes(label = count_label, colour=event),
@@ -49,6 +51,7 @@ category_plot <- function(plot_data, plot_title, y_label, cat_labels){
       panel.grid.minor = element_blank(),
       panel.border = element_blank(),
       panel.background = element_blank(),
+      axis.text.x = element_text(angle=50, vjust = 0.9, hjust = 0.9, size=rel(0.8)),
       legend.title = element_blank()
     ) +
     scale_fill_viridis(
@@ -56,10 +59,17 @@ category_plot <- function(plot_data, plot_title, y_label, cat_labels){
       breaks = levels(plot_data$event),
       labels = cat_labels
     ) +
-    text_label_scale
+    text_label_scale 
+  # Add facet wrap if faceting columns are avaialble
+  if(length(extra_colnames) > 0) {
+    g <- g +facet_wrap(extra_colnames, nrow = 2)
+  }
+  return(g)
 }
 
 # Use a grey for the middle color
+#' @title  Odd Palette
+#' @describeIn Category Plot
 #' @importFrom viridis viridis_pal
 odd_palette <- function(n){
   pal <- viridis_pal(direction = -1)(n)
@@ -67,4 +77,12 @@ odd_palette <- function(n){
   extra_color <- "#2D2D2D"
   pal[ceiling(n/2)] <- extra_color
   return(pal)
+}
+
+#' @title  Category Extra Colnames
+#' @description set diff of column names in plot data with expected names
+#' @describeIn Category Plot
+category_extra_colnames <- function(cnames){
+  expected_names <- c('id', 'timepoint', 'event', 'count', 'limit', 'count_label')
+  setdiff(cnames, expected_names)
 }
