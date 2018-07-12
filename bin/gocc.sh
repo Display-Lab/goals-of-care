@@ -17,6 +17,7 @@ Options:
   -h | --help   print help and exit
   -c | --config path to configuration file
   -o | --output path to output directory
+  --version     print package version
   --clc         path to clc report input csv file
   --hbpc        path to hbpc report input csv file
   --dementia    (unimplimented) path to dementia report input csv file
@@ -49,6 +50,12 @@ while (( "$#" )); do
     --dementia)
       DEMENTIA_INPUT=$2
       shift 2
+      ;;
+    --version)
+      VER_EXPR='cat(as.character(packageVersion("gocc")))'
+      VER_STRING=$(Rscript --vanilla --default-packages=utils -e "${VER_EXPR}")
+      echo "gocc package version: ${VER_STRING}"
+      exit 0
       ;;
     --) # end argument parsing
       shift
