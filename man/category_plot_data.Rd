@@ -13,5 +13,6 @@ category_plot_data(input_data)
 dataframe transformed for plotting with category_plot
 }
 \description{
-Transform rate data to rate plot data.
+Transform rate data to rate plot data. Assumes all numeric columns are count data. Will group by id and timepoint.
+Other columns are preserved and end up as facets.
 }

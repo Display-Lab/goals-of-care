@@ -4,15 +4,20 @@
 \alias{calc_category_sums}
 \title{Calculate Category Sums}
 \usage{
-calc_category_sums(flt_data, id_cols, numer_categories, group_cols)
+calc_category_sums(flt_data, id_cols, numer_categories, preserve_cols)
 }
 \arguments{
 \item{flt_data}{dataframe of filtered data}
 
 \item{id_cols}{names of columns to use as id}
 
-\item{numer_categories}{names of columns grouped by category}
+\item{numer_categories}{list of numerator groupings each containing a vector of names of column names which belong to the numerator group.}
+
+\item{preserve_cols}{names of columns to be preserved for subsquent use in faceting for further processing.}
 }
 \value{
 dataframe of category sums
+}
+\description{
+Sum the counts for categories of numerators.  This function assumes there is only a single denominator.
 }

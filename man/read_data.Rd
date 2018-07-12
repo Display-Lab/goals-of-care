@@ -4,6 +4,7 @@
 \alias{read_data}
 \alias{read_clc_data}
 \alias{read_hbpc_data}
+\alias{read_dementia_data}
 \title{Read Data}
 \usage{
 read_data(path, classes)
@@ -11,6 +12,8 @@ read_data(path, classes)
 read_clc_data(path)
 
 read_hbpc_data(path)
+
+read_dementia_data(path)
 }
 \arguments{
 \item{path}{path to clc or hbpc csv file}
@@ -25,5 +28,7 @@ dataframe or NULL
 \item \code{read_clc_data}: Convenience function for reading CLC data
 
 \item \code{read_hbpc_data}: Convenience function for reading HBPC data
+
+\item \code{read_dementia_data}: Convenience function for reading dementia data
 }}
 
