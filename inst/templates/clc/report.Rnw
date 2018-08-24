@@ -34,11 +34,11 @@ timespan_text <- function(timepoints){
 
 \maketitle
 
-On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations (GoCCs) for Veterans newly admitted to \Sexpr{name}.\bigskip
 
-This report focuses on newly admitted Veterans because the admissions process provides a key opportunity to engage Veterans in GoCCs.\bigskip
+The following pages present data about the number of goals of care conversations (GoCCs) that
+were documented using the Life-Sustaining Treatment template for Veterans at \Sexpr{name} CLC. \bigskip
 
-Please review the charts on the reverse side of this page to encourage reflection on your current practice and how \Sexpr{name} might increase the number of GoCCs and improve documentation of GoCCs.\bigskip
+Please review these charts to encourage reflection on your current practice and how \Sexpr{name} might increase the number of GoCCs and improve documentation of GoCCs. \bigskip
 
 To better understand the data, please keep in mind these points:
 
@@ -48,16 +48,18 @@ To better understand the data, please keep in mind these points:
 @
 \end{itemize}\bigskip
 
-More information about the implementation of GoCCs, including a step-by-step implementation guide, is available at the following website: \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
+More information about the LSTDI and its implementation is available at:
+\url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
 
 If you have any questions about this report, you can contact:
 \begin{itemize}
 <<contacts_list, results="asis", echo=FALSE>>=
-  cat("", contacts, sep="\n\\item ")
+  cat("", contacts, sep="\n\\item[] ")
 @
 \end{itemize}\bigskip
 
-Thank you for your efforts to increase the frequency of GoCCs with Veterans and their families in \Sexpr{name} and in ensuring that these important discussions are documented to improve care and the quality of life for our Veterans.
+Thank you for your efforts to conduct and document GoCCs with Veterans and their families in
+\Sexpr{name} to improve care and the quality of life for our Veterans.
 
 \newpage
 
