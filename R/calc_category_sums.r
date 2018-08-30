@@ -7,7 +7,7 @@
 #' @return dataframe of category sums
 calc_category_sums <- function(flt_data, id_cols, numer_categories, preserve_cols){
   id          <- apply(flt_data[,id_cols, drop=FALSE], 1, FUN=paste, sep="", collapse="")
-  timepoint   <- paste(flt_data$fy, " ", month.abb[flt_data$month], sep="")
+  timepoint   <- flt_data$date
   cat_sums    <- lapply(numer_categories, FUN=function(x, df){rowSums(df[,x,drop=FALSE])}, df=flt_data)
   preserved   <- as.data.frame(flt_data[, preserve_cols])
   names(preserved) <- preserve_cols

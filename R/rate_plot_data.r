@@ -20,7 +20,10 @@ rate_plot_data <- function(input_data){
   # Create a column count_label with NA for counts that are less than the count limit for the id.
   gathered %>% 
     left_join(count_limits, by="id")  %>%
-    mutate(
+    mutate( 
+      trtsp_1 = recode(trtsp_1, 
+                       "Long-Term NH Care"="Long-Term Care Residents", 
+                       "Short-Term NH Care"="Short-Stay Patients"),
       count_label = case_when(
         count > limit ~ count,
         count <= limit ~ as.numeric(NA)

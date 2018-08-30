@@ -3,6 +3,7 @@
 
 <<load_gocc, include=FALSE>>=
 library(gocc)
+library(knitr)
 cls_path <- system.file(file.path("templates", "clc", "texMemo.cls"), package="gocc")
 tex_cls_name <- tools::file_path_sans_ext(cls_path)
 @
@@ -14,24 +15,25 @@ tex_cls_name <- tools::file_path_sans_ext(cls_path)
 \usepackage{graphicx}
 \usepackage{placeins}
 \usepackage{helvet}
+\usepackage{datetime}
+\usepackage{booktabs}
 \renewcommand*\familydefault{\sfdefault} %% Only if the base font of the documen%t is to be sans serif
 
 <<timespan_to_text, include=FALSE>>=
 # Utility function to convert timepoints factor into string for title. 
 timespan_text <- function(timepoints){
-  ret <- paste(first(timepoints), last(timepoints), sep=" - ")
-  ret <- gsub('\\\n','', ret)
+  paste( 
+    format(first(timepoints), "%b %Y"),
+    format(last(timepoints), "%b %Y"),
+    sep=" - ")
 }
 @
 
-\memoto{ \Sexpr{name} CLC Providers and Staff }
-\memofrom{ \Sexpr{provider} }
-\memosubject{ \Sexpr{title} }
-\memodate{\today}
-
+\title{Feedback Report on Documented Life-Sustaining Treatment Decisions in CLC}
+\author{\Sexpr{name}}
+\date{\monthname, \the\year}
 
 \begin{document}
-
 \maketitle
 
 
@@ -80,15 +82,14 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 <<lt_rate_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
 
-  title_txt <- paste("How many total newly admitted Veterans",
-                     "have a documented goals of care conversation?",
-                     paste("CLC", timespan_text(plot_data$timepoint)),
+  title_txt <- paste("How many total newly admitted Veterans have a documented goals of care conversation?",
+                     paste(name,"CLC", timespan_text(plot_data$timepoint)),
                      sep="\n",collapse="")
   
   # Create plot
   rate_plot <- gocc::rate_plot(plot_data,
     plot_title = title_txt,
-    y_label = "Veterans Admitted",
+    y_label = "Number of Newly Admitted Veterans",
     line_label = "Newly admitted\nVeterans",
     stack_labels = c("Not documented", "Documented")
   )
@@ -96,11 +97,6 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
   # print plot to include in document
   rate_plot
 @
-
-\begin{itemize}
-  \item The columns in the chart above show the number of Veterans admitted to \Sexpr{name} each quarter.
-  \item The segments of each column compare the number without documentation to the number who had documentation from the LST template at any time between the first use of the LST template by \Sexpr{name}, and up to 30 days following each CLC admission.
-\end{itemize}
 
 \hrulefill
 
@@ -117,30 +113,28 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
 @
 
 <<lt_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
-
   # Format title of plot
-  title_txt <- paste("From time of admission,",
-                     "when goals of care conversations documented?",
-                     paste("CLC", timespan_text(plot_data$timepoint)),
-                     sep="\n",collapse="")
+  title_txt <- "For patients/residents with a documented GoCC, when was the conversation documented?"
+  
+  # Labels for the categories in order
+  ctgy_labels <- c("8 to 30 days after", "0 to 7 days after","Before admission")
   
   # Create plot
   ctgy_plot <- gocc::category_plot(plot_data,
     plot_title = title_txt,
-    y_label = "Veterans Admitted",
-    cat_labels = c("8 to 30 days after", "0 to 7 days after","Before admission")
+    y_label = "Number of Newly Admitted Veterans with GoCC",
+    cat_labels = ctgy_labels
   )
   
   # print plot to include in document
   ctgy_plot
 @
 
-\begin{itemize}
+\newpage
+\FloatBarrier
 
-  \item The segments of each column in the chart above show Veterans whose most recent GoCC was documented before or after admission.
-
-  \item Each Veteran with a documented GoCC was counted only once, starting with "0 to 7 days after", then "8 to 30 days after", then "Before admission".
-
-\end{itemize}\bigskip
-
+<<cats_table, include=TRUE, message=FALSE, echo=FALSE>>=
+  table_data <- gocc::category_plot_table_data(plot_data, ctgy_labels)
+  knitr::kable(table_data, format="latex", booktabs=T, caption=title_txt)
+@
 \end{document}

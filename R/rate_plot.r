@@ -25,12 +25,13 @@ rate_plot <- function(plot_data, plot_title = "", y_label = "", line_label="", s
               position = position_stack(vjust = 0.5))   +
     geom_point(aes(y = denominator, color = "denominator")) +
     geom_line(data = plot_data, aes(
-      x = as.factor(timepoint),
+      x = timepoint,
       y = denominator,
       color = "denominator"
     )) +
-    labs(title = plot_title, x = " ", y = y_label) +
+    labs(title = plot_title, x = "", y = y_label) +
     scale_y_continuous(breaks=pretty_breaks(), limits=c(0,ulim)) +
+    scale_x_date(date_labels = "%Y %b") +
     scale_colour_manual(
       values = viridis_colors,
       breaks = c("denominator"),
@@ -46,13 +47,13 @@ rate_plot <- function(plot_data, plot_title = "", y_label = "", line_label="", s
       panel.grid.minor = element_blank(),
       panel.border = element_blank(),
       panel.background = element_blank(),
-      axis.text.x = element_text(angle=50, vjust = 0.9, hjust = 0.9, size=rel(0.8)),
-      legend.title = element_blank()
+      legend.title = element_blank(),
+      legend.position = "top"
     ) +
     guides(colour = guide_legend(order = 1)) 
   # Add facet wrap if faceting columns are avaialble
   if(length(extra_colnames) > 0) {
-    g <- g +facet_wrap(extra_colnames, nrow = 2)
+    g <- g + facet_wrap(extra_colnames, nrow = 2, scales = "free")
   }
   return(g)
 }

@@ -45,13 +45,14 @@ category_plot <- function(plot_data, plot_title, y_label, cat_labels){
               position = position_stack(vjust = 0.5),
               show.legend = F)   +
     scale_y_continuous(breaks=pretty_breaks(), limit=c(0,ulim)) +
-    labs(title = plot_title, x = " ", y = y_label) +
+    scale_x_date(date_labels = "%Y %b") +
+    labs(title = plot_title, x = "", y = y_label) +
     theme(
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
       panel.border = element_blank(),
       panel.background = element_blank(),
-      axis.text.x = element_text(angle=50, vjust = 0.9, hjust = 0.9, size=rel(0.8)),
+      legend.position = "top",
       legend.title = element_blank()
     ) +
     scale_fill_viridis(
@@ -62,7 +63,7 @@ category_plot <- function(plot_data, plot_title, y_label, cat_labels){
     text_label_scale 
   # Add facet wrap if faceting columns are avaialble
   if(length(extra_colnames) > 0) {
-    g <- g +facet_wrap(extra_colnames, nrow = 2)
+    g <- g +facet_wrap(extra_colnames, nrow = 2, scales = "free")
   }
   return(g)
 }
