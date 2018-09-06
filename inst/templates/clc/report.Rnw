@@ -73,10 +73,10 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
   library(gocc, warn.conflicts = FALSE)
 
   # Format data for plotting
-  plot_data <- gocc::rate_plot_data(rate_data)
+  all_plot_data <- gocc::rate_plot_data(rate_data)
   
   # This plot should only have data from a single recipient (site).
-  plot_data <- dplyr::filter(plot_data, id == selected_id)
+  plot_data <- dplyr::filter(all_plot_data, id == selected_id)
 @
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

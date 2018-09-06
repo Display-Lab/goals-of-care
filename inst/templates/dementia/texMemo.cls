@@ -45,27 +45,3 @@
 \RequirePackage{geometry}
 \geometry{margin=0.75in}
 
-% Create the Letterhead and To/From Block
-
-\renewcommand{\maketitle}{\makememotitle}
-\newcommand\makememotitle{
-	\ifthenelse{\equal{\@memologo}{\relax}}{}
-	{ % Create With Logo
-	\begin{minipage}[t]{1\columnwidth}%
-		\begin{flushright}
-			\vspace{-0.6in}
-			\@memologo
-			\vspace{0.5in}
-		\par\end{flushright}%
-	\end{minipage}
-	}
-	
-	% To, From, Subject Block
-	\begin{description}
-		\ifthenelse{\equal{\@memoto}{\relax}}{}{\item [{To:}] \@memoto}
-		\ifthenelse{\equal{\@memofrom}{\relax}}{}{\item [{From:}] \@memofrom}
-		\ifthenelse{\equal{\@memosubject}{\relax}}{}{\item [{Subject:}] \@memosubject}
-		\ifthenelse{\equal{\@memodate}{\relax}}{}{\item [{Date:}] \@memodate}
-	\end{description}
-	\decorativeline\bigskip{}
-}

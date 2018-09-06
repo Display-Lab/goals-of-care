@@ -10,6 +10,10 @@
 #' @importFrom viridis scale_colour_viridis
 #' @importFrom viridis scale_fill_viridis
 #' @export
+
+tmpfunc <- function(x){
+  print(x)
+}
 category_plot <- function(plot_data, plot_title, y_label, cat_labels){
   # Check for extra columns to be used as faceting factors:
   extra_colnames <- category_extra_colnames(names(plot_data))
@@ -45,7 +49,7 @@ category_plot <- function(plot_data, plot_title, y_label, cat_labels){
               position = position_stack(vjust = 0.5),
               show.legend = F)   +
     scale_y_continuous(breaks=pretty_breaks(), limit=c(0,ulim)) +
-    scale_x_date(date_labels = "%Y %b") +
+    scale_x_date(date_labels = "%Y %b", date_breaks = "1 months" ) +
     labs(title = plot_title, x = "", y = y_label) +
     theme(
       panel.grid.major = element_blank(),

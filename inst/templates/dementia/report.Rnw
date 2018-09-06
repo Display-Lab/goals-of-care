@@ -14,21 +14,23 @@ tex_cls_name <- tools::file_path_sans_ext(cls_path)
 \usepackage{graphicx}
 \usepackage{placeins}
 \usepackage{helvet}
+\usepackage{datetime}
+\usepackage{booktabs}
 \renewcommand*\familydefault{\sfdefault} %% Only if the base font of the documen%t is to be sans serif
 
 <<timespan_to_text, include=FALSE>>=
 # Utility function to convert timepoints factor into string for title. 
 timespan_text <- function(timepoints){
-  ret <- paste(first(timepoints), last(timepoints), sep=" - ")
-  ret <- gsub('\\\n','', ret)
+  paste( 
+    format(first(timepoints), "%b %Y"),
+    format(last(timepoints), "%b %Y"),
+    sep=" - ")
 }
 @
 
-\memoto{ \Sexpr{name} CLC Providers and Staff }
-\memofrom{ \Sexpr{provider} }
-\memosubject{ \Sexpr{title} }
-\memodate{\today}
-
+\title{Feedback Report on Documented Life-Sustaining Treatment Decisions in CLC}
+\author{\Sexpr{name}}
+\date{\monthname, \the\year}
 
 \begin{document}
 
@@ -72,13 +74,16 @@ Thank you for your efforts to increase the frequency of GoCCs with Veterans and 
   plot_data <- gocc::category_plot_data(category_data) %>%
     dplyr::filter(id == selected_id)
   
-  lt_plot_data <- plot_data %>% dplyr::filter(trtsp_1 == "Long-Term NH Care")
-  st_plot_data <- plot_data %>% dplyr::filter(trtsp_1 == "Short-Term NH Care")
+  lt_plot_data <- plot_data %>% dplyr::filter(trtsp_1 == "Long-Term Care Residents")
+  st_plot_data <- plot_data %>% dplyr::filter(trtsp_1 == "Short-Stay Patients") 
   
   # Format title of plots
-  title_txt <- paste("How many Veterans have a documented goals of care conversation?",
-                     paste("CLC", timespan_text(plot_data$timepoint)),
+  title_txt <- paste("How many total newly admitted Veterans",
+                     "have a documented goals of care conversation?",
+                     paste(name,"CLC", timespan_text(plot_data$timepoint)),
                      sep="\n",collapse="")
+  
+  ctgy_labels = c("This Month", "Previous Month", "Not Documented")
 @
 
 <<lt_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
@@ -86,21 +91,13 @@ Thank you for your efforts to increase the frequency of GoCCs with Veterans and 
   # Create plot
   lt_plot <- gocc::category_plot(lt_plot_data,
     plot_title = title_txt,
-    y_label = "Veterans Count",
-    cat_labels = c("This Quarter", "Previous Quarter", "Not Documented")
+    y_label = "Number of Veterans per Month",
+    cat_labels = ctgy_labels
   )
   
   # print plot to include in document
   lt_plot
 @
-
-\begin{itemize}
-
-  \item The columns in the chart above show the number of Veterans residing in the CLC at \Sexpr{name} each quarter.
-  
-  \item The segments of each column compare the number without documentation to the number who had documentation from the LST template at any time between the first use of the LST template by Coatesville VAMC, and up to the end of the given quarter.
-  
-\end{itemize}
 
 \newpage
 
@@ -111,20 +108,28 @@ Thank you for your efforts to increase the frequency of GoCCs with Veterans and 
   # Create plot
   st_plot <- gocc::category_plot(st_plot_data,
     plot_title = title_txt,
-    y_label = "Veterans Count",
-    cat_labels = c("This Quarter", "Previous Quarter", "Not Documented")
+    y_label = "Number of Veterans per Month",
+    cat_labels = ctgy_labels
   )
   
   # print plot to include in document
   st_plot
 @
 
-\begin{itemize}
+\bigskip
 
-  \item The columns in the chart above show the number of Veterans residing in the CLC at \Sexpr{name} each quarter.
+\newpage
+\FloatBarrier
+
+<<cats_table, include=TRUE, message=FALSE, echo=FALSE>>=
+  lt_table_data <- gocc::category_plot_table_data(lt_plot_data, ctgy_labels)
+  st_table_data <- gocc::category_plot_table_data(st_plot_data, ctgy_labels)
   
-  \item The segments of each column compare the number without documentation to the number who had documentation from the LST template at any time between the first use of the LST template by Coatesville VAMC, and up to the end of the given quarter.
+  lt_title_txt <- paste("Long-term care Veterans goals of care documentation")
+  st_title_txt <- paste("Short-stay Veterans goals of care documentation")
   
-\end{itemize}\bigskip
+  knitr::kable(lt_table_data, format="latex", booktabs=T, caption=lt_title_txt)
+  knitr::kable(st_table_data, format="latex", booktabs=T, caption=st_title_txt)
+@
 
 \end{document}
