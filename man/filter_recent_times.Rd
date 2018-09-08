@@ -7,9 +7,9 @@
 filter_recent_times(df, x)
 }
 \arguments{
-\item{df}{the hbpc or clc data frame: has fy, quart, sta6a}
+\item{df}{the data frame that has a date column}
 
-\item{x}{number of most recent time points to include}
+\item{x}{number of most recent months}
 }
 \value{
 dataframe of filtered data
