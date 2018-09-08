@@ -8,7 +8,9 @@ tex_cls_name <- tools::file_path_sans_ext(cls_path)
 @
 
 % CLC Report Template
-\documentclass[letterpaper, 10pt]{\Sexpr{tex_cls_name}}
+%\documentclass[letterpaper, 10pt]{\Sexpr{tex_cls_name}}
+\documentclass[letterpaper, 10pt]{article}
+
 
 \usepackage{hyperref}
 \usepackage{graphicx}
@@ -17,6 +19,13 @@ tex_cls_name <- tools::file_path_sans_ext(cls_path)
 \usepackage{datetime}
 \usepackage{booktabs}
 \renewcommand*\familydefault{\sfdefault} %% Only if the base font of the documen%t is to be sans serif
+
+% Set the Paper Size and margins
+\RequirePackage{geometry}
+\geometry{margin=0.75in}
+
+% Don't indent paragraphs
+\setlength\parindent{0pt}
 
 <<timespan_to_text, include=FALSE>>=
 # Utility function to convert timepoints factor into string for title. 
@@ -50,7 +59,7 @@ To better understand the data, please keep in mind these points:
 @
 \end{itemize}\bigskip
 
-More information about the implementation of GoCCs, including a step-by-step implementation guide, is available at the following website: \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
+More information about the LSTDI and its implementation is available at: \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
 
 If you have any questions about this report, you can contact:
 \begin{itemize}
@@ -59,7 +68,7 @@ If you have any questions about this report, you can contact:
 @
 \end{itemize}\bigskip
 
-Thank you for your efforts to increase the frequency of GoCCs with Veterans and their families in \Sexpr{name} and in ensuring that these important discussions are documented to improve care and the quality of life for our Veterans.
+Thank you for your efforts to conduct and document GoCCs with Veterans and their families in \Sexpr{name} to improve care and the quality of life for our Veterans.
 
 \newpage
 
