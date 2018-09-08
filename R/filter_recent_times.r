@@ -5,6 +5,6 @@
 #' @return dataframe of filtered data
 #' @importFrom lubridate %m-% 
 filter_recent_times <- function(df, x){
-  threshold <- max(df$date) %m-% months(x-1)
-  df[df$date >= threshold,]
+  threshold <- max(df$report_month) %m-% months(x-1)
+  df[df$report_month >= threshold,]
 }
