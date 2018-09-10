@@ -37,7 +37,7 @@ timespan_text <- function(timepoints){
 }
 @
 
-\title{Feedback Report on Documented Life-Sustaining Treatment Decisions in CLC}
+\title{Feedback Report on the CLC Partnership and Documented Life-Sustaining Treatment Decisions in the CLC}
 \author{\Sexpr{name}}
 \date{\monthname, \the\year}
 
@@ -59,14 +59,9 @@ To better understand the data, please keep in mind these points:
 @
 \end{itemize}\bigskip
 
-More information about the LSTDI and its implementation is available at: \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
+More information about the LSTDI and its implementation is available at: \url{http://www.ethics.va.gov/LST.asp}.\bigskip
 
-If you have any questions about this report, you can contact:
-\begin{itemize}
-<<contacts_list, results="asis", echo=FALSE>>=
-  cat("", contacts, sep="\n\\item ")
-@
-\end{itemize}\bigskip
+If you have any questions about this report, you can contact Mary Ersek, mary.ersek@va.gov, or Joan Carpenter, joan.carpenter@va.gov.\bigskip
 
 Thank you for your efforts to conduct and document GoCCs with Veterans and their families in \Sexpr{name} to improve care and the quality of life for our Veterans.
 
@@ -83,28 +78,30 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
   plot_data <- gocc::category_plot_data(category_data) %>%
     dplyr::filter(id == selected_id)
   
-  dem_plot_data <- plot_data %>% dplyr::filter(dementia == "dementia patients")
-  nod_plot_data <- plot_data %>% dplyr::filter(dementia == "all patients") 
+  lt_plot_data <- plot_data %>% 
+    dplyr::filter(trtsp_1 == "Long-Term Care Residents") %>%
+    dplyr::mutate(dementia=dplyr::recode(dementia, "Patients with Dementia"="Residents with Dementia", "All Patients"="All Residents"))
+  st_plot_data <- plot_data %>% dplyr::filter(trtsp_1 == "Short-Stay Patients") 
   
   
   ctgy_labels = c("This Month", "Previous Month", "Not Documented")
 @
 
-<<nod_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
+<<lt_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
 
-  title_txt <- paste("How many Veterans with dementia",
+  title_txt <- paste("How many total long-term residents",
                      "have a documented goals of care conversation?",
                      paste(name,"CLC", timespan_text(plot_data$timepoint)),
                      sep="\n",collapse="")
   # Create plot
-  nod_plot <- gocc::category_plot(nod_plot_data,
+  lt_plot <- gocc::category_plot(lt_plot_data,
     plot_title = title_txt,
     y_label = "Number of Veterans per Month",
     cat_labels = ctgy_labels
   )
   
   # print plot to include in document
-  nod_plot
+  lt_plot
 @
 
 \bigskip
@@ -112,36 +109,48 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
 \newpage
 \FloatBarrier
 
-<<dem_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
+<<st_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
 
-  title_txt <- paste("How many Veterans have a documented goals of care conversation?",
+  title_txt <- paste("How many total short-stay patients",
+                     "have a documented goals of care conversation?",
                      paste(name,"CLC", timespan_text(plot_data$timepoint)),
                      sep="\n",collapse="")
   # Create plot
-  dem_plot <- gocc::category_plot(dem_plot_data,
+  st_plot <- gocc::category_plot(st_plot_data,
     plot_title = title_txt,
     y_label = "Number of Veterans per Month",
     cat_labels = ctgy_labels
   )
   
   # print plot to include in document
-  dem_plot
+  st_plot
 @
 
 \newpage
 
 \FloatBarrier
 
+<<table_data, include=FALSE, message=FALSE, echo=FALSE>>=
+  table_data <- function(plot_data, cat_labels){
+    names(cat_labels) <- paste("cat", 1:length(cat_labels), sep="_")
+    plot_data %>%
+      mutate(date=format(timepoint, "%Y %b"),
+             category=recode(event, !!!cat_labels),
+             patient_set=dementia) %>%
+      arrange(dementia, timepoint, category) %>%
+      select(date, patient_set, category, count)
+  }
+@
 
 <<cats_table, include=TRUE, message=FALSE, echo=FALSE>>=
-  dem_table_data <- gocc::category_plot_table_data(dem_plot_data, ctgy_labels)
-  nod_table_data <- gocc::category_plot_table_data(nod_plot_data, ctgy_labels)
+  lt_table_data <- table_data(lt_plot_data, ctgy_labels)
+  st_table_data <- table_data(st_plot_data, ctgy_labels)
   
-  dem_title_txt <- paste("All Veterans goals of care documentation")
-  nod_title_txt <- paste("Veterans with dementia goals of care documentation")
+  lt_title_txt <- paste("Long-Term Veterans goals of care documentation")
+  st_title_txt <- paste("Short-Stay Veterans goals of care documentation")
   
-  knitr::kable(dem_table_data, format="latex", booktabs=T, caption=dem_title_txt)
-  knitr::kable(nod_table_data, format="latex", booktabs=T, caption=nod_title_txt)
+  knitr::kable(lt_table_data, format="latex", booktabs=T, caption=lt_title_txt, linesep=c('', '', '', '', '','\\addlinespace'))
+  knitr::kable(st_table_data, format="latex", booktabs=T, caption=st_title_txt, linesep=c('', '', '', '', '','\\addlinespace'))
 @
 
 \end{document}

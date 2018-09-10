@@ -6,6 +6,6 @@
 filter_dementia_data <- function(df){
   names(df) <- str_to_lower(names(df))
   df %>%
-    mutate(dementia=ifelse(dementia==1, 'dementia patients', 'all patients')) %>%
+    mutate(dementia=ifelse(dementia==1, 'Patients with Dementia', 'All Patients')) %>%
     filter_recent_times(., 8)
 }
