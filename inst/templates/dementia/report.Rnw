@@ -7,7 +7,7 @@ cls_path <- system.file(file.path("templates", "dementia", "texMemo.cls"), packa
 tex_cls_name <- tools::file_path_sans_ext(cls_path)
 @
 
-% CLC Report Template
+% Dementia Report Template
 %\documentclass[letterpaper, 10pt]{\Sexpr{tex_cls_name}}
 \documentclass[letterpaper, 10pt]{article}
 
@@ -45,11 +45,11 @@ timespan_text <- function(timepoints){
 
 \maketitle
 
-On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations (GoCCs) for Veterans newly admitted to \Sexpr{name}.\bigskip
+The following pages present data about the number of goals of care conversations (GoCCs) that were documented using the Lif-Sustaining Treatment template for Veterats at the \Sexpr{name}. \bigskip
 
-This report focuses on newly admitted Veterans because the admissions process provides a key opportunity to engage Veterans in GoCCs.\bigskip
 
-Please review the charts on the reverse side of this page to encourage reflection on your current practice and how \Sexpr{name} might increase the number of GoCCs and improve documentation of GoCCs.\bigskip
+Please review these charts to encourage reflection on your current practice and how \Sexpr{name} might increase the number of GoCCs and improve documentation of GoCCs.\bigskip
+
 
 To better understand the data, please keep in mind these points:
 
@@ -83,46 +83,28 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
   plot_data <- gocc::category_plot_data(category_data) %>%
     dplyr::filter(id == selected_id)
   
-  lt_plot_data <- plot_data %>% dplyr::filter(trtsp_1 == "Long-Term Care Residents")
-  st_plot_data <- plot_data %>% dplyr::filter(trtsp_1 == "Short-Stay Patients") 
+  dem_plot_data <- plot_data %>% dplyr::filter(dementia == "dementia patients")
+  nod_plot_data <- plot_data %>% dplyr::filter(dementia == "all patients") 
   
-  # Format title of plots
-  title_txt <- paste("How many total newly admitted Veterans",
-                     "have a documented goals of care conversation?",
-                     paste(name,"CLC", timespan_text(plot_data$timepoint)),
-                     sep="\n",collapse="")
   
   ctgy_labels = c("This Month", "Previous Month", "Not Documented")
 @
 
-<<lt_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
+<<nod_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
 
+  title_txt <- paste("How many Veterans with dementia",
+                     "have a documented goals of care conversation?",
+                     paste(name,"CLC", timespan_text(plot_data$timepoint)),
+                     sep="\n",collapse="")
   # Create plot
-  lt_plot <- gocc::category_plot(lt_plot_data,
+  nod_plot <- gocc::category_plot(nod_plot_data,
     plot_title = title_txt,
     y_label = "Number of Veterans per Month",
     cat_labels = ctgy_labels
   )
   
   # print plot to include in document
-  lt_plot
-@
-
-\newpage
-
-\FloatBarrier
-
-<<st_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
-
-  # Create plot
-  st_plot <- gocc::category_plot(st_plot_data,
-    plot_title = title_txt,
-    y_label = "Number of Veterans per Month",
-    cat_labels = ctgy_labels
-  )
-  
-  # print plot to include in document
-  st_plot
+  nod_plot
 @
 
 \bigskip
@@ -130,15 +112,36 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
 \newpage
 \FloatBarrier
 
+<<dem_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
+
+  title_txt <- paste("How many Veterans have a documented goals of care conversation?",
+                     paste(name,"CLC", timespan_text(plot_data$timepoint)),
+                     sep="\n",collapse="")
+  # Create plot
+  dem_plot <- gocc::category_plot(dem_plot_data,
+    plot_title = title_txt,
+    y_label = "Number of Veterans per Month",
+    cat_labels = ctgy_labels
+  )
+  
+  # print plot to include in document
+  dem_plot
+@
+
+\newpage
+
+\FloatBarrier
+
+
 <<cats_table, include=TRUE, message=FALSE, echo=FALSE>>=
-  lt_table_data <- gocc::category_plot_table_data(lt_plot_data, ctgy_labels)
-  st_table_data <- gocc::category_plot_table_data(st_plot_data, ctgy_labels)
+  dem_table_data <- gocc::category_plot_table_data(dem_plot_data, ctgy_labels)
+  nod_table_data <- gocc::category_plot_table_data(nod_plot_data, ctgy_labels)
   
-  lt_title_txt <- paste("Long-term care Veterans goals of care documentation")
-  st_title_txt <- paste("Short-stay Veterans goals of care documentation")
+  dem_title_txt <- paste("All Veterans goals of care documentation")
+  nod_title_txt <- paste("Veterans with dementia goals of care documentation")
   
-  knitr::kable(lt_table_data, format="latex", booktabs=T, caption=lt_title_txt)
-  knitr::kable(st_table_data, format="latex", booktabs=T, caption=st_title_txt)
+  knitr::kable(dem_table_data, format="latex", booktabs=T, caption=dem_title_txt)
+  knitr::kable(nod_table_data, format="latex", booktabs=T, caption=nod_title_txt)
 @
 
 \end{document}

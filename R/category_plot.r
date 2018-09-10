@@ -11,9 +11,6 @@
 #' @importFrom viridis scale_fill_viridis
 #' @export
 
-tmpfunc <- function(x){
-  print(x)
-}
 category_plot <- function(plot_data, plot_title, y_label, cat_labels){
   # Check for extra columns to be used as faceting factors:
   extra_colnames <- category_extra_colnames(names(plot_data))
