@@ -2,13 +2,14 @@
 #' @description Create a rate plot figure.
 #' @param plot_data rate plot dataframe
 #' @param plot_title string for plot title
+#' @param plot_subtitle string for plot subtitle
 #' @param y_label string for y-axis label
 #' @param line_label legend text for line that represents total admissions
 #' @param stack_labels legend text for the numerator and misses values.
 #' @import ggplot2
 #' @importFrom scales pretty_breaks
 #' @export
-rate_plot <- function(plot_data, plot_title = "", y_label = "", line_label="", stack_labels=c("") ){
+rate_plot <- function(plot_data, plot_title = "", plot_subtitle="", y_label = "", line_label="", stack_labels=c("") ){
   # Manually selected colors from Viridis Palette
   viridis_colors = c(denominator="#440154FF", "#414487FF", numerator="#2A788EFF", "#22A884FF", misses = "#7AD151FF", "#FDE725FF")
   
@@ -29,7 +30,9 @@ rate_plot <- function(plot_data, plot_title = "", y_label = "", line_label="", s
       y = denominator,
       color = "denominator"
     )) +
-    labs(title = plot_title, x = "", y = y_label) +
+    labs(title = plot_title, 
+         subtitle = plot_subtitle,
+         x = "", y = y_label) +
     scale_y_continuous(breaks=pretty_breaks(), limits=c(0,ulim)) +
     scale_x_date(date_labels = "%Y %b") +
     scale_colour_manual(

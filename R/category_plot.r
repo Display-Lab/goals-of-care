@@ -2,6 +2,7 @@
 #' @description Create a category plot figure.
 #' @param plot_data category plot dataframe
 #' @param plot_title string for plot title
+#' @param plot_subtitle string for plot subtitle
 #' @param y_label string for y-axis label
 #' @param line_label legend text for line that represents total admissions
 #' @param cat_labels legend text for the numerator and misses values.
@@ -11,7 +12,7 @@
 #' @importFrom viridis scale_fill_viridis
 #' @export
 
-category_plot <- function(plot_data, plot_title, y_label, cat_labels){
+category_plot <- function(plot_data, plot_title, plot_subtitle="", y_label, cat_labels){
   # Check for extra columns to be used as faceting factors:
   extra_colnames <- category_extra_colnames(names(plot_data))
   
@@ -47,7 +48,9 @@ category_plot <- function(plot_data, plot_title, y_label, cat_labels){
               show.legend = F)   +
     scale_y_continuous(breaks=pretty_breaks(), limit=c(0,ulim)) +
     scale_x_date(date_labels = "%Y %b", date_breaks = "1 months" ) +
-    labs(title = plot_title, x = "", y = y_label) +
+    labs(title = plot_title, 
+         subtitle = plot_subtitle,
+         x = "", y = y_label) +
     theme(
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
