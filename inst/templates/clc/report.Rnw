@@ -134,11 +134,4 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
   ctgy_plot
 @
 
-\newpage
-\FloatBarrier
-
-<<cats_table, include=TRUE, message=FALSE, echo=FALSE>>=
-  table_data <- gocc::category_plot_table_data(plot_data, ctgy_labels)
-  knitr::kable(table_data, format="latex", booktabs=T, caption=title_txt)
-@
 \end{document}
