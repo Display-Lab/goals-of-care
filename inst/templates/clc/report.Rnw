@@ -29,9 +29,10 @@ timespan_text <- function(timepoints){
 }
 @
 
-\title{Feedback Report on Documented Life-Sustaining Treatment Decisions in CLC}
-\author{\Sexpr{name}}
-\date{\monthname, \the\year}
+\memoto{ \Sexpr{name} CLC Providers and Staff }
+\memofrom{ \Sexpr{provider} }
+\memosubject{ \Sexpr{title} }
+\memodate{\today}
 
 \begin{document}
 \maketitle
