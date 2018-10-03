@@ -83,8 +83,8 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 <<lt_rate_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
 
-  title_txt <- paste("How many total newly admitted Veterans",
-                     "  have a documented goals of care conversation?",
+  title_txt <- paste("How many total newly admitted Veterans have a documented",
+                     "goals of care conversation?",
                      sep="\n",collapse="")
   
   # Create plot
@@ -116,8 +116,8 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
 
 <<lt_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
   # Format title of plot
-  title_txt <- paste("For patients/residents with a documented GoCC,",
-                     "  when was the conversation documented?",
+  title_txt <- paste("For patients/residents with a documented GoCC,  when was the ",
+                     "conversation documented?",
                      sep="\n",collapse="")
   
   # Labels for the categories in order
