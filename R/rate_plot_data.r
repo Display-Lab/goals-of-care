@@ -1,5 +1,5 @@
 #' @title Rate Plot Data
-#' @description Transform rate data to rate plot data. 
+#' @description Transform rate data to rate plot data.  
 #' @param input_data dataframe with "identifier", "numerator" and "misses" columns,
 #' @return dataframe transformed for plotting with rate_plot
 #' @import dplyr
@@ -21,9 +21,6 @@ rate_plot_data <- function(input_data){
   gathered %>% 
     left_join(count_limits, by="id")  %>%
     mutate( 
-      trtsp_1 = recode(trtsp_1, 
-                       "Long-Term NH Care"="Long-Term Care Residents", 
-                       "Short-Term NH Care"="Short-Stay Patients"),
       count_label = case_when(
         count > limit ~ count,
         count <= limit ~ as.numeric(NA)

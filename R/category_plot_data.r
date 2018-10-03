@@ -32,9 +32,6 @@ category_plot_data <- function(input_data){
   gathered %>% 
     left_join(count_limits, by=NULL)  %>%
     mutate(
-      trtsp_1 = recode(trtsp_1, 
-                       "Long-Term NH Care"="Long-Term Care Residents", 
-                       "Short-Term NH Care"="Short-Stay Patients"),
       count_label = case_when(
         count > limit ~ count,
         count <= limit ~ as.numeric(NA)

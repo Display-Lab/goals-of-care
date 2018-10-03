@@ -8,8 +8,8 @@ GOCC <- new.env()
 GOCC$HBPC <- new.env(parent=GOCC)
 attr(GOCC$HBPC, "name") <- 'hbpc'
 
-GOCC$HBPC$COL_CLASSES <- c("integer","integer","character",rep("integer",7))
-GOCC$HBPC$COL_NAMES <- make.names(c("fy","month","cdw_sta6a","hbpc","numer1","numer2",
+GOCC$HBPC$COL_CLASSES <- c("Date","character",rep("integer",7))
+GOCC$HBPC$COL_NAMES <- make.names(c("report_month","cdw_sta6a","hbpc","numer1","numer2",
                                     "numer3","denom90","numer90","goc_pre"))
 
 GOCC$HBPC$ID_COLS    <- c("sta6a")
