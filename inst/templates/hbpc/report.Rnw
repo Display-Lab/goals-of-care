@@ -116,7 +116,7 @@ Thank you for your efforts to increase the frequency of GoCCs with Veterans and 
     plot_title = title_txt,
     plot_subtitle = paste(name,"HBPC", timespan_text(plot_data$timepoint)),
     y_label = "Newly Admitted Veterans",
-    cat_labels = c("61-90 days", "31-60 days", "0-30 days", "Before admission")
+    cat_labels = c("3rd Visit or Later", "2nd Visit", "1st Visit", "Before admission")
   )
   
   # print plot to include in document
