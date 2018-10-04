@@ -12,7 +12,7 @@ calc_rate_sums <- function(flt_data, id_cols, numer_cols, denom_cols, group_cols
   flt_data %>%
     mutate(
       id=idvals,
-      timepoint=paste(fy, " ", "Q", quart, sep=""),
+      timepoint=report_month,
       numerator=rowSums(select_at(., .vars=numer_cols)),
       denominator=rowSums(select_at(., .vars=denom_cols)),
       misses=denominator - numerator) %>%

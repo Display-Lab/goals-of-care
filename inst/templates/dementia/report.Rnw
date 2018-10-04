@@ -7,38 +7,49 @@ cls_path <- system.file(file.path("templates", "dementia", "texMemo.cls"), packa
 tex_cls_name <- tools::file_path_sans_ext(cls_path)
 @
 
-% CLC Report Template
-\documentclass[letterpaper, 10pt]{\Sexpr{tex_cls_name}}
+% Dementia Report Template
+%\documentclass[letterpaper, 10pt]{\Sexpr{tex_cls_name}}
+\documentclass[letterpaper, 10pt]{article}
+
 
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{placeins}
 \usepackage{helvet}
+\usepackage{datetime}
+\usepackage{booktabs}
 \renewcommand*\familydefault{\sfdefault} %% Only if the base font of the documen%t is to be sans serif
+
+% Set the Paper Size and margins
+\RequirePackage{geometry}
+\geometry{margin=0.75in}
+
+% Don't indent paragraphs
+\setlength\parindent{0pt}
 
 <<timespan_to_text, include=FALSE>>=
 # Utility function to convert timepoints factor into string for title. 
 timespan_text <- function(timepoints){
-  ret <- paste(first(timepoints), last(timepoints), sep=" - ")
-  ret <- gsub('\\\n','', ret)
+  paste( 
+    format(first(timepoints), "%b %Y"),
+    format(last(timepoints), "%b %Y"),
+    sep=" - ")
 }
 @
 
-\memoto{ \Sexpr{name} CLC Providers and Staff }
-\memofrom{ \Sexpr{provider} }
-\memosubject{ \Sexpr{title} }
-\memodate{\today}
-
+\title{Feedback Report on the CLC Partnership and Documented Life-Sustaining Treatment Decisions in the CLC}
+\author{\Sexpr{name}}
+\date{\monthname, \the\year}
 
 \begin{document}
 
 \maketitle
 
-On the reverse side of this page are feedback reports that present data about the completeness and timeliness with which clinicians document goals of care conversations (GoCCs) for Veterans newly admitted to \Sexpr{name}.\bigskip
+The following pages present data about the number of goals of care conversations (GoCCs) that were documented using the Lif-Sustaining Treatment template for Veterats at the \Sexpr{name}. \bigskip
 
-This report focuses on newly admitted Veterans because the admissions process provides a key opportunity to engage Veterans in GoCCs.\bigskip
 
-Please review the charts on the reverse side of this page to encourage reflection on your current practice and how \Sexpr{name} might increase the number of GoCCs and improve documentation of GoCCs.\bigskip
+Please review these charts to encourage reflection on your current practice and how \Sexpr{name} might increase the number of GoCCs and improve documentation of GoCCs.\bigskip
+
 
 To better understand the data, please keep in mind these points:
 
@@ -48,16 +59,11 @@ To better understand the data, please keep in mind these points:
 @
 \end{itemize}\bigskip
 
-More information about the implementation of GoCCs, including a step-by-step implementation guide, is available at the following website: \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
+More information about the LSTDI and its implementation is available at: \url{http://www.ethics.va.gov/LST.asp}.\bigskip
 
-If you have any questions about this report, you can contact:
-\begin{itemize}
-<<contacts_list, results="asis", echo=FALSE>>=
-  cat("", contacts, sep="\n\\item ")
-@
-\end{itemize}\bigskip
+If you have any questions about this report, you can contact Mary Ersek, mary.ersek@va.gov, or Joan Carpenter, joan.carpenter@va.gov.\bigskip
 
-Thank you for your efforts to increase the frequency of GoCCs with Veterans and their families in \Sexpr{name} and in ensuring that these important discussions are documented to improve care and the quality of life for our Veterans.
+Thank you for your efforts to conduct and document GoCCs with Veterans and their families in \Sexpr{name} to improve care and the quality of life for our Veterans.
 
 \newpage
 
@@ -72,59 +78,79 @@ Thank you for your efforts to increase the frequency of GoCCs with Veterans and 
   plot_data <- gocc::category_plot_data(category_data) %>%
     dplyr::filter(id == selected_id)
   
-  lt_plot_data <- plot_data %>% dplyr::filter(trtsp_1 == "Long-Term NH Care")
-  st_plot_data <- plot_data %>% dplyr::filter(trtsp_1 == "Short-Term NH Care")
+  lt_plot_data <- plot_data %>% 
+    dplyr::filter(trtsp_1 == "Long-Term Care Residents") %>%
+    dplyr::mutate(dementia=dplyr::recode(dementia, "Patients with Dementia"="Residents with Dementia", "All Patients"="All Residents"))
+  st_plot_data <- plot_data %>% dplyr::filter(trtsp_1 == "Short-Stay Patients") 
   
-  # Format title of plots
-  title_txt <- paste("How many Veterans have a documented goals of care conversation?",
-                     paste("CLC", timespan_text(plot_data$timepoint)),
-                     sep="\n",collapse="")
+  
+  ctgy_labels = c("This Month", "Previous Month", "Not Documented")
 @
 
 <<lt_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
 
+  title_txt <- paste("How many total long-term residents",
+                     "have a documented goals of care conversation?",
+                     paste(name,"CLC", timespan_text(plot_data$timepoint)),
+                     sep="\n",collapse="")
   # Create plot
   lt_plot <- gocc::category_plot(lt_plot_data,
     plot_title = title_txt,
-    y_label = "Veterans Count",
-    cat_labels = c("This Quarter", "Previous Quarter", "Not Documented")
+    y_label = "Number of Veterans per Month",
+    cat_labels = ctgy_labels
   )
   
   # print plot to include in document
   lt_plot
 @
 
-\begin{itemize}
-
-  \item The columns in the chart above show the number of Veterans residing in the CLC at \Sexpr{name} each quarter.
-  
-  \item The segments of each column compare the number without documentation to the number who had documentation from the LST template at any time between the first use of the LST template by Coatesville VAMC, and up to the end of the given quarter.
-  
-\end{itemize}
+\bigskip
 
 \newpage
-
 \FloatBarrier
 
 <<st_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
 
+  title_txt <- paste("How many total short-stay patients",
+                     "have a documented goals of care conversation?",
+                     paste(name,"CLC", timespan_text(plot_data$timepoint)),
+                     sep="\n",collapse="")
   # Create plot
   st_plot <- gocc::category_plot(st_plot_data,
     plot_title = title_txt,
-    y_label = "Veterans Count",
-    cat_labels = c("This Quarter", "Previous Quarter", "Not Documented")
+    y_label = "Number of Veterans per Month",
+    cat_labels = ctgy_labels
   )
   
   # print plot to include in document
   st_plot
 @
 
-\begin{itemize}
+\newpage
 
-  \item The columns in the chart above show the number of Veterans residing in the CLC at \Sexpr{name} each quarter.
+\FloatBarrier
+
+<<table_data, include=FALSE, message=FALSE, echo=FALSE>>=
+  table_data <- function(plot_data, cat_labels){
+    names(cat_labels) <- paste("cat", 1:length(cat_labels), sep="_")
+    plot_data %>%
+      mutate(date=format(timepoint, "%Y %b"),
+             category=recode(event, !!!cat_labels),
+             patient_set=dementia) %>%
+      arrange(dementia, timepoint, category) %>%
+      select(date, patient_set, category, count)
+  }
+@
+
+<<cats_table, include=TRUE, message=FALSE, echo=FALSE>>=
+  lt_table_data <- table_data(lt_plot_data, ctgy_labels)
+  st_table_data <- table_data(st_plot_data, ctgy_labels)
   
-  \item The segments of each column compare the number without documentation to the number who had documentation from the LST template at any time between the first use of the LST template by Coatesville VAMC, and up to the end of the given quarter.
+  lt_title_txt <- paste("Long-Term Veterans goals of care documentation")
+  st_title_txt <- paste("Short-Stay Veterans goals of care documentation")
   
-\end{itemize}\bigskip
+  knitr::kable(lt_table_data, format="latex", booktabs=T, caption=lt_title_txt, linesep=c('', '', '', '', '','\\addlinespace'))
+  knitr::kable(st_table_data, format="latex", booktabs=T, caption=st_title_txt, linesep=c('', '', '', '', '','\\addlinespace'))
+@
 
 \end{document}

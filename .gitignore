@@ -12,6 +12,9 @@
 .Rproj.user
 *.Rproj
 
+# R manual docs from package build
+man/*
+
 # Scratch space
 scratch/*
 scratch.r

@@ -1,5 +1,5 @@
 #' @title Rate Plot Data
-#' @description Transform rate data to rate plot data. 
+#' @description Transform rate data to rate plot data.  
 #' @param input_data dataframe with "identifier", "numerator" and "misses" columns,
 #' @return dataframe transformed for plotting with rate_plot
 #' @import dplyr
@@ -20,7 +20,7 @@ rate_plot_data <- function(input_data){
   # Create a column count_label with NA for counts that are less than the count limit for the id.
   gathered %>% 
     left_join(count_limits, by="id")  %>%
-    mutate(
+    mutate( 
       count_label = case_when(
         count > limit ~ count,
         count <= limit ~ as.numeric(NA)

@@ -2,6 +2,7 @@
 #' @description Create a category plot figure.
 #' @param plot_data category plot dataframe
 #' @param plot_title string for plot title
+#' @param plot_subtitle string for plot subtitle
 #' @param y_label string for y-axis label
 #' @param line_label legend text for line that represents total admissions
 #' @param cat_labels legend text for the numerator and misses values.
@@ -10,7 +11,8 @@
 #' @importFrom viridis scale_colour_viridis
 #' @importFrom viridis scale_fill_viridis
 #' @export
-category_plot <- function(plot_data, plot_title, y_label, cat_labels){
+
+category_plot <- function(plot_data, plot_title, plot_subtitle="", y_label, cat_labels){
   # Check for extra columns to be used as faceting factors:
   extra_colnames <- category_extra_colnames(names(plot_data))
   
@@ -45,13 +47,16 @@ category_plot <- function(plot_data, plot_title, y_label, cat_labels){
               position = position_stack(vjust = 0.5),
               show.legend = F)   +
     scale_y_continuous(breaks=pretty_breaks(), limit=c(0,ulim)) +
-    labs(title = plot_title, x = " ", y = y_label) +
+    scale_x_date(date_labels = "%Y %b", date_breaks = "1 months" ) +
+    labs(title = plot_title, 
+         subtitle = plot_subtitle,
+         x = "", y = y_label) +
     theme(
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
       panel.border = element_blank(),
       panel.background = element_blank(),
-      axis.text.x = element_text(angle=50, vjust = 0.9, hjust = 0.9, size=rel(0.8)),
+      legend.position = "top",
       legend.title = element_blank()
     ) +
     scale_fill_viridis(
@@ -62,7 +67,7 @@ category_plot <- function(plot_data, plot_title, y_label, cat_labels){
     text_label_scale 
   # Add facet wrap if faceting columns are avaialble
   if(length(extra_colnames) > 0) {
-    g <- g +facet_wrap(extra_colnames, nrow = 2)
+    g <- g +facet_wrap(extra_colnames, nrow = 2, scales = "free")
   }
   return(g)
 }

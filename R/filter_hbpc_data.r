@@ -8,5 +8,5 @@
 filter_hbpc_data <- function(df){
   df %>%
     rename(sta6a=cdw_sta6a) %>%
-    filter_recent_times(., 8)
+    filter_recent_times(., 6)
 }

@@ -8,8 +8,8 @@ GOCC <- new.env()
 GOCC$HBPC <- new.env(parent=GOCC)
 attr(GOCC$HBPC, "name") <- 'hbpc'
 
-GOCC$HBPC$COL_CLASSES <- c("integer","integer","character",rep("integer",7))
-GOCC$HBPC$COL_NAMES <- make.names(c("fy","quart","cdw_sta6a","hbpc","numer1","numer2",
+GOCC$HBPC$COL_CLASSES <- c("Date","character",rep("integer",7))
+GOCC$HBPC$COL_NAMES <- make.names(c("report_month","cdw_sta6a","hbpc","numer1","numer2",
                                     "numer3","denom90","numer90","goc_pre"))
 
 GOCC$HBPC$ID_COLS    <- c("sta6a")
@@ -22,13 +22,13 @@ GOCC$HBPC$DENOM_COLS <- c('hbpc')
 GOCC$HBPC$OUTFILE_PREFIX <- "hbpc"
 
 # ---------------#
-#     CLC ENv    #
+#     CLC ENV    #
 # ---------------#
 GOCC$CLC  <- new.env(parent=GOCC)
 attr(GOCC$CLC, "name") <- 'clc'
 
-GOCC$CLC$COL_CLASSES  <- c("integer", "integer", rep("character", 2), rep("integer", 7))
-GOCC$CLC$COL_NAMES <- make.names(c("fy", "quart", "sta6a", "trtsp_1",
+GOCC$CLC$COL_CLASSES  <- c(rep("character", 2), "Date", rep("integer", 7))
+GOCC$CLC$COL_NAMES <- make.names(c("sta6a", "trtsp_1", "report_month",
                                    "_freq_", "goc_7", "goc_14", "goc_30", "goc_pre90", 
                                    "goc_pre", "goc_none"))
 GOCC$CLC$ID_COLS    <- c("sta6a")
@@ -46,15 +46,16 @@ GOCC$CLC$OUTFILE_PREFIX <- "clc"
 GOCC$DEMENTIA  <- new.env(parent=GOCC)
 attr(GOCC$DEMENTIA, "name") <- 'dementia'
 
-GOCC$DEMENTIA$COL_CLASSES  <- c("integer", "integer", "character", "integer", "character", rep("integer", 5))
-GOCC$DEMENTIA$COL_NAMES <- make.names(c("fy", "quart", "sta6a", "dementia", "trtsp_1",
-                                   "_freq_", "goc_pre_quart", "goc_first_quart", "goc_ever", "goc_none"))
+GOCC$DEMENTIA$COL_CLASSES  <- c("character", "character", "Date", rep("integer", 6))
+GOCC$DEMENTIA$COL_NAMES <- make.names(c("sta6a", "trtsp_1", "report_month",
+                                        "dementia", "_freq_", "goc_pre_month",
+                                        "goc_first_month", "goc_ever", "goc_none"))
 GOCC$DEMENTIA$ID_COLS    <- c("sta6a")
 GOCC$DEMENTIA$CATEGORIES <- list("cat_1"=c("goc_none"),
-                            "cat_2"=c("goc_pre_quart"),
-                            "cat_3"=c("goc_first_quart"))
-GOCC$DEMENTIA$NUMER_COLS <- c('goc_pre_quart', 'goc_first_quart')
-GOCC$DEMENTIA$DENOM_COLS <- c('goc_pre_quart', 'goc_first_quart', 'goc_none')
+                            "cat_2"=c("goc_pre_month"),
+                            "cat_3"=c("goc_first_month"))
+GOCC$DEMENTIA$NUMER_COLS <- c('goc_pre_month', 'goc_first_month')
+GOCC$DEMENTIA$DENOM_COLS <- c('goc_pre_month', 'goc_first_month', 'goc_none')
 GOCC$DEMENTIA$GROUP_COLS <- c('trtsp_1', 'dementia')
 GOCC$DEMENTIA$OUTFILE_PREFIX <- "dementia"
 

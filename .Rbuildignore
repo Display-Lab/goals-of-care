@@ -3,3 +3,4 @@
 ^scratch\.r$
 ^build/.*$
 ^build/$
+^man/\.keep$

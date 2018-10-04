@@ -11,7 +11,8 @@ Usage:
   gocc.sh [options]
   gocc.sh [options] config_file  
 
-Input directory is expected to contain hbpc.csv and clc.csv files.
+Specify the report and input files to be run. E.g.:
+  gocc.sh --clc path/to/input_clc.csv --config path/to/config.yml
 
 Options:
   -h | --help   print help and exit
@@ -20,7 +21,7 @@ Options:
   --version     print package version
   --clc         path to clc report input csv file
   --hbpc        path to hbpc report input csv file
-  --dementia    (unimplimented) path to dementia report input csv file
+  --dementia    path to dementia report input csv file
 HEREDOC
 
 # Parse args
