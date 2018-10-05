@@ -45,7 +45,7 @@ timespan_text <- function(timepoints){
 
 \maketitle
 
-The following pages present data about the number of goals of care conversations (GoCCs) that were documented using the Lif-Sustaining Treatment template for Veterats at the \Sexpr{name}. \bigskip
+The following pages present data about the number of goals of care conversations (GoCCs) that were documented using the Life-Sustaining Treatment template for Veterats at the \Sexpr{name}. \bigskip
 
 
 Please review these charts to encourage reflection on your current practice and how \Sexpr{name} might increase the number of GoCCs and improve documentation of GoCCs.\bigskip
