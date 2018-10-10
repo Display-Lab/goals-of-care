@@ -83,8 +83,7 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
     dplyr::mutate(dementia=dplyr::recode(dementia, "Patients with Dementia"="Residents with Dementia", "All Patients"="All Residents"))
   st_plot_data <- plot_data %>% dplyr::filter(trtsp_1 == "Short-Stay Patients") 
   
-  
-  ctgy_labels = c("This Month", "Previous Month", "Not Documented")
+  ctgy_labels <- rev(c("Not Documented", "Previous Month", "This Month"))
 @
 
 <<lt_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
@@ -132,7 +131,7 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
 
 <<table_data, include=FALSE, message=FALSE, echo=FALSE>>=
   table_data <- function(plot_data, cat_labels){
-    names(cat_labels) <- paste("cat", 1:length(cat_labels), sep="_")
+    names(cat_labels) <- rev(paste("cat", 1:length(cat_labels), sep="_"))
     plot_data %>%
       mutate(date=format(timepoint, "%Y %b"),
              category=recode(event, !!!cat_labels),
