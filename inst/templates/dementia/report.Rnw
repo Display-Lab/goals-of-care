@@ -83,7 +83,7 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
     dplyr::mutate(dementia=dplyr::recode(dementia, "Patients with Dementia"="Residents with Dementia", "All Patients"="All Residents"))
   st_plot_data <- plot_data %>% dplyr::filter(trtsp_1 == "Short-Stay Patients") 
   
-  ctgy_labels <- rev(c("Not Documented", "Previous Month", "This Month"))
+  ctgy_labels <- rev(c("Not Documented", "Prior Documentation", "This Month"))
 @
 
 <<lt_cats_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 7, fig.align='center', fig.show='hold'>>=
