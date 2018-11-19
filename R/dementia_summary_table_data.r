@@ -6,11 +6,13 @@
 dementia_summary_table_data <- function(ctgy_data){
   ctgy_data %>% 
     group_by(trtsp_1, dementia, timepoint) %>% 
-    summarize(all=sum(count),
-              new=sum(count[event=='cat_3']),
-              old=sum(count[event=='cat_2']),
-              any=sum(count[event=='cat_2'|event=='cat_3'])) %>%
-    pivot_on(timepoint)
+    summarize('Total number pts'=sum(count),
+              "Number with new LST this month"=sum(count[event=='cat_3']),
+              "Number with existing LST this month"=sum(count[event=='cat_2']),
+              "Number with any LST"=sum(count[event=='cat_2'|event=='cat_3'])) %>%
+    pivot_on(timepoint) %>%
+    rename_at(.vars=vars(dateish()), .funs=dateify) %>%
+    select(evt, everything())
 }
 
 #' @title inner_spread
@@ -22,7 +24,6 @@ dementia_summary_table_data <- function(ctgy_data){
 #' @importFrom tidyr spread
 inner_spread <- function(vc, pcol_name, data){
   col_names <- c(vc,pcol_name, group_vars(data))
-  print(vc)
   
   data %>% 
     select_at(col_names) %>%
@@ -38,11 +39,27 @@ inner_spread <- function(vc, pcol_name, data){
 #' @return tibble of values 
 #' @export
 pivot_on <- function(.data, pcol){
-  print(colnames(.data))
-  print(group_vars(.data))
   pcol_name <- deparse(substitute(pcol))
   val_col_names <- dplyr::setdiff(colnames(.data), c(group_vars(.data), pcol_name))
   
   spread_tbls <- lapply(val_col_names, FUN=inner_spread, pcol_name, .data)
   bind_rows(spread_tbls)
+}
+
+#' @title Dateify
+#' @description custom formatting function for dementia summary table column names
+#' @describeIn Dementia Summary Table Data
+#' @param x character vector of names to format
+#' @return character vector of names formatted like 2018 Apr 
+dateify <- function(x){ format(as.Date(x), format="%Y %b") }
+  
+#' @title Dateish
+#' @description Determine which column names are date strings   
+#' @describeIn Dementia Summary Table Data
+#' @param x character vector of column names
+#' @return vector of indecies 
+dateish <- function(vars=tidyselect::peek_vars()){
+  parsed <- suppressWarnings(sapply(X=vars, FUN=lubridate::as_date))
+  isdates <- !is.na(parsed)
+  return(which(isdates))
 }
