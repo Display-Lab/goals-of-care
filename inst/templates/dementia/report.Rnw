@@ -190,9 +190,8 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
     select(-rgroup) %>%
     rename( 'Count Category'=evt)
     
-  
   # Generate LaTeX table
-  knitr::kable(summ_table_data, format="latex", booktabs=T, caption=st_title_txt) %>%
+  knitr::kable(summ_table_data, format="latex", booktabs=T, caption="Veterans goals of care documentation") %>%
     kable_styling(latex_options="striped") %>% 
     group_rows(index=rowspans)
 @
