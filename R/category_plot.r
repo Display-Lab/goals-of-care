@@ -40,6 +40,7 @@ category_plot <- function(plot_data, plot_title, plot_subtitle="", y_label, cat_
   # Upper limit should not be less than 10
   ulim <- max(data_max, 10)
   
+  # TODO: Fixing legend margins
   g <- ggplot(plot_data, aes(x = timepoint, y = count)) +
     geom_col(aes(fill = event)) +
     geom_text(size = 4,
@@ -57,7 +58,8 @@ category_plot <- function(plot_data, plot_title, plot_subtitle="", y_label, cat_
       panel.border = element_blank(),
       panel.background = element_blank(),
       legend.position = "top",
-      legend.title = element_blank()
+      legend.title = element_blank(),
+      legend.text = element_text(margin=margin(t=1,r=8,b=1,l=3,unit="pt"))
     ) +
     scale_fill_viridis(
       discrete = TRUE,
