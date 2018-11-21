@@ -2,7 +2,11 @@
 %\VignetteEngine{knitr::knitr}
 
 <<load_gocc, include=FALSE>>=
+options(kableExtra.latex.load_packages = FALSE)
+
 library(gocc)
+library(kableExtra)
+
 cls_path <- system.file(file.path("templates", "dementia", "texMemo.cls"), package="gocc")
 tex_cls_name <- tools::file_path_sans_ext(cls_path)
 @
@@ -11,7 +15,23 @@ tex_cls_name <- tools::file_path_sans_ext(cls_path)
 %\documentclass[letterpaper, 10pt]{\Sexpr{tex_cls_name}}
 \documentclass[letterpaper, 10pt]{article}
 
+% kableExtra required packages
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
 
+% supporting packages
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{placeins}
@@ -141,7 +161,7 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
   }
 @
 
-<<cats_table, include=TRUE, message=FALSE, echo=FALSE>>=
+<<cats_table, include=FALSE, message=FALSE, echo=FALSE>>=
   lt_table_data <- table_data(lt_plot_data, ctgy_labels)
   st_table_data <- table_data(st_plot_data, ctgy_labels)
   
@@ -150,6 +170,30 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
   
   knitr::kable(lt_table_data, format="latex", booktabs=T, caption=lt_title_txt, linesep=c('', '', '', '', '','\\addlinespace'))
   knitr::kable(st_table_data, format="latex", booktabs=T, caption=st_title_txt, linesep=c('', '', '', '', '','\\addlinespace'))
+@
+
+<<dimentia_table, include=TRUE, message=FALSE, echo=FALSE>>=
+  summ_table_data <- dementia_summary_table_data(plot_data) %>%
+    arrange(trtsp_1, dementia, evt) %>%
+    mutate(rgroup=paste(trtsp_1,": ",dementia, sep='')) %>%
+    ungroup %>%
+    select( c(-dementia, -trtsp_1) ) %>%
+    select( rgroup, evt, everything())
+  
+  # Calculate the row spans for the grouping of rows
+  runs <- rle(summ_table_data$rgroup)
+  rowspans <- runs$lengths
+  names(rowspans) <- runs$values
+  
+  # Drop the row group column so it doesn't appear in the table
+  summ_table_data <- summ_table_data %>% 
+    select(-rgroup) %>%
+    rename( 'Count Category'=evt)
+    
+  # Generate LaTeX table
+  knitr::kable(summ_table_data, format="latex", booktabs=T, caption="Veterans goals of care documentation") %>%
+    kable_styling(latex_options="striped") %>% 
+    group_rows(index=rowspans)
 @
 
 \end{document}

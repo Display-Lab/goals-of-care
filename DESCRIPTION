@@ -13,8 +13,11 @@ Imports: config,
     dplyr,
     ggplot2,
     ggthemes,
+    kableExtra,
     knitr,
+    lubridate,
     magrittr,
+    purrr,
     rmarkdown,
     scales,
     stringr,
@@ -23,4 +26,4 @@ Imports: config,
     tools,
     utils,
     viridis
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
