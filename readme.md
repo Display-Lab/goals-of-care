@@ -75,6 +75,9 @@ Ensure the R Packages listed in this section are installed and available for the
 
 ### LaTeX
 For Windows users MikTex is suggested [https://miktex.org/](https://miktex.org/)
+Additionally, the latex-extras packages will need to be present on the system.  
+- texlive-latex-extra (deb) 
+- texlive-collection-latexextra (rpm)
 
 ### Pandoc
 Home Page [https://www.pandoc.org](https://www.pandoc.org)
@@ -87,18 +90,19 @@ Home Page [https://cran.r-project.org/](https://cran.r-project.org/)
 Optionally, use RStudio to get a GUI. [https://www.rstudio.com/](https://www.rstudio.com/)
 
 ### R Packages
-- config,
-- dplyr,
-- ggplot2,
-- ggthemes,
-- knitr,
-- magrittr,
-- rmarkdown,
-- scales,
-- stringr,
-- tidyr,
-- tools,
-- utils,
+- config
+- dplyr
+- ggplot2
+- ggthemes
+- kableExtra
+- knitr
+- magrittr
+- rmarkdown
+- scales
+- stringr
+- tidyr
+- tools
+- utils
 - viridis
 
 Included under lib/ is an installer script that will attempt to download, build, and install required packages: [lib/required-packages.r](lib/required-packages.r)
@@ -113,7 +117,7 @@ Important Config Notes
 - **The config file must exist**
 - The config must be filled out for each id that exists in the input data.
 - The config must start with the key `default`
-- The config should contain a config for `clc` & `hbpc`.
+- The config should contain a config for `clc`, `hbpc`, $ `dementia`.
 
 Example:
 
