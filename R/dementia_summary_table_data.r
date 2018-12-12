@@ -4,15 +4,52 @@
 #' @return tibble of values 
 #' @export
 dementia_summary_table_data <- function(ctgy_data){
+  summ_data <- dementia_summary_data_calculation(ctgy_data)
+  dementia_summary_data_formatting(summ_data)
+}
+
+#' @title Dementia Summary Table Data
+#' @description Summarize count data for dementia reports table
+#' @describeIn Dementia Summary Table Data
+dementia_summary_data_calculation <- function(ctgy_data){
   ctgy_data %>% 
     group_by(trtsp_1, dementia, timepoint) %>% 
-    summarize('Total number pts'=sum(count),
+    summarize('Total number patients'=sum(count),
               "Number with new LST this month"=sum(count[event=='cat_3']),
               "Number with existing LST this month"=sum(count[event=='cat_2']),
               "Number with any LST"=sum(count[event=='cat_2'|event=='cat_3'])) %>%
     pivot_on(timepoint) %>%
     rename_at(.vars=vars(dateish()), .funs=dateify) %>%
     select(evt, everything())
+}
+
+#' @title Dementia Summary Table Data
+#' @description Rearrange summarized count data for dementia reports table
+#' @describeIn Dementia Summary Table Data
+dementia_summary_data_formatting <- function(dementia_summ_data){
+  # Enforce specific ordering of evt values using factor levels
+  ordered_evt_levels <- c("Number with new LST this month",
+                          "Number with existing LST this month",
+                          "Number with any LST",
+                          "Total number residents",
+                          "Total number patients")
+  
+  # Re-arrange and rename data to facilite table display
+  dementia_summ_data %>%
+    arrange(trtsp_1, dementia, evt) %>%
+    ungroup %>%
+    mutate(rgroup=case_when(
+             trtsp_1=="Long-Term Care Residents" ~ paste(trtsp_1,": ", sub('Patients', 'Residents', dementia), sep=''),
+             trtsp_1=="Short-Stay Patients" ~ paste(trtsp_1,": ",dementia, sep='')
+           ),
+           evt = case_when(
+             trtsp_1=="Long-Term Care Residents" & evt == "Total number patients" ~ "Total number residents",
+             TRUE ~ evt), 
+           evt = factor(evt, ordered_evt_levels, ordered=TRUE)) %>%
+    arrange(rgroup,evt) %>%
+    select( c(-dementia, -trtsp_1) ) %>%
+    rename_at(.vars=vars(dateish()), .funs=dateify) %>%
+    select( rgroup, evt, everything() )
 }
 
 #' @title inner_spread

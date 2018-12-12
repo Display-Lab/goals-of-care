@@ -174,27 +174,7 @@ Thank you for your efforts to conduct and document GoCCs with Veterans and their
 
 <<dimentia_table, include=TRUE, message=FALSE, echo=FALSE>>=
   # Enforce specific ordering of evt values using factor levels
-  ordered_evt_levels <- c("Number with new LST this month",
-                          "Number with existing LST this month",
-                          "Number with any LST",
-                          "Total number residents",
-                          "Total number pts")
-  
-  summ_table_data <- dementia_summary_table_data(plot_data) %>%
-    arrange(trtsp_1, dementia, evt) %>%
-    ungroup %>%
-    mutate(rgroup=case_when(
-             trtsp_1=="Long-Term Care Residents" ~ paste(trtsp_1,": ", sub('Patients', 'Residents', dementia), sep=''),
-             trtsp_1=="Short-Stay Patients" ~ paste(trtsp_1,": ",dementia, sep='')
-           ),
-           evt = case_when(
-             trtsp_1=="Long-Term Care Residents" & evt == "Total number pts" ~ "Total number residents",
-             TRUE ~ evt), 
-           evt = factor(evt, ordered_evt_levels, ordered=TRUE)) %>%
-    arrange(rgroup,evt) %>%
-    select( c(-dementia, -trtsp_1) ) %>%
-    rename_at(.vars=vars(dateish()), .funs=dateify) %>%
-    select( rgroup, evt, everything())
+  summ_table_data <- dementia_summary_table_data(plot_data)
   
   # Calculate the row spans for the grouping of rows
   runs <- rle(summ_table_data$rgroup)
