@@ -34,3 +34,6 @@ build/*
 
 figure/*
 
+Vagrantfile
+.vagrant/*
+
