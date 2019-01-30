@@ -7,7 +7,7 @@ options(kableExtra.latex.load_packages = FALSE)
 library(gocc)
 library(kableExtra)
 
-cls_path <- system.file(file.path("templates", "dementia", "texMemo.cls"), package="gocc")
+cls_path <- system.file(file.path("templates", "dementia.cls"), package="gocc")
 tex_cls_name <- tools::file_path_sans_ext(cls_path)
 @
 

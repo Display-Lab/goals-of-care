@@ -4,7 +4,7 @@
 <<load_gocc, include=FALSE>>=
 library(gocc)
 library(knitr)
-cls_path <- system.file(file.path("templates", "clc", "texMemo.cls"), package="gocc")
+cls_path <- system.file(file.path("templates", "texMemo.cls"), package="gocc")
 tex_cls_name <- tools::file_path_sans_ext(cls_path)
 @
 
