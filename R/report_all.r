@@ -42,7 +42,9 @@ report_one <- function(id, df_list, envir, config, output_dir){
   report_env$provider      <- site_cfg$provider
   report_env$contacts      <- site_cfg$contacts
   
-  template_path <- system.file(file.path("templates", memo_type,"report.Rnw"), package="gocc")
+  #template_path <- system.file(file.path("templates", memo_type,"report.Rnw"), package="gocc")
+  template_file <- paste(memo_type, ".Rnw", sep="")
+  template_path <- system.file(file.path("templates", template_file), package="gocc")
   
   out_filename <- paste(envir$OUTFILE_PREFIX, site_cfg$name, "pdf", sep=".")
   build_dir <- tempdir()
