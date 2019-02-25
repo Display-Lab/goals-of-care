@@ -40,7 +40,7 @@ timespan_text <- function(timepoints){
 
 The following pages present data about the number of completed LST templates for Veterans at the \Sexpr{name}. \bigskip
 
-Please review these charts to encourage reflection on your current practice and how \Sexpr{name} might increase the number of goals of care conversations (GoCCs) completed LST order templates. \bigskip
+Please review these charts to encourage reflection on your current practice and how \Sexpr{name} might increase the number of goals of care conversations (GoCCs) and completed LST order templates. \bigskip
 
 To better understand the data, please keep in mind these points:
 
