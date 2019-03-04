@@ -7,7 +7,7 @@ options(kableExtra.latex.load_packages = FALSE)
 library(gocc)
 library(kableExtra)
 
-cls_path <- system.file(file.path("templates", "dementia", "texMemo.cls"), package="gocc")
+cls_path <- system.file(file.path("templates", "dementia.cls"), package="gocc")
 tex_cls_name <- tools::file_path_sans_ext(cls_path)
 @
 
@@ -67,9 +67,7 @@ timespan_text <- function(timepoints){
 
 The following pages present data about the number of completed LST templates for Veterans at the \Sexpr{name}. \bigskip
 
-
-Please review these charts to encourage reflection on your current practice and how \Sexpr{name} might increase the number of goals of care conversations (GOCC) completed LST order templates. \bigskip
-
+Please review these charts to encourage reflection on your current practice and how \Sexpr{name} might increase the number of goals of care conversations (GoCCs) and completed LST order templates. \bigskip
 
 To better understand the data, please keep in mind these points:
 
@@ -83,7 +81,7 @@ More information about the LSTDI and its implementation is available at: \url{ht
 
 If you have any questions about this report, you can contact Mary Ersek, mary.ersek@va.gov, or Joan Carpenter, joan.carpenter@va.gov.\bigskip
 
-Thank you for your efforts to conduct GoCC and complete LST templates with Veterans and their families in \Sexpr{name} to improve care and the quality of life for our Veterans.
+Thank you for your efforts to conduct GoCCs and complete LST templates with Veterans and their families in \Sexpr{name} to improve care and the quality of life for our Veterans.
 
 \newpage
 
