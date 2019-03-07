@@ -31,26 +31,29 @@ timespan_text <- function(timepoints){
 
 \memoto{ \Sexpr{name} CLC Providers and Staff }
 \memofrom{ \Sexpr{provider} }
-\memosubject{ \Sexpr{title} }
+\memosubject{ Feedback Report on Documented Life-Sustaining Treatment Decisions in CLC }
 \memodate{\today}
 
 \begin{document}
 \maketitle
 
 
-The following pages present data about the number of completed LST templates for Veterans at the \Sexpr{name}. \bigskip
+The following pages present information about the number of completed Life Sustaining Treatment (LST) templates for Veterans at the \Sexpr{name}. \bigskip
 
-Please review these charts to encourage reflection on your current practice and how \Sexpr{name} might increase the number of goals of care conversations (GoCCs) and completed LST order templates. \bigskip
+Please review these charts to encourage reflection on your current practice and how your CLC might increase the number of goals of care conversations (GoCCs) and completed LST order templates. \bigskip
 
 To better understand the data, please keep in mind these points:
 
 \begin{itemize}
-<<intepret_assist, results="asis", echo=FALSE>>=
-  cat("", assists, sep="\n\\item ")
-@
+
+	\item The report includes data only for Veterans who were newly admitted to your CLC in the last 6 months, month by month
+	\item Data come from the LST template in CPRS. Only templates with all 4 required elements completed were counted
+	\item If a Veteran had more than one LST template completed in a month, only the first template was counted			
+	\item Each Veteran was counted only once even if they had multiple stays.
+		
 \end{itemize}\bigskip
 
-More information about the LSTDI and its implementation is available at:
+More information about the goals and implementation of the LSTDI, including a step-by-step implementation guide, is available at the following website:
 \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
 
 If you have any questions about this report, you can contact:
@@ -60,7 +63,7 @@ If you have any questions about this report, you can contact:
 @
 \end{itemize}\bigskip
 
-Thank you for your efforts to conduct GoCCs and complete LST templates with Veterans and their families in \Sexpr{name} to improve care and the quality of life for our Veterans.
+Thank you for your efforts to conduct GoCCs and complete LST templates with Veterans and their families to improve care and the quality of life for our Veterans.
 
 \newpage
 
