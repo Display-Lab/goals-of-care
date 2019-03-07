@@ -36,7 +36,7 @@ timespan_text <- function(timepoints){
 
 \maketitle
 
-The following pages present information about the number of completed Life Sustaining Treatment (LST) templates for Veterans at \Sexpr{name}. \bigskip
+The following pages present information about the number of completed Life Sustaining Treatment (LST) templates for Veterans in the \Sexpr{name} HBPC program. \bigskip
 
 Please review these charts to encourage reflection on your current practice and how your HBPC program might increase the number of goals of care conversations (GoCCs) and completed LST order templates. \bigskip
 
