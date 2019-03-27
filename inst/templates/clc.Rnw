@@ -50,9 +50,7 @@ To better understand the data, please keep in mind these points:
 	\item Data come from the LST template in CPRS. Only templates with all 4 required elements completed were counted
 	\item If a Veteran had more than one LST template completed in a month, only the first template was counted			
 	\item Each Veteran was counted only once even if they had multiple stays.
-	\item Veterans are defined as either long stay or short stay residents, based on their treating specialty; those admitted for hospice are counted as long stay residents.
-
-
+		
 \end{itemize}\bigskip
 
 More information about the goals and implementation of the LSTDI, including a step-by-step implementation guide, is available at the following website:
