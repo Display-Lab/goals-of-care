@@ -142,7 +142,8 @@ default:
         contacts: John Jones, Random Manager (555-222-1121)
         provider: Friendly Neighborhood Feedback Provider
 ```
-
+## Input Codebook
+The meaning and values of the various input csv files is documented in the [codebook markdown](codebook.md).
 ## License
 Copyright 2018 Regents of the University of Michigan
 
