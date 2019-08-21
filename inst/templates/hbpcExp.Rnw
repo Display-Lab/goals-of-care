@@ -1,0 +1,127 @@
+% Specify vignette engine so R CMD Sweave will work from the command line
+%\VignetteEngine{knitr::knitr}
+
+<<load_gocc, include=FALSE>>=
+library(gocc)
+cls_path <- system.file(file.path("templates", "texMemo.cls"), package="gocc")
+tex_cls_name <- tools::file_path_sans_ext(cls_path)
+@
+
+% HBPC Report Template
+\documentclass[letterpaper, 10pt]{\Sexpr{tex_cls_name}}
+
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{helvet}
+\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the documen%t is to be sans serif
+
+<<timespan_to_text, include=FALSE>>=
+# Utility function to convert timepoints factor into string for title. 
+timespan_text <- function(timepoints){
+  paste( 
+    format(first(timepoints), "%b %Y"),
+    format(last(timepoints), "%b %Y"),
+    sep=" - ")
+}
+@
+
+\memoto{ \Sexpr{name} HBPC Providers and Staff }
+\memofrom{ \Sexpr{provider} }
+\memosubject{ Feedback Report on Documented Life-Sustaining Treatment Decisions in HBPC }
+\memodate{\today}
+
+
+\begin{document}
+
+\maketitle
+
+The following pages present information about the number of completed Life Sustaining Treatment (LST) templates for Veterans in the \Sexpr{name} HBPC program. \bigskip
+
+Please review these charts to encourage reflection on your current practice and how your HBPC program might increase the number of goals of care conversations (GoCCs) and completed LST order templates. \bigskip
+
+To better understand the data, please keep in mind these points:
+
+\begin{itemize}
+
+        \item The report includes data only for Veterans who were newly admitted to your HBPC in the last 6 months, month by month
+        \item Data come from the LST template in CPRS. Only templates with all 4 required elements completed were counted
+        \item If a Veteran had more than one LST template completed in a month, only the first template was counted
+        \item Each Veteran was counted only once even if they had multiple admissions.
+
+\end{itemize}\bigskip
+
+More information about the goals and implementation of the LSTDI, including a step-by-step implementation guide, is available at the following website: \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
+
+If you have any questions about this report, you can contact:
+\begin{itemize}
+<<contacts_list, results="asis", echo=FALSE>>=
+  cat("", contacts, sep="\n\\item ")
+@
+\end{itemize}\bigskip
+
+Thank you for your efforts to conduct GoCCs and complete LST templates with Veterans and their families to improve care and the quality of life for our Veterans.
+
+\newpage
+
+\FloatBarrier
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+<<plot1, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 6.5, fig.height = 3.5, fig.align='center', fig.show='hold'>>=
+
+  library(dplyr, warn.conflicts = FALSE)
+
+  # Format data for plotting
+  plot_data <- gocc::rate_plot_data(rate_data)
+  
+  # This plot should only have data from a single recipient (site).
+  plot_data <- dplyr::filter(plot_data, id == selected_id)
+  
+  # Format title of plot
+  title_txt <- paste("How many total newly admitted Veterans have a completed",
+                     "LST template?",
+                     sep="\n",collapse="")
+  
+  # Create plot
+  rt_plot <- gocc::rate_plot(plot_data,
+    plot_title = title_txt,
+    plot_subtitle = paste(name,"HBPC", timespan_text(plot_data$timepoint)),
+    y_label = "Newly Admitted Veterans",
+    line_label = "Newly admitted\nVeterans",
+    stack_labels = c("Not documented", "Documented")
+  )
+  # print plot to include in document
+  rt_plot
+@
+
+\bigskip
+
+\hrulefill
+
+\bigskip
+
+<<plot2, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 3.5, fig.align='center', fig.show='hold'>>=
+
+  # Format data for plotting
+  plot_data <- gocc::category_plot_data(category_data)
+  
+  # This plot should only have data from a single recipient (site).
+  plot_data <- dplyr::filter(plot_data, id == selected_id)
+  
+  # Format title of plot
+  title_txt <- paste("During which visit were LST templates completed?",
+                     sep="\n",collapse="")
+  
+  # Create plot
+  ctgy_plot <- gocc::category_plot(plot_data,
+    plot_title = title_txt,
+    plot_subtitle = paste(name,"HBPC", timespan_text(plot_data$timepoint)),
+    y_label = "Newly Admitted Veterans",
+    cat_labels = c("3rd Visit or Later", "2nd Visit", "1st Visit", "Before admission")
+  )
+  
+  # print plot to include in document
+  ctgy_plot
+@
+
+\end{document}
