@@ -8,8 +8,8 @@ report_all <- function(df_list, envir, config, output_dir){
   ids <- unique(df_list$rate[,"id"])
   
   cat(paste("\n\n----Generating", environmentName(envir), "Reports\n"))
-  
   successes <- sapply(ids, FUN=report_one, df_list, envir, config, output_dir)
+  
   num_reports <- sum(successes)
   cat(paste("\nCreated ", num_reports, environmentName(envir),"reports.\n"))
   
@@ -27,26 +27,24 @@ report_all <- function(df_list, envir, config, output_dir){
 #' @importFrom utils capture.output
 #' @importFrom tools file_path_sans_ext
 report_one <- function(id, df_list, envir, config, output_dir){
-  cat(".")
+  # Only generate reports that there is a config for.
   memo_type <- environmentName(envir)
-  type_cfg <- config[[ memo_type ]]
-  site_cfg <- config[[ c(memo_type, "sites", id) ]]
+  report_env <- build_report_env(config, memo_type, id)
+  if(is.null(report_env)){ 
+    cat("x")
+    return(false) 
+  } else {
+    cat(".")
+  }
   
-  report_env <- new.env()
-  report_env$selected_id   <- id
+  # Add data into environment
   report_env$rate_data     <- df_list$rate
   report_env$category_data <- df_list$category
-  report_env$title         <- type_cfg$title
-  report_env$assists       <- type_cfg$assists
-  report_env$name          <- site_cfg$name
-  report_env$provider      <- site_cfg$provider
-  report_env$contacts      <- site_cfg$contacts
   
-  #template_path <- system.file(file.path("templates", memo_type,"report.Rnw"), package="gocc")
   template_file <- paste(memo_type, ".Rnw", sep="")
   template_path <- system.file(file.path("templates", template_file), package="gocc")
   
-  out_filename <- paste(envir$OUTFILE_PREFIX, site_cfg$name, "pdf", sep=".")
+  out_filename <- paste(envir$OUTFILE_PREFIX, report_env$name, "pdf", sep=".")
   build_dir <- tempdir()
   
   output_path = file.path(output_dir, out_filename)
@@ -57,8 +55,31 @@ report_one <- function(id, df_list, envir, config, output_dir){
       knitr::knit2pdf(input = template_path,
                     envir=report_env,
                     pdf_file= output_path)
-    )
-  )
+  ) )
   
   return(TRUE)
+}
+
+#' @title Build Report Environment
+#' @description Create report environment from config
+#' @param config external configuration information
+#' @param memo_type with name matching the convention for the corresponding template
+#' @param id by which to subset
+build_report_env <- function(config, memo_type, id){
+  site_cfg <- config[[ c(memo_type, "sites", id) ]]
+  type_cfg <- config[[ memo_type ]]
+  
+  if(is.null(site_cfg)){ return(NULL) }
+  
+  # Assign values
+  report_env <- new.env()
+  report_env$selected_id   <- id
+  report_env$title         <- type_cfg$title
+  report_env$assists       <- type_cfg$assists
+  report_env$name          <- site_cfg$name
+  report_env$provider      <- site_cfg$provider
+  report_env$contacts      <- site_cfg$contacts
+  report_env$tips          <- site_cfg$tips
+  
+  return(report_env)
 }
