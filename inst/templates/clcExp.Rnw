@@ -67,10 +67,10 @@ More information about the goals and implementation of the LSTDI, including a st
 \ifincludetips
 \bigskip%
 \noindent\fbox{ \parbox{\textwidth}{%
-\noindent Tips for your site:
+\noindent Tips based on an assessment of your CLC:
 <<clc_exp, include=include_tips, results="asis", echo=FALSE>>=
   cat("\\begin{itemize}")
-  cat("", tips, sep="\n\\item[] ")
+  cat("", tips, sep="\n\\item ")
   cat("\\end{itemize}")
 @
 } }%

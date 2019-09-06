@@ -3,8 +3,17 @@
 
 <<load_gocc, include=FALSE>>=
 library(gocc)
+
 cls_path <- system.file(file.path("templates", "texMemo.cls"), package="gocc")
 tex_cls_name <- tools::file_path_sans_ext(cls_path)
+# Use for including tips block. tips will be null for site configs lacking them
+include_tips <- length(tips) > 0
+@
+
+% Setup conditional to include latex content for tips section
+\newif\ifincludetips
+<<has_tips_tex, include=TRUE, eval=TRUE, echo=FALSE, results='asis'>>=
+if(include_tips){ cat('\\includetipstrue') }else{ cat('\\includetipsfalse') }
 @
 
 % HBPC Report Template
@@ -40,7 +49,7 @@ The following pages present information about the number of completed Life Susta
 
 Please review these charts to encourage reflection on your current practice and how your HBPC program might increase the number of goals of care conversations (GoCCs) and completed LST order templates. \bigskip
 
-To better understand the data, please keep in mind these points:
+\noindent To better understand the data, please keep in mind these points:
 
 \begin{itemize}
 
@@ -53,7 +62,22 @@ To better understand the data, please keep in mind these points:
 
 More information about the goals and implementation of the LSTDI, including a step-by-step implementation guide, is available at the following website: \url{http://vaww.ethics.va.gov/LST.asp}.\bigskip
 
-If you have any questions about this report, you can contact:
+%%%%%%%%%%%%%%% Begin Tips %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifincludetips
+\bigskip%
+\noindent\fbox{ \parbox{\textwidth}{%
+\noindent Tips based on an assessment of your HBPC:
+<<hbpc_exp, include=include_tips, results="asis", echo=FALSE>>=
+  cat("\\begin{itemize}")
+  cat("", tips, sep="\n\\item ")
+  cat("\\end{itemize}")
+@
+} }%
+\bigskip%
+\fi
+%%%%%%%%%%%%%% End of Tips %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent If you have any questions about this report, you can contact:
 \begin{itemize}
 <<contacts_list, results="asis", echo=FALSE>>=
   cat("", contacts, sep="\n\\item ")

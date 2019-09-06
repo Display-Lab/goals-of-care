@@ -32,7 +32,7 @@ report_one <- function(id, df_list, envir, config, output_dir){
   report_env <- build_report_env(config, memo_type, id)
   if(is.null(report_env)){ 
     cat("x")
-    return(false) 
+    return(FALSE) 
   } else {
     cat(".")
   }
