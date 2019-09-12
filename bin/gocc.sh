@@ -18,6 +18,7 @@ Options:
   -h | --help   print help and exit
   -c | --config path to configuration file
   -o | --output path to output directory
+  -e | --exp    generate additional experimental reports
   --version     print package version
   --clc         path to clc report input csv file
   --hbpc        path to hbpc report input csv file
@@ -39,6 +40,10 @@ while (( "$#" )); do
     -o|--output)
       OUTPUT_DIR=$2
       shift 2
+      ;;
+    -e|--exp)
+      GENERATE_EXP="T"
+      shift
       ;;
     --clc)
       CLC_INPUT=$2
@@ -94,17 +99,28 @@ if [[ -z $OUTPUT_DIR ]]; then
     OUTPUT_DIR="${PWD}/build"
 fi
 
+if [[ -z $GENERATE_EXP ]]; then
+    GENERATE_EXP="F"
+fi
+
 echo "Creating ${OUTPUT_DIR} if it doesn't exist"
 mkdir -p "${OUTPUT_DIR}"
 
 INPUT_ARGS="clc='${CLC_INPUT}', hbpc='${HBPC_INPUT}', dementia='${DEMENTIA_INPUT}'"
+CFG_ARGS="config_path='${CONFIG_FILE}', output_dir='${OUTPUT_DIR}'"
+FLAG_ARGS="experimental=${GENERATE_EXP}"
 
 echo "Running GoCC R Package."
-EXPR="gocc::main(config_path='${CONFIG_FILE}', output_dir='${OUTPUT_DIR}', ${INPUT_ARGS})"
-echo "${EXPR}"
-Rscript --vanilla --default-packages=gocc -e "${EXPR}"
+EXPR="gocc::main(${CFG_ARGS}, ${FLAG_ARGS}, ${INPUT_ARGS})"
 
-echo "Cleaning up: framed.sty, report.tex, figures/"
+#Rscript --vanilla --default-packages=gocc -e "${EXPR}"
+# DEBUG
+#Rscript --default-packages=gocc,utils -e "packageVersion('gocc')"
+echo "${EXPR}"
+Rscript --default-packages=gocc -e "${EXPR}"
+
+echo "Cleaning up: framed.sty, *.tex, *.log, figures/"
 rm -f "framed.sty"
-rm -f "report.tex"
+rm -f "*.tex"
+rm -f "*.log"
 rm -rf "figures"

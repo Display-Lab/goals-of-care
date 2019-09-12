@@ -4,10 +4,11 @@
 #' @param ... paths to input files for clc, hbpc, or dementia reports
 #' @param config_path path to configuration file
 #' @param output_dir path to output directory. Defaults to input_dir
+#' @param experimental boolean True generates additional experimental reports. Defaults to false
 #' @return boolean TRUE indicates successful run.
 #' @export
 #' 
-main <- function(config_path, output_dir = NULL, ...){
+main <- function(config_path, output_dir = NULL, experimental=FALSE, ...){
   input_args <- list(...)
   
   # Ignore warnings
@@ -40,6 +41,13 @@ main <- function(config_path, output_dir = NULL, ...){
   if(exists('df_hbpc')){
     hbpc_df_list <- process_data(df_hbpc, envir=GOCC$HBPC)
     report_all(hbpc_df_list, GOCC$HBPC, config, output_dir)
+    if(experimental){
+      # Use shallow-ish duplicate of environment
+      exp_env <- as.environment(as.list(GOCC$HBPC, all.names=T))
+      attr(exp_env, "name") <- 'hbpcExp'
+      exp_env$OUTFILE_PREFIX <-'ex-hbpc' 
+      report_all(hbpc_df_list, exp_env, config, output_dir)
+    }
   }else{
     cat("\nSkipping HBPC processing")
   }
@@ -47,6 +55,13 @@ main <- function(config_path, output_dir = NULL, ...){
   if(exists('df_clc')){
     clc_df_list <- process_data(df_clc, envir=GOCC$CLC)
     report_all(clc_df_list,  GOCC$CLC,  config, output_dir)
+    if(experimental){
+      # Use shallow-ish duplicate of environment
+      exp_env <- as.environment(as.list(GOCC$CLC, all.names=T))
+      attr(exp_env, "name") <- 'clcExp'
+      exp_env$OUTFILE_PREFIX <-'ex-clc' 
+      report_all(clc_df_list, exp_env, config, output_dir)
+    }
   }else{
     cat("\nSkipping CLC processing")
   }
