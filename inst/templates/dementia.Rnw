@@ -193,7 +193,7 @@ Thank you for your efforts to conduct GoCCs and complete LST templates with Vete
   # Generate LaTeX table
   knitr::kable(summ_table_data, format="latex", booktabs=T, caption="LTC + Short Stay LST complete counts") %>%
     kable_styling(latex_options="striped") %>% 
-    group_rows(index=rowspans)
+    kableExtra::group_rows(index=rowspans)
 @
 
 \end{document}
