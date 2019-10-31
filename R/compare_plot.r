@@ -16,14 +16,12 @@ compare_plot <- function(plot_data, plot_title = "", plot_subtitle="", y_label =
   # Check for extra columns to be used as faceting factors:
   extra_colnames <- quant_extra_colnames(names(plot_data))
   
-  # Set upper limit to 10 or max(count) whichever is higher.
-  #data_max <- max(plot_data$rate, plot_data$uquant)
-  #ulim <- ifelse(data_max < 1, 1, data_max)
+  # Set upper limit to 1
   ulim <- 1
   
   g <- ggplot(plot_data, aes(x = timepoint, y = rate, group = event)) +
     geom_col(aes(fill=trtsp_1)) +
-    geom_hline(aes(yintercept=med, colour=line_label)) +
+    geom_errorbar(aes(ymin=med,ymax=med,colour=line_label)) +
     labs(title = plot_title,  x = "", y = "") +
     scale_y_continuous(breaks=pretty_breaks(), labels=scales::percent, limits=c(0,ulim)) +
     scale_x_date(date_labels = "%Y %b") +
@@ -35,8 +33,7 @@ compare_plot <- function(plot_data, plot_title = "", plot_subtitle="", y_label =
       panel.background = element_blank(),
       legend.title = element_blank(),
       legend.position = "top",
-      axis.text.x = element_text(angle = 45, hjust = 1)
-    ) +
+      axis.text.x = element_text(angle = 45, hjust = 1)) +
     guides(colour = guide_legend(order = 1)) 
   # Add facet wrap if faceting columns are avaialble
   if(length(extra_colnames) > 0) {
