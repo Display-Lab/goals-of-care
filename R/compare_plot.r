@@ -8,10 +8,10 @@
 #' @importFrom scales pretty_breaks percent
 #' @export
 compare_plot <- function(plot_data, plot_title = "", plot_subtitle="", y_label = ""){
-  ribbon_label <- "VA Interquartile Range (25% - 75%)"
+  line_label <- "VA Median LST Completion"
   # Manually selected colors from Viridis Palette
   plot_colors = c("#90EE90", "#414487FF",  "#2A788EFF", "#22A884FF",  "#7AD151FF", "#FDE725FF")
-  names(plot_colors) <- c(ribbon_label, unique(plot_data$trtsp_1))
+  names(plot_colors) <- c(line_label, unique(plot_data$trtsp_1))
   
   # Check for extra columns to be used as faceting factors:
   extra_colnames <- quant_extra_colnames(names(plot_data))
@@ -22,8 +22,8 @@ compare_plot <- function(plot_data, plot_title = "", plot_subtitle="", y_label =
   ulim <- 1
   
   g <- ggplot(plot_data, aes(x = timepoint, y = rate, group = event)) +
-    geom_ribbon(aes(x=timepoint,ymin=lquant,ymax=uquant, fill=ribbon_label))+
     geom_col(aes(fill=trtsp_1)) +
+    geom_hline(aes(yintercept=med, colour=line_label)) +
     labs(title = plot_title,  x = "", y = "") +
     scale_y_continuous(breaks=pretty_breaks(), labels=scales::percent, limits=c(0,ulim)) +
     scale_x_date(date_labels = "%Y %b") +
@@ -48,6 +48,6 @@ compare_plot <- function(plot_data, plot_title = "", plot_subtitle="", y_label =
 #' @description set diff of column names in plot data with expected names
 #' @describeIn compare_plot discover extra column names in plot data
 quant_extra_colnames <- function(cnames){
-  expected_names <- c('id', 'timepoint', 'event', 'count', 'limit', 'count_label', 'denominator', 'uquant', 'lquant', 'rate')
+  expected_names <- c('id', 'timepoint', 'event', 'count', 'limit', 'count_label', 'denominator', 'uquant', 'lquant', 'rate', 'mean', 'med')
   setdiff(cnames, expected_names)
 }
