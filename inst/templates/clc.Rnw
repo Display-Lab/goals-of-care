@@ -15,7 +15,7 @@ tex_cls_name <- tools::file_path_sans_ext(cls_path)
 \usepackage{graphicx}
 \usepackage{placeins}
 \usepackage{helvet}
-\usepackage{datetime}
+%\usepackage{datetime}
 \usepackage{booktabs}
 \renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
 
