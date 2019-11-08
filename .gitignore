@@ -4,6 +4,8 @@
 # Intermediate build files
 *.log
 *.synctex.gz
+*.png
+*.svg
 
 # RStudo project and R Data files
 *.RData
