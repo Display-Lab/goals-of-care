@@ -11,17 +11,28 @@ compare_plot <- function(plot_data, plot_title = "", plot_subtitle="", y_label =
   line_label <- "VA Median LST Completion"
   # Manually selected colors from Viridis Palette
   plot_colors = c("#90EE90", "#414487FF",  "#2A788EFF", "#22A884FF",  "#7AD151FF", "#FDE725FF")
-  names(plot_colors) <- c(line_label, unique(plot_data$trtsp_1))
   
-  # Check for extra columns to be used as faceting factors:
+  # Check for extra columns to be used as faceting and color fill factors:
   extra_colnames <- quant_extra_colnames(names(plot_data))
+  extra_color_vals <- c()
+  if(length(extra_colnames) > 0){
+    extra_color_vals <- unique(plot_data[,extra_colnames])
+  }
+  
+  names(plot_colors) <- c(line_label, extra_color_vals, as.character(unique(plot_data$event)))
   
   # Set upper limit to 1
   ulim <- 1
   
+  # Invert count_label. NA count labels become "no admits"
+  zero_denoms <- plot_data$denominator == 0
+  plot_data$count_label <- NA
+  plot_data$count_label[zero_denoms] <- "no admits"
+  
   g <- ggplot(plot_data, aes(x = timepoint, y = rate, group = event)) +
-    geom_col(aes(fill=trtsp_1)) +
-    geom_errorbar(aes(ymin=med,ymax=med,colour=line_label)) +
+    geom_col(aes(fill=event)) +
+    geom_line(aes(y=med, colour=line_label)) +
+    geom_text(aes(y=.35, label=count_label), angle=90) +
     labs(title = plot_title,  x = "", y = "") +
     scale_y_continuous(breaks=pretty_breaks(), labels=scales::percent, limits=c(0,ulim)) +
     scale_x_date(date_labels = "%Y %b") +
