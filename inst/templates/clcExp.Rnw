@@ -22,6 +22,9 @@ if(exists("docompare") && length(docompare) > 0){
 } else {
   do_compare <- FALSE
 }
+
+# comparison graph should over-ride tips presence
+if(do_compare){ include_tips <- FALSE}
 @
 
 % Setup conditional to include latex content for tips and comparison sections
@@ -42,8 +45,6 @@ if(do_compare){ cat('\\docomparetrue') }else{ cat('\\docomparefalse') }
 \usepackage{graphicx}
 \usepackage{placeins}
 \usepackage{helvet}
-%\usepackage{datetime}
-\usepackage{booktabs}
 \renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
 
 <<timespan_to_text, include=FALSE>>=
@@ -99,7 +100,6 @@ More information about the goals and implementation of the LSTDI, including a st
 
 %%%%%%%%%%%%%%% Begin Compare%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifdocompare
-\bigskip%
 \noindent\fbox{ \parbox{\textwidth}{%
 
 << compare_data, include=FALSE, results="asis", echo=FALSE>>=
@@ -109,12 +109,13 @@ More information about the goals and implementation of the LSTDI, including a st
     dplyr::filter(event=='numerator') %>%
     group_by(trtsp_1, timepoint) %>%
     mutate(rate = count/denominator,
-           med = stats::median(rate, na.rm=T)) %>%
+           avg = mean(rate, na.rm=T)) %>%
     dplyr::filter(id == selected_id)
 @
 
 <<compare_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 3, fig.align='center', fig.show='hold'>>=
-  title_txt <- "% Newly admitted Veterans with completed LST template"
+  title_txt <- paste("% Newly admitted Veterans with completed LST template",
+                     sep="\n",collapse="")
   comp_plot <- gocc::compare_plot(plot_data,
     plot_title = title_txt,
     plot_subtitle = paste(name,"CLC", timespan_text(plot_data$timepoint)),
@@ -124,7 +125,7 @@ More information about the goals and implementation of the LSTDI, including a st
 } }%
 \bigskip%
 \fi
-%%%%%%%%%%%%%% End of Tips %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%% End of Compare %%%%%%%%%%%%%%%%%%%%%%%%%
 
 \noindent If you have any questions about this report, you can contact:
 \begin{itemize}
@@ -134,7 +135,6 @@ More information about the goals and implementation of the LSTDI, including a st
 \end{itemize}\bigskip
 
 Thank you for your efforts to conduct GoCCs and complete LST templates with Veterans and their families to improve care and the quality of life for our Veterans.
-
 
 \newpage
 \FloatBarrier
