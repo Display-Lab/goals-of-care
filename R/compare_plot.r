@@ -24,17 +24,21 @@ compare_plot <- function(plot_data, plot_title = "", plot_subtitle="", y_label =
   # Set upper limit to 1
   ulim <- 1
   
-  # Invert count_label. NA count labels become "no admits"
+  # Differentiate between no admits and 0% documetnation rate
   zero_denoms <- plot_data$denominator == 0
-  zero_nums <- plot_data$count == 0
-  plot_data$count_label <- NA
-  plot_data$count_label[zero_nums] <- "0%"
-  plot_data$count_label[zero_denoms] <- "no admits"
+  plot_data$noadmits_label <- NA
+  plot_data$noadmits_label[zero_denoms] <- "no admits"
+  
+  # indicate 0% when all new admits were not documented.
+  zero_nums <- plot_data$count == 0 & plot_data$denominator > 0
+  plot_data$counts_label <- NA
+  plot_data$counts_label[zero_nums] <- "0%"
   
   g <- ggplot(plot_data, aes(x = timepoint, y = rate)) +
     geom_col(fill=plot_colors[3]) +
     geom_line(aes(y=avg, colour=line_label), size=2 ) +
-    geom_text(aes(y=.35, label=count_label), angle=90) +
+    geom_text(aes(y=.35, label=noadmits_label), angle=90) +
+    geom_text(aes(y=.1, label=counts_label)) +
     labs(title = plot_title,  x = "", y = "", subtitle = plot_subtitle) +
     scale_y_continuous(breaks=pretty_breaks(), labels=scales::percent, limits=c(0,ulim)) +
     scale_x_date(date_labels = "%Y %b") +
@@ -48,9 +52,9 @@ compare_plot <- function(plot_data, plot_title = "", plot_subtitle="", y_label =
       legend.position = "top",
       legend.margin=margin(c(1.5,1.5,1.5,1.5), unit="pt"),
       axis.text.x = element_text(angle = 45, hjust = 1),
-      plot.margin=unit(c(1,1,1,0), "pt")) +
+      plot.margin=margin(10,15,0,0,"pt")) +
     guides(colour = guide_legend(order = 1)) 
-  # Add facet wrap if faceting columns are avaialble
+  # Add facet wrap if faceting columns are avaialble e.g. trtsp_1
   if(length(extra_colnames) > 0) {
     g <- g + facet_wrap(extra_colnames, nrow = 1, scales = "free")
   }
