@@ -116,7 +116,7 @@ More information about the goals and implementation of the LSTDI, including a st
 @
 
 <<compare_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 3, fig.align='center', fig.show='hold'>>=
-  title_txt <- "% Newly admitted Veterans with completed LST template"
+  title_txt <- "% Newly admitted Veterans a with completed LST template"
   comp_plot <- gocc::compare_plot(plot_data,
     plot_title = title_txt,
     plot_subtitle = paste(name,"CLC", timespan_text(plot_data$timepoint)),
