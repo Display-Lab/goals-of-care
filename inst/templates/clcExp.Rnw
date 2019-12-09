@@ -6,14 +6,36 @@ library(gocc)
 library(knitr)
 cls_path <- system.file(file.path("templates", "texMemo.cls"), package="gocc")
 tex_cls_name <- tools::file_path_sans_ext(cls_path)
-# Use for including tips block. tips will be null for site configs lacking them
-include_tips <- length(tips) > 0
 @
 
-% Setup conditional to include latex content for tips section
+<<experimental_switch, include=FALSE>>=
+# Use for including tips block. tips will be null for site configs lacking them
+if(exists('tips')){
+  include_tips <- length(tips) > 0
+} else {
+  include_tips <- FALSE
+  tips <- c()
+}
+
+if(exists("docompare") && length(docompare) > 0){
+  do_compare <- docompare
+} else {
+  do_compare <- FALSE
+}
+
+# comparison graph should over-ride tips presence
+if(do_compare){ include_tips <- FALSE}
+@
+
+% Setup conditional to include latex content for tips and comparison sections
 \newif\ifincludetips
 <<has_tips_tex, include=TRUE, eval=TRUE, echo=FALSE, results='asis'>>=
 if(include_tips){ cat('\\includetipstrue') }else{ cat('\\includetipsfalse') }
+@
+
+\newif\ifdocompare
+<<docompare_tex, include=TRUE, eval=TRUE, echo=FALSE, results='asis'>>=
+if(do_compare){ cat('\\docomparetrue') }else{ cat('\\docomparefalse') }
 @
 
 % CLC Report Template
@@ -23,8 +45,6 @@ if(include_tips){ cat('\\includetipstrue') }else{ cat('\\includetipsfalse') }
 \usepackage{graphicx}
 \usepackage{placeins}
 \usepackage{helvet}
-%\usepackage{datetime}
-\usepackage{booktabs}
 \renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
 
 <<timespan_to_text, include=FALSE>>=
@@ -78,6 +98,35 @@ More information about the goals and implementation of the LSTDI, including a st
 \fi
 %%%%%%%%%%%%%% End of Tips %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%% Begin Compare%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifdocompare
+\noindent\fbox{ \parbox{\textwidth}{%
+
+<< compare_data, include=FALSE, results="asis", echo=FALSE>>=
+  # Format data for plotting
+  all_plot_data <- gocc::rate_plot_data(rate_data)
+  plot_data <- all_plot_data %>%
+    dplyr::filter(event=='numerator') %>%
+    group_by(trtsp_1, timepoint) %>%
+    mutate(rate = count/denominator,
+           avg = mean(rate, na.rm=T)) %>%
+    dplyr::filter(id == selected_id)
+@
+
+<<compare_plot, include=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.1p="fig:", fig.keep='all', fig.width = 7, fig.height = 3, fig.align='center', fig.show='hold'>>=
+  title_txt <- paste("% Newly admitted Veterans with a completed LST template",
+                     sep="\n",collapse="")
+  comp_plot <- gocc::compare_plot(plot_data,
+    plot_title = title_txt,
+    plot_subtitle = paste(name,"CLC", timespan_text(plot_data$timepoint)),
+    y_label = "Newly Admitted Veterans")
+  comp_plot
+@
+} }%
+\bigskip%
+\fi
+%%%%%%%%%%%%%% End of Compare %%%%%%%%%%%%%%%%%%%%%%%%%
+
 \noindent If you have any questions about this report, you can contact:
 \begin{itemize}
 <<contacts_list, include=TRUE, results="asis", echo=FALSE>>=
@@ -86,7 +135,6 @@ More information about the goals and implementation of the LSTDI, including a st
 \end{itemize}\bigskip
 
 Thank you for your efforts to conduct GoCCs and complete LST templates with Veterans and their families to improve care and the quality of life for our Veterans.
-
 
 \newpage
 \FloatBarrier

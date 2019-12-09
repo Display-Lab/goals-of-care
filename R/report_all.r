@@ -80,6 +80,7 @@ build_report_env <- function(config, memo_type, id){
   report_env$provider      <- site_cfg$provider
   report_env$contacts      <- site_cfg$contacts
   report_env$tips          <- site_cfg$tips
+  report_env$docompare     <- site_cfg$docompare
   
   return(report_env)
 }
