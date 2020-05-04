@@ -11,7 +11,7 @@
 #' @export
 rate_plot <- function(plot_data, plot_title = "", plot_subtitle="", y_label = "", line_label="", stack_labels=c("") ){
   # Manually selected colors from Viridis Palette
-  viridis_colors = c(denominator="#440154FF", "#414487FF", numerator="#2A788EFF", "#22A884FF", misses = "#7AD151FF", "#FDE725FF")
+  vcolors <- c(denominator="#440154FF", numerator="#2A788EFF", misses = "#7AD151FF")
   
   # Check for extra columns to be used as faceting factors:
   extra_colnames <- rate_extra_colnames(names(plot_data))
@@ -36,12 +36,13 @@ rate_plot <- function(plot_data, plot_title = "", plot_subtitle="", y_label = ""
     scale_y_continuous(breaks=pretty_breaks(), limits=c(0,ulim)) +
     scale_x_date(date_labels = "%Y %b") +
     scale_colour_manual(
-      values = viridis_colors,
+      values = vcolors,
       breaks = c("denominator"),
       labels = c(line_label)
     ) +
     scale_fill_manual(
-      values = viridis_colors,
+      values = vcolors,
+      limits = c("denominator", "numerator", "misses"),
       breaks = c("misses", "numerator"),
       labels = stack_labels
     ) +
