@@ -144,6 +144,14 @@ default:
 ```
 ## Input Codebook
 The meaning and values of the various input csv files is documented in the [codebook markdown](codebook.md).
+
+## Creating full set of reports.
+
+```sh
+bin/gocc.sh -e -c config/report_settings.yml --clc input/clc.csv --hbpc input/hbpc.csv --dementia input/dementia.csv
+
+```
+
 ## License
 Copyright 2018 Regents of the University of Michigan
 
