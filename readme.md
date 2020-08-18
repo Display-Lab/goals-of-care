@@ -1,6 +1,8 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1300783.svg)](https://doi.org/10.5281/zenodo.1300783)
 # Goals of Care Site Reports
 
+![CLI Demo Animation](demo.svg)
+
 ## Installation
 Installation instructions are inteneted to be run from the directory that contains the `gocc` directory.
 For example, if `/home/joe/projects/gocc` is where the gocc source directory will reside, then the commands below should be run from `/home/joe/projects`.
