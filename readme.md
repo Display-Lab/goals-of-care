@@ -18,12 +18,10 @@ Additionally, the latex-extras packages will need to be present on the system.
 
 ### Pandoc
 Home Page [https://www.pandoc.org](https://www.pandoc.org)
-
 Pandoc is a requirement of the knitr package.  For command line Rscript, `pandoc` needs to be included in `PATH`.
 
 ### R
 Home Page [https://cran.r-project.org/](https://cran.r-project.org/)
-
 Optionally, use RStudio to get a GUI. [https://www.rstudio.com/](https://www.rstudio.com/)
 
 ### R Packages
@@ -65,20 +63,6 @@ For example, if `/home/joe/projects/gocc` is where the gocc source directory wil
     R CMD INSTALL --preclean --no-multiarch --with-keep.source gocc
     ```
 
-## Package Use
-The package comes with a command line utility script in `bin/gocc.sh`
-1. Gather input data and export in csv format with a header row into the input/ directory.
-    - Expected input file input/clc.csv
-    - Expected input file input/hbpc.csv
-
-1. Make a configuration file `config/report_settings.yml`
-    - An example config with defaults settings exists in the package source directory under `config/report_settings.yml.sample`
-
-1. Run the report generation script supplying the path to your inputs directory and config file.
-    ```console
-      /path/to/gocc/bin/gocc.sh input config/report_settings.yml
-    ```
-
 ## Configuration
 Various strings that appear in the reports need to be changed per recipient.
 To facilitate this, those strings are specified in a yaml configuration file `config/report_settings.yml`.
@@ -115,19 +99,17 @@ default:
         provider: Friendly Neighborhood Feedback Provider
 ```
 
-## Input Codebook
-The meaning and values of the various input csv files is documented in the [codebook markdown](codebook.md).
+## Package Use
+The package comes with a command line utility script in `bin/gocc.sh`
+1. Gather input data.
+1. Make a configuration file. An example config with defaults settings exists in the package source directory under `config/report_settings.yml.sample`
+1. Run the report generation script supplying the path to your inputs directory and config file.
 
-## Creating full set of reports.
+### An Example Directory Structure and Use
+A example directory structure and command
+- gocc.sh is a symlink to the shell script in the package
+- report_settings.yml is the configuration file
 
-```sh
-bin/gocc.sh -c config/report_settings.yml --clc input/clc.csv --hbpc input/hbpc.csv --dementia input/dementia.csv
-
-```
-
-### An Example Directory Structure
-The expected use and example directory structure that was used for testing is shown in the tree.
-gocc.sh is a symlink to the shell script in the package
 ```
 example/
 ├── config
@@ -141,6 +123,16 @@ From within `example`, the command that would generate clc & hbpc reports is:
 ```console
 ./gocc.sh -c config/report_settings.yml --clc input/clc.csv --hbpc input/hbpc.csv
 ```
+## Input Codebook
+The meaning and values of the various input csv files is documented in the [codebook markdown](codebook.md).
+
+## Creating full set of reports.
+
+```sh
+bin/gocc.sh -c config/report_settings.yml --clc input/clc.csv --hbpc input/hbpc.csv --dementia input/dementia.csv
+
+```
+
 
 ## License
 Copyright 2018 Regents of the University of Michigan
