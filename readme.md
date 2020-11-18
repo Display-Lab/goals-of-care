@@ -1,7 +1,34 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1300783.svg)](https://doi.org/10.5281/zenodo.1300783)
 # Goals of Care Site Reports
 
+An R package and command line tool to generate goals of care conversation reports for VA sites.
+
 ![CLI Demo Animation](demo.svg)
+
+## Prerequisites
+This project makes use of `R`, `Rscript`,`pandoc`, and `pdflatex`.
+All should be in the PATH of the user. 
+Ensure the R Packages listed in this section are installed and available for the user. 
+
+### LaTeX
+For Windows users MikTex is suggested [https://miktex.org/](https://miktex.org/)
+Additionally, the latex-extras packages will need to be present on the system.  
+- texlive-latex-extra (deb) 
+- texlive-collection-latexextra (rpm)
+
+### Pandoc
+Home Page [https://www.pandoc.org](https://www.pandoc.org)
+
+Pandoc is a requirement of the knitr package.  For command line Rscript, `pandoc` needs to be included in `PATH`.
+
+### R
+Home Page [https://cran.r-project.org/](https://cran.r-project.org/)
+
+Optionally, use RStudio to get a GUI. [https://www.rstudio.com/](https://www.rstudio.com/)
+
+### R Packages
+The [DESCRIPTION](./DESCRIPTION) file lists the packages GoCC needs to import in order to run.
+Using `devtools::install_deps` should download and install these.
 
 ## Installation
 Installation instructions are inteneted to be run from the directory that contains the `gocc` directory.
@@ -38,7 +65,6 @@ For example, if `/home/joe/projects/gocc` is where the gocc source directory wil
     R CMD INSTALL --preclean --no-multiarch --with-keep.source gocc
     ```
 
-
 ## Package Use
 The package comes with a command line utility script in `bin/gocc.sh`
 1. Gather input data and export in csv format with a header row into the input/ directory.
@@ -52,62 +78,6 @@ The package comes with a command line utility script in `bin/gocc.sh`
     ```console
       /path/to/gocc/bin/gocc.sh input config/report_settings.yml
     ```
-
-### Example Directory
-The expected use and example directory structure that was used for testing is shown in the tree.
-gocc.sh is a symlink to the shell script in the package
-```
-gocctest/
-├── config
-│   └── report_settings.yml
-├── gocc.sh -> /home/grosscol/workspace/gocc/bin/gocc.sh
-└── input
-    ├── clc.csv
-    └── hbpc.csv
-```
-From within `gocctest`, the command used to run the example is
-```console
-./gocc.sh input config/report_settings.yml
-```
-
-## Prerequisites
-This project makes use of `R`, `Rscript`,`pandoc`, and `pdflatex`.
-All should be in the PATH of the user. 
-Ensure the R Packages listed in this section are installed and available for the user. 
-
-### LaTeX
-For Windows users MikTex is suggested [https://miktex.org/](https://miktex.org/)
-Additionally, the latex-extras packages will need to be present on the system.  
-- texlive-latex-extra (deb) 
-- texlive-collection-latexextra (rpm)
-
-### Pandoc
-Home Page [https://www.pandoc.org](https://www.pandoc.org)
-
-Pandoc is a requirement of the knitr package.  For command line Rscript, `pandoc` needs to be included in `PATH`.
-
-### R
-Home Page [https://cran.r-project.org/](https://cran.r-project.org/)
-
-Optionally, use RStudio to get a GUI. [https://www.rstudio.com/](https://www.rstudio.com/)
-
-### R Packages
-- config
-- dplyr
-- ggplot2
-- ggthemes
-- kableExtra
-- knitr
-- magrittr
-- rmarkdown
-- scales
-- stringr
-- tidyr
-- tools
-- utils
-- viridis
-
-Included under lib/ is an installer script that will attempt to download, build, and install required packages: [lib/required-packages.r](lib/required-packages.r)
 
 ## Configuration
 Various strings that appear in the reports need to be changed per recipient.
@@ -144,14 +114,32 @@ default:
         contacts: John Jones, Random Manager (555-222-1121)
         provider: Friendly Neighborhood Feedback Provider
 ```
+
 ## Input Codebook
 The meaning and values of the various input csv files is documented in the [codebook markdown](codebook.md).
 
 ## Creating full set of reports.
 
 ```sh
-bin/gocc.sh -e -c config/report_settings.yml --clc input/clc.csv --hbpc input/hbpc.csv --dementia input/dementia.csv
+bin/gocc.sh -c config/report_settings.yml --clc input/clc.csv --hbpc input/hbpc.csv --dementia input/dementia.csv
 
+```
+
+### An Example Directory Structure
+The expected use and example directory structure that was used for testing is shown in the tree.
+gocc.sh is a symlink to the shell script in the package
+```
+example/
+├── config
+│   └── report_settings.yml
+├── gocc.sh -> /home/grosscol/workspace/gocc/bin/gocc.sh
+└── input
+    ├── clc.csv
+    └── hbpc.csv
+```
+From within `example`, the command that would generate clc & hbpc reports is:
+```console
+./gocc.sh -c config/report_settings.yml --clc input/clc.csv --hbpc input/hbpc.csv
 ```
 
 ## License

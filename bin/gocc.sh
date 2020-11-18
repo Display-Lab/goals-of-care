@@ -8,11 +8,12 @@ command -v Rscript 1> /dev/null 2>&1 || \
 read -r -d '' USE_MSG <<'HEREDOC'
 Usage:
   gocc.sh -h
-  gocc.sh [options]
-  gocc.sh [options] config_file  
+  gocc.sh [options] -c config_file.yml --clc clc_file.csv
+  gocc.sh [options] -c config_file.yml --hbpc hbpc_file.csv
+  gocc.sh [options] -c config_file.yml --dementia dementia_file.csv
 
-Specify the report and input files to be run. E.g.:
-  gocc.sh --clc path/to/input_clc.csv --config path/to/config.yml
+Multiple inputs input files to be run. E.g.:
+  gocc.sh -c config.yml --clc clc.csv --hbpc hbpc.csv --demential dementia.csv
 
 Options:
   -h | --help   print help and exit
